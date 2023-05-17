@@ -1,0 +1,50 @@
+.box {
+  padding: 80px 60px;
+  background: black;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 60px;
+}
+
+.heading {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+a {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+a:hover {
+  color: green;
+  transition: 200ms ease-in;
+}
+
+.copyright {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  font-size: 12px;
+  text-decoration: none;
+}
