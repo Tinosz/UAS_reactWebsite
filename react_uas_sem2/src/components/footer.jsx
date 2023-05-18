@@ -4,14 +4,11 @@ import "./footerStyles.css";
 const Footer = () => {
   return (
     <div className="box">
-      <div className="content">
+      <div className="right-layer"></div>
       <h1 className="heading">
         Discover the pages that unleash your potential.
       </h1>
-      <div className="logo">
-        <img src="../Assets/book.gif" alt="My Logo" />
-      </div>
-    </div>
+  
       <div className="container">
 
         <div className="column">
@@ -22,6 +19,13 @@ const Footer = () => {
           <a href="#">Daniel</a>
         </div>
         <div className="column">
+          <h3 className="topic">Discover</h3>
+          <a href="#">Home</a>
+          <a href="#">Trending</a>
+          <a href="#">Authors</a>
+          <a href="#">Your Wishlist</a>
+        </div>
+        <div className="column">
           <h3 className="topic">Other Genres</h3>
           <a href="#">Romance</a>
           <a href="#">Fantasy</a>
@@ -29,20 +33,13 @@ const Footer = () => {
           <a href="#">Fiction</a>
         </div>
         <div className="column">
-          <h3 className="topic">Contact Us</h3>
-          <a href="#">Uttar Pradesh</a>
-          <a href="#">Ahemdabad</a>
-          <a href="#">Indore</a>
-          <a href="#">Mumbai</a>
-        </div>
-        <div className="column">
           <h3 className="topic">Social Media</h3>
-          <a href="#">Facebook</a>
-          <a href="#">Instagram</a>
-          <a href="#">Twitter</a>
-          <a href="#">Youtube</a>
-          
+          <a href="#" className="social" id="facebook">Facebook</a>
+          <a href="#" className="social" id="instagram">Instagram</a>
+          <a href="#" className="social" id="twitter"><span>Twitter</span></a>
+          <a href="#" className="social" id="youtube">Youtube</a>
         </div>
+
       </div>
       <p className="copyright">
         Copyright © 2023 Open Library |
