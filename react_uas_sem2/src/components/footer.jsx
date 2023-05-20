@@ -7,7 +7,10 @@ const Footer = () => {
       <div className="topBox">
         <div className="centered">
           <h1 className="heading">
-          “A reader lives a thousand lives before he dies . . . The man who never reads lives only one.”<br /><br />- George R.R Martin -
+            “A reader lives a thousand lives before he dies . . . The man who
+            never reads lives only one.”
+            <br />
+            <br />- George R.R Martin -
           </h1>
         </div>
         <div className="right-layer"></div>
@@ -52,7 +55,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="copyright">
-        Copyright © 2023 Open Library | All rights reserved
+        Copyright © 2023 BookHaven | All rights reserved
       </p>
     </div>
   );
