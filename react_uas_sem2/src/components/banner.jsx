@@ -1,15 +1,15 @@
 import React from 'react';
-import { useSnapCarousel } from 'react-snap-carousel';
 import "./carouselStyles.css";
 import Carousel from 'react-bootstrap/Carousel';
+import umnImage from '../Assets/umn.jpeg';
 
 function Banner() {
   return (
     <Carousel>
       <Carousel.Item>
         <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=First slide&bg=373940"
+          className="first"
+          src= {umnImage}
           alt="First slide"
         />
         <Carousel.Caption>
@@ -19,8 +19,8 @@ function Banner() {
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Second slide&bg=282c34"
+          className="second"
+          src={umnImage}
           alt="Second slide"
         />
 
@@ -31,8 +31,8 @@ function Banner() {
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Third slide&bg=20232a"
+          className="third"
+          src={umnImage}
           alt="Third slide"
         />
 
