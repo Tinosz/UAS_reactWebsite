@@ -1,0 +1,62 @@
+/* Carousel.css */
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background-color: royalblue;
+  transition: transform 0.5 ease;
+}
+
+.carousel-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+
+.left-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.right-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.image-box{
+  width: 200px;
+}
+
+.carousel-buttons {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 400px;
+  margin: auto;
+}
+
+.carousel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.5);
+  color: #fff;
+  cursor: pointer;
+}
+
+.carousel-prev {
+  order: 1; /* Move previous button to the left */
+}
+
+.carousel-next {
+  order: 2; /* Move next button to the right */
+}
+
+
