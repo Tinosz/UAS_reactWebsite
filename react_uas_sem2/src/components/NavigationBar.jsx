@@ -53,7 +53,7 @@ function NavigationBar() {
   }, [isNavOpen]);
 
   const navCollapseClass = isNavOpen
-    ? "collapse navbar-collapse show collapsedNav justify-content-center flex-column"
+    ? "collapse navbar-collapse show collapsedNav flex-column"
     : "collapse navbar-collapse";
 
   const toggleSearch = () => {
@@ -67,7 +67,7 @@ function NavigationBar() {
     setIsExpanded(!isExpanded);
   };
   return (
-    <Navbar expand="md">
+    <Navbar expand="md" className="navigationBar">
       <Container>
         <Navbar.Brand href="#home" className="mr-auto">
           Logo

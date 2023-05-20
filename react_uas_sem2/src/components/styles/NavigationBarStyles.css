@@ -38,6 +38,12 @@
   }
 }
 
+.navigationBar {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
 .wholeSearchBarToggler {
   width: 100%;
   max-width: 200px;
