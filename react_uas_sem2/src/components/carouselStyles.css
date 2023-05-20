@@ -1,0 +1,18 @@
+#slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+#square {
+  width: 800px; /* Adjust width as needed */
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.square-game {
+  width: 200px; /* Adjust width as needed */
+  height: 200px; /* Adjust height as needed */
+  background-color: red; /* Adjust color as needed */
+  margin-right: 10px; /* Adjust spacing between squares as needed */
+}
+  

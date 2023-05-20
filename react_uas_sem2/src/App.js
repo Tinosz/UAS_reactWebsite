@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Axios from 'axios';
 import Footer from './components/footer';
+import Banner from './components/banner';
 
 function App() {
   const googleBookAPI = () => {
@@ -19,6 +20,7 @@ function App() {
   return (
     <div className="App">
       <Footer />
+      <Banner />
     </div>
   );
 }

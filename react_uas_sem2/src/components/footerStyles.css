@@ -141,7 +141,7 @@ a {
 }
 
 a:hover {
-  color: green;
+  color: rgb(207, 82, 207);
   transition: 200ms ease-in;
 }
 
