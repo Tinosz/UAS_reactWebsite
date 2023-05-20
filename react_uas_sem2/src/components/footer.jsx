@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="topBox">
         <div className="centered">
           <h1 className="heading">
-            Discover the pages that unleash your potential.
+          “A reader lives a thousand lives before he dies . . . The man who never reads lives only one.”<br /><br />- George R.R Martin -
           </h1>
         </div>
         <div className="right-layer"></div>

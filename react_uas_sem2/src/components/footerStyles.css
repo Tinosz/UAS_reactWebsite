@@ -94,13 +94,14 @@
 }
 
 .right-layer {
-  width: 390px;
-  height: 360px;
+  width: 200px;
+  height: 200px;
   background: lightgray;
   z-index: 1;
   box-shadow: -5px 5px 10px rgba(150, 110, 200, 0.5);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  margin-left: 15%;
+  margin-left: 8%;
+  margin-right: 10%;
 }
 
 .right-layer:hover {
@@ -145,6 +146,7 @@
   font-weight: bold;
   text-align: center;
   margin-left: auto;
+  max-width: 800px;
 }
 
 .topic {
@@ -203,4 +205,5 @@ a:hover {
   right: 10px;
   font-size: 12px;
   text-decoration: none;
+  margin-top: 20px;
 }
