@@ -1,21 +1,26 @@
 @media (max-width: 1000px) {
-  .box{
+  .box {
     overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
   }
 
   .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    text-align: center;
     margin-left: 0;
     width: 100%;
     max-height: none;
+    justify-content: space-evenly;
   }
-  
+
   .column {
-    width: 100%;
     padding: 20px;
   }
 
@@ -26,7 +31,6 @@
     font-weight: bold;
     display: flex;
     justify-content: center;
-    
   }
 
   a {
@@ -37,23 +41,31 @@
   }
 }
 
-@media (max-width: 1200px){
-  .right-layer{
+@media (max-width: 1000px) {
+  .right-layer {
     display: none;
+    position: absolute;
+    align-items: end;
   }
 }
 
 .box {
   padding: 80px 60px;
   background: black;
-  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: auto; /* Remove the fixed height */
-  display: flex; /* Add display flex to adjust height */
-  flex-direction: column; /* Stack elements vertically */
-  align-items: flex-start; /* Align items to the start of the column */
+  flex-direction: column;
+  display: flex;
+}
+
+.topBox {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .container {
@@ -61,36 +73,43 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
-  flex-grow: 1; /* Allow container to grow and fill available space */
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-height: none;
+  justify-content: space-evenly;
+}
+
+.centered {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-left: autop;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   text-align: left;
-  margin-left: 60px;
 }
 
 .right-layer {
-  position: absolute;
-  top: -20px;
-  right: 20px;
   width: 390px;
   height: 360px;
   background: lightgray;
   z-index: 1;
   box-shadow: -5px 5px 10px rgba(150, 110, 200, 0.5);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  margin-left: 15%;
 }
 
 .right-layer:hover {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 .right-layer::before,
 .right-layer::after {
-  content: '';
-  position: absolute;
+  content: "";
   top: 0;
   right: 0;
   width: 100%;
@@ -98,19 +117,19 @@
   background: lightgray;
   z-index: 1;
   transform: translateX(0);
-  transition: opacity 0.3s ease, transform 0.3s ease; 
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .right-layer:hover::before {
-  opacity: 0.6; 
-  transform: translateX(-10px); 
+  opacity: 0.6;
+  transform: translateX(-10px);
   background: lightgray;
   top: 3px;
 }
 
 .right-layer:hover::after {
-  opacity: 0.3; 
-  transform: translateX(-20px); 
+  opacity: 0.3;
+  transform: translateX(-20px);
   background: lightgray;
   top: 6px;
 }
@@ -124,6 +143,8 @@
   font-size: 18px;
   color: #fff;
   font-weight: bold;
+  text-align: center;
+  margin-left: auto;
 }
 
 .topic {
@@ -133,9 +154,9 @@
   font-weight: bold;
 }
 
-a {
+.column a {
   color: white;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-size: 16px;
   text-decoration: none;
 }
@@ -160,25 +181,24 @@ a:hover {
 }
 
 #facebook:hover {
-  background-image: url('../Assets/facebook.png');
+  background-image: url("../Assets/facebook.png");
 }
 
 #instagram:hover {
-  background-image: url('../Assets/insta.jpg');
+  background-image: url("../Assets/insta.jpg");
 }
 
 #twitter:hover {
-  background-image: url('../Assets/twitter.png');
+  background-image: url("../Assets/twitter.png");
 }
 
 #youtube:hover {
-  background-image: url('../Assets/youtube.png');
+  background-image: url("../Assets/youtube.png");
   background-size: 30px auto;
 }
 
-.copyright{
+.copyright {
   color: white;
-  position: absolute;
   bottom: 0;
   right: 10px;
   font-size: 12px;
