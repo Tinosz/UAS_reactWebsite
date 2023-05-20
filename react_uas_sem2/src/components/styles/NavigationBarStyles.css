@@ -1,0 +1,253 @@
+@media (min-width: 768px) {
+  .toggler {
+    display: none;
+  }
+  .searchToggleWrapper {
+    display: none;
+  }
+  .wholeSearchBar {
+    display: none;
+  }
+  .wholeSearchBarToggler {
+    display: none;
+  }
+  .themeModeWrapperToggler{
+    display: none;
+  }
+  .genre-dropdown .dropdown-menu {
+    margin-left: 100px;
+    top: 30%;
+  }
+  .select-container {
+    padding: 0 10px;
+    border-right: 1px solid #ccc;
+    width: 100%;
+    max-width: 100px;
+    
+  }
+}
+
+@media (max-width: 576px) {
+  .form-control {
+    width: 100%;
+  }
+  .genre-dropdown .dropdown-menu {
+    margin-left: -10px;
+    top: 30%;
+    height: auto;
+  }
+}
+
+.wholeSearchBarToggler {
+  width: 100%;
+  max-width: 200px;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.themeModeWrapperToggler {
+  margin-left: auto;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.navCollapseContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.browseDropdown {
+  margin-right: auto;
+  margin-left: 0;
+  z-index: 1000;
+  position: absolute;
+}
+
+.collapsedNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profilePic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.form-container {
+  flex-direction: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: 3px;
+}
+
+.select-container {
+  padding: 0 10px;
+  border-right: 1px solid #ccc;
+  width: 100%;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-containers {
+  padding: 0 10px;
+  border-right: 1px solid #ccc;
+  width: 100%;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-container select {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.select-containers select {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.wholeSearchBar {
+  max-width: 550px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+.input-container input {
+  flex-grow: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.search-icon {
+  padding: 10px;
+  padding-right: 12px;
+  cursor: pointer;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.themeModeWrapper {
+  margin-right: auto;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.custom-dropdown {
+  z-index: 1000;
+  margin-left: 10px;
+}
+
+.itemGenreDropdownr{
+  position: absolute;
+  z-index: 1000;
+}
+
+.bookShelf {
+  margin-right: auto;
+}
+
+.rightSide {
+  align-items: center;
+  text-align: center;
+}
+
+.username {
+  margin-left: 10px;
+  font-size: 17px;
+}
+
+.spanBar {
+  display: block;
+  height: 2px;
+  width: 25px;
+  margin: 5px 0;
+  background-color: black;
+  transition: all 0.3s ease;
+}
+
+.toggler:hover .spanBar {
+  background-color: lightgray;
+}
+
+.toggler {
+  background-color: transparent;
+  border: none;
+}
+
+.toggler .spanBar:nth-of-type(1) {
+  -webkit-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+}
+
+.toggler .spanBar:nth-of-type(2) {
+  transform: translate3d(0, 0, 0) rotate(0deg);
+}
+
+.toggler .spanBar:nth-of-type(3) {
+  -webkit-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+}
+
+.toggler.active .spanBar:nth-of-type(1) {
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transform-origin: 10% 10%;
+  -ms-transform-origin: 10% 10%;
+  transform-origin: 10% 10%;
+}
+
+.toggler.active .spanBar:nth-of-type(2) {
+  transform: translate3d(30px, 0, 0);
+  opacity: 0;
+}
+
+.toggler.active .spanBar:nth-of-type(3) {
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-transform-origin: 10% 90%;
+  -ms-transform-origin: 10% 90%;
+  transform-origin: 10% 90%;
+}
