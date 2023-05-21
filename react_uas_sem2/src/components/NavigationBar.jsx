@@ -25,6 +25,20 @@ function NavigationBar() {
   const [isSearchOpen, setIsSeachOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState(false);
+  const showDropdown = (e) => {
+    setShow(!show);
+  };
+  const hideDropdown = (e) => {
+    setShow(false);
+  };
+  const [show2, setShow2] = useState(false);
+  const showDropdown2 = (e) => {
+    setShow2(!show2);
+  };
+  const hideDropdown2 = (e) => {
+    setShow2(false);
+  };
 
   const handleBookSearch = async (searchTerm, searchOption) => {
     try {
@@ -187,6 +201,9 @@ function NavigationBar() {
               title="Browse"
               id="dropdown-autoclose-outside"
               className="genreDropdown"
+              show={show}
+              onMouseEnter={showDropdown}
+              onMouseLeave={hideDropdown}
             >
               <NavDropdown.Item>Popular</NavDropdown.Item>
               <NavDropdown.Item>Best-Sellers</NavDropdown.Item>
@@ -195,6 +212,9 @@ function NavigationBar() {
                 title="Genre"
                 id="genreDropdown"
                 className="genre-dropdown custom-dropdown"
+                show={show2}
+                onMouseEnter={showDropdown2}
+                onMouseLeave={hideDropdown2}
               >
                 <div className="itemGenreDropdown">
                   <NavDropdown.Item>test</NavDropdown.Item>
