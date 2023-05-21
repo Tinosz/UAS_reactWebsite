@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./bannerStyles.css";
+import "./styles/bannerStyles.css";
 import Carousel from 'react-bootstrap/Carousel';
 import umnImage from '../Assets/umn.jpeg';
 
