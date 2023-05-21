@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   width: auto;
+  cursor: none;
+}
+
+* {
+  cursor: none;
 }
 
 ::-webkit-scrollbar {
@@ -32,8 +37,6 @@
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
   transform: translate(-50%, -50%);
 }
-
-
 
 .App-logo {
   height: 40vmin;

@@ -54,7 +54,6 @@
 .themeModeWrapperToggler {
   margin-left: auto;
   margin-right: 20px;
-  cursor: pointer;
 }
 
 .navCollapseContainer {
@@ -166,7 +165,6 @@
 .search-icon {
   padding: 10px;
   padding-right: 12px;
-  cursor: pointer;
   margin-right: 0;
   margin-left: auto;
 }
@@ -174,7 +172,6 @@
 .themeModeWrapper {
   margin-right: auto;
   margin-left: 20px;
-  cursor: pointer;
 }
 
 .custom-dropdown {
@@ -256,4 +253,4 @@
   -webkit-transform-origin: 10% 90%;
   -ms-transform-origin: 10% 90%;
   transform-origin: 10% 90%;
-}
+} 
