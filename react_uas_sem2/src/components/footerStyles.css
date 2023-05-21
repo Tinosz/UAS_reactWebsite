@@ -46,7 +46,7 @@
 .box {
   padding: 80px 60px;
   background: black;
-  position: absolute;
+  position: relative;
   bottom: 0;
   left: 0;
   right: 0;
@@ -57,7 +57,9 @@
 }
 
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto; /* Creates a grid with two columns, the first column takes remaining space, and the second column adjusts to content */
+  grid-gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
@@ -71,10 +73,8 @@
   margin-left: 60px;
 }
 
-.right-layer {
-  position: absolute;
-  top: -20px;
-  right: 20px;
+.right-section {
+  position: relative;
   width: 390px;
   height: 360px;
   background: lightgray;
@@ -90,9 +90,7 @@
 .right-layer::before,
 .right-layer::after {
   content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
   width: 100%;
   height: 100%;
   background: lightgray;
@@ -178,7 +176,7 @@ a:hover {
 
 .copyright{
   color: white;
-  position: absolute;
+  position: relative;
   bottom: 0;
   right: 10px;
   font-size: 12px;

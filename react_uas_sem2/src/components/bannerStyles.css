@@ -19,11 +19,13 @@
 .left-section {
   flex: 1;
   padding: 20px;
+  background-color: blue;
 }
 
 .right-section {
   flex: 1;
   padding: 20px;
+  background-color: red ;
 }
 
 .image-box{
