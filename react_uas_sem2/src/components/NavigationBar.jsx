@@ -85,13 +85,10 @@ function NavigationBar() {
   const toggleSearchBar = () => {
     if (window.innerWidth < 768) {
       if (isExpanded) {
-        // If search bar is expanded
         if (searchTerm.length > 0) {
-          // If there are characters in the input field, perform the search
           handleBookSearch(searchTerm, searchOption);
         }
       } else {
-        // If search bar is collapsed, toggle it
         setIsExpanded(true);
       }
     }
