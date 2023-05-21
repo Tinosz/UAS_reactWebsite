@@ -17,11 +17,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
+import axios from "axios";
 
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSearchOpen, setIsSeachOpen] = useState(true);
+  const [searchOption, setSearchOption] = useState("#");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleBookSearch = async (searchTerm, searchOption) => {
+    try {
+      let url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
+        searchTerm
+      )}`;
+
+      if (searchOption !== "#") {
+        url += `+${searchOption}:${encodeURIComponent(searchTerm)}`;
+      }
+
+      const response = await axios.get(url, {
+        params: {
+          key: process.env.REACT_APP_APIKEY,
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const lightModeClick = () => {
     setLightModeOn(!lightModeOn);
@@ -56,16 +80,30 @@ function NavigationBar() {
     ? "collapse navbar-collapse show collapsedNav flex-column"
     : "collapse navbar-collapse";
 
-  const toggleSearch = () => {
-    if (window.innerWidth < 768) {
-      setIsSeachOpen(!isSearchOpen);
-    }
-  };
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSearchBar = () => {
-    setIsExpanded(!isExpanded);
+    if (window.innerWidth < 768) {
+      if (isExpanded) {
+        // If search bar is expanded
+        if (searchTerm.length > 0) {
+          // If there are characters in the input field, perform the search
+          handleBookSearch(searchTerm, searchOption);
+        }
+      } else {
+        // If search bar is collapsed, toggle it
+        setIsExpanded(true);
+      }
+    }
   };
+
+  const handleSearchBlur = () => {
+    if (isExpanded && searchTerm.length === 0) {
+      // If search bar is expanded and there are no characters in the input field, toggle it
+      setIsExpanded(false);
+    }
+  };
+
   return (
     <Navbar expand="md" className="navigationBar">
       <Container>
@@ -77,6 +115,12 @@ function NavigationBar() {
             className={`d-flex rounded-pill align-items-center ${
               isExpanded ? "search-form active" : ""
             }`}
+            onSubmit={(e) => {
+              e.preventDefault(); // Prevent form submission
+              if (searchTerm.trim() !== "") {
+                handleBookSearch(searchTerm, searchOption);
+              }
+            }}
           >
             {!isExpanded && (
               <div className="search-icon" onClick={toggleSearchBar}>
@@ -86,11 +130,17 @@ function NavigationBar() {
             {isExpanded && (
               <>
                 <div className="select-containers">
-                  <select id="searchBy" className="mr-2">
+                  <select
+                    id="searchBy"
+                    className="mr-2"
+                    onChange={(e) => {
+                      setSearchOption(e.target.value);
+                    }}
+                  >
                     <option value="#">All</option>
-                    <option value="#">Authors</option>
-                    <option value="#">Books</option>
-                    <option value="#">Publishers</option>
+                    <option value="inauthor">Authors</option>
+                    <option value="intitle">Titles</option>
+                    <option value="inpublisher">Publishers</option>
                   </select>
                 </div>
                 <div className="input-container">
@@ -98,6 +148,10 @@ function NavigationBar() {
                     type="text"
                     placeholder="Search"
                     className="flex-grow-1"
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                    onBlur={handleSearchBlur}
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
@@ -157,11 +211,17 @@ function NavigationBar() {
               }`}
             >
               <div className="select-container">
-                <select id="searchBy" className="mr-2">
+                <select
+                  id="searchBy"
+                  className="mr-2"
+                  onChange={(e) => {
+                    setSearchOption(e.target.value);
+                  }}
+                >
                   <option value="#">All</option>
-                  <option value="#">Authors</option>
-                  <option value="#">Books</option>
-                  <option value="#">Publishers</option>
+                  <option value="inauthor">Authors</option>
+                  <option value="intitle">Titles</option>
+                  <option value="inpublisher">Publishers</option>
                 </select>
               </div>
               <div className="input-container">
@@ -169,8 +229,27 @@ function NavigationBar() {
                   type="text"
                   placeholder="Search"
                   className="flex-grow-1"
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      if (searchTerm.trim() !== "") {
+                        handleBookSearch(searchTerm, searchOption);
+                        e.preventDefault();
+                      } else {
+                        e.preventDefault();
+                      }
+                    }
+                  }}
                 />
-                <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="search-icon"
+                  onClick={() => {
+                    handleBookSearch(searchTerm, searchOption);
+                  }}
+                />
               </div>
             </Form>
           )}
