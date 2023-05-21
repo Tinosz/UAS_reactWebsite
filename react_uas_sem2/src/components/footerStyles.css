@@ -39,9 +39,7 @@
     color: white;
     font-size: 16px;
   }
-}
 
-@media (max-width: 1000px) {
   .right-layer {
     display: none;
     position: absolute;
@@ -84,24 +82,27 @@
   flex: 1;
   display: flex;
   align-items: center;
-  margin-left: autop;
+  margin-left: auto;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   text-align: left;
+  min-width: 120px;
 }
 
 .right-layer {
+  position: relative;
   width: 200px;
   height: 200px;
+  border-radius: 3px;
   background: lightgray;
   z-index: 1;
   box-shadow: -5px 5px 10px rgba(150, 110, 200, 0.5);
   transition: opacity 0.3s ease, transform 0.3s ease;
-  margin-left: 8%;
-  margin-right: 10%;
+  margin-left: 4%;
+  margin-right: 4%;
 }
 
 .right-layer:hover {
@@ -111,6 +112,8 @@
 .right-layer::before,
 .right-layer::after {
   content: "";
+  position: absolute;
+  border-radius: 3px;
   top: 0;
   right: 0;
   width: 100%;
@@ -122,17 +125,19 @@
 }
 
 .right-layer:hover::before {
+  position: absolute;
   opacity: 0.6;
-  transform: translateX(-10px);
+  transform: translateX(-7px);
   background: lightgray;
-  top: 3px;
+  top: 3px; /* Adjust the top value */
 }
 
 .right-layer:hover::after {
+  position: absolute;
   opacity: 0.3;
-  transform: translateX(-20px);
+  transform: translateX(-14px);
   background: lightgray;
-  top: 6px;
+  top: 6px; /* Adjust the top value */
 }
 
 .logo {
@@ -146,6 +151,7 @@
   font-weight: bold;
   text-align: center;
   margin-left: auto;
+  margin-right: 10%;
   max-width: 800px;
 }
 
@@ -174,9 +180,6 @@ a:hover {
   font-size: 16px;
   text-decoration: none;
   position: relative;
-}
-
-.social {
   background-repeat: no-repeat;
   background-position: right center;
   background-size: 20px auto;
