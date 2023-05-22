@@ -61,11 +61,21 @@ function TrenSlider() {
   ];
 
   const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === slides.length - 1 ? 0 : prevSlide + 1));
+    if (currentSlide === slides.length - 1) {
+      // Reached the end of the slides
+      // Add logic to handle "View More" action here
+      console.log("View More");
+    } else {
+      setCurrentSlide((prevSlide) => prevSlide + 1);
+    }
   };
 
+
   const prevSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide === 0 ? slides.length - 1 : prevSlide - 1));
+    if (currentSlide === 0) {
+      return; // Do nothing if already on the first slide
+    }
+    setCurrentSlide((prevSlide) => prevSlide - 1);
   };
 
   const handleTouchStart = (e) => {
@@ -99,7 +109,15 @@ function TrenSlider() {
   return (
     <div className='slider-vase'>
       <div className='upper-section'>
-        <h2 className='case'>Recommended For You</h2>
+
+        <div className='topic-box'>
+          <h2 className='case'>Recommended For You</h2>
+          <div className="redirect-button" onClick={nextSlide}>
+            <span>&gt;</span>
+          </div>
+        </div>
+
+
         <div className="slider-buttons">
           <div className="slider-button slider-prev" onClick={prevSlide}>
             <span>&lt;</span>
@@ -123,7 +141,10 @@ function TrenSlider() {
             </div>
           ))}
         </div>
-        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        
+      </div>
+      <div className='progress-box'>
+          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
       </div>
     </div>
   );

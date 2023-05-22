@@ -12,7 +12,7 @@ const CustomCursor = () => {
 
     const handleMouseOver = (event) => {
       const targetElement = event.target;
-      const clickableElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'SVG', 'IMG'];
+      const clickableElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'SVG', 'IMG', 'LI'];
 
       if (clickableElements.includes(targetElement.tagName)) {
         setIsActive(true);

@@ -8,14 +8,14 @@
   will-change: width, height, transform;
   z-index: 999;
   pointer-events: none;
-  background-color: rgba(109, 197, 180, 0.65);
+  background-color: rgba(187, 109, 197, 0.65);
 }
 
 .rings.active {
   width: 40px;
   height: 40px;
   transition: width 0.3s ease-out, height 0.3s ease-out, background-color 0.3s ease-out, border 0.3s ease-out;
-  background-color: rgba(109, 197, 180, 0.8);
+  background-color: rgba(187, 109, 197, 0.8);
 }
 
 .rings.shrink {

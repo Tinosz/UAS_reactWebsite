@@ -17,11 +17,57 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
+import axios from "axios";
 
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isSearchOpen, setIsSeachOpen] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(true);
+  const [searchOption, setSearchOption] = useState("#");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState(false);
+  const [dropdownTimeout, setDropdownTimeout] = useState(null);
+  const showDropdown = (e) => {
+    clearTimeout(dropdownTimeout);
+    setShow(true);
+  };
+  const hideDropdown = (e) => {
+    setTimeout(() => {
+      setShow(false);
+    }, 300); // Delay the dropdown menu closing by 0.5 seconds
+  };
+  const [show2, setShow2] = useState(false);
+
+  const showDropdown2 = (e) => {
+    clearTimeout(dropdownTimeout);
+    setShow2(true);
+  };
+  const hideDropdown2 = (e) => {
+    setTimeout(() => {
+      setShow2(false);
+    }, 300); // Delay the dropdown menu closing by 0.5 seconds
+  };
+
+  const handleBookSearch = async (searchTerm, searchOption) => {
+    try {
+      let url = `https://openlibrary.org/search.json?`;
+
+      if (searchOption === "inauthor") {
+        url += `author=${encodeURIComponent(searchTerm)}`;
+      } else if (searchOption === "intitle") {
+        url += `title=${encodeURIComponent(searchTerm)}`;
+      } else if (searchOption === "inpublisher") {
+        url += `publisher=${encodeURIComponent(searchTerm)}`;
+      } else {
+        url += `q=${encodeURIComponent(searchTerm)}`;
+      }
+
+      const response = await axios.get(url);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const lightModeClick = () => {
     setLightModeOn(!lightModeOn);
@@ -56,16 +102,26 @@ function NavigationBar() {
     ? "collapse navbar-collapse show collapsedNav flex-column"
     : "collapse navbar-collapse";
 
-  const toggleSearch = () => {
-    if (window.innerWidth < 768) {
-      setIsSeachOpen(!isSearchOpen);
-    }
-  };
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSearchBar = () => {
-    setIsExpanded(!isExpanded);
+    if (window.innerWidth < 768) {
+      if (isExpanded) {
+        if (searchTerm.length > 0) {
+          handleBookSearch(searchTerm, searchOption);
+        }
+      } else {
+        setIsExpanded(true);
+      }
+    }
   };
+
+  const handleSearchBlur = () => {
+    if (isExpanded && searchTerm.length === 0) {
+      setIsExpanded(false);
+    }
+  };
+
   return (
     <Navbar expand="md" className="navigationBar">
       <Container>
@@ -77,6 +133,12 @@ function NavigationBar() {
             className={`d-flex rounded-pill align-items-center ${
               isExpanded ? "search-form active" : ""
             }`}
+            onSubmit={(e) => {
+              e.preventDefault(); // Prevent form submission
+              if (searchTerm.trim() !== "") {
+                handleBookSearch(searchTerm, searchOption);
+              }
+            }}
           >
             {!isExpanded && (
               <div className="search-icon" onClick={toggleSearchBar}>
@@ -86,11 +148,17 @@ function NavigationBar() {
             {isExpanded && (
               <>
                 <div className="select-containers">
-                  <select id="searchBy" className="mr-2">
+                  <select
+                    id="searchBy"
+                    className="mr-2"
+                    onChange={(e) => {
+                      setSearchOption(e.target.value);
+                    }}
+                  >
                     <option value="#">All</option>
-                    <option value="#">Authors</option>
-                    <option value="#">Books</option>
-                    <option value="#">Publishers</option>
+                    <option value="inauthor">Authors</option>
+                    <option value="intitle">Titles</option>
+                    <option value="inpublisher">Publishers</option>
                   </select>
                 </div>
                 <div className="input-container">
@@ -98,6 +166,10 @@ function NavigationBar() {
                     type="text"
                     placeholder="Search"
                     className="flex-grow-1"
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                    }}
+                    onBlur={handleSearchBlur}
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
@@ -133,7 +205,12 @@ function NavigationBar() {
               title="Browse"
               id="dropdown-autoclose-outside"
               className="genreDropdown"
+              show={show}
+              onMouseEnter={showDropdown}
+              onMouseLeave={hideDropdown}
             >
+              <div className="dropdownedItem">
+
               <NavDropdown.Item>Popular</NavDropdown.Item>
               <NavDropdown.Item>Best-Sellers</NavDropdown.Item>
               <NavDropdown.Item>Recommended</NavDropdown.Item>
@@ -141,6 +218,9 @@ function NavigationBar() {
                 title="Genre"
                 id="genreDropdown"
                 className="genre-dropdown custom-dropdown"
+                show={show2}
+                onMouseEnter={showDropdown2}
+                onMouseLeave={hideDropdown2}
               >
                 <div className="itemGenreDropdown">
                   <NavDropdown.Item>test</NavDropdown.Item>
@@ -148,6 +228,7 @@ function NavigationBar() {
                   <NavDropdown.Item>test</NavDropdown.Item>
                 </div>
               </NavDropdown>
+              </div>
             </NavDropdown>
           </Nav>
           {!isNavOpen && (
@@ -157,11 +238,17 @@ function NavigationBar() {
               }`}
             >
               <div className="select-container">
-                <select id="searchBy" className="mr-2">
+                <select
+                  id="searchBy"
+                  className="mr-2"
+                  onChange={(e) => {
+                    setSearchOption(e.target.value);
+                  }}
+                >
                   <option value="#">All</option>
-                  <option value="#">Authors</option>
-                  <option value="#">Books</option>
-                  <option value="#">Publishers</option>
+                  <option value="inauthor">Authors</option>
+                  <option value="intitle">Titles</option>
+                  <option value="inpublisher">Publishers</option>
                 </select>
               </div>
               <div className="input-container">
@@ -169,8 +256,27 @@ function NavigationBar() {
                   type="text"
                   placeholder="Search"
                   className="flex-grow-1"
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      if (searchTerm.trim() !== "") {
+                        handleBookSearch(searchTerm, searchOption);
+                        e.preventDefault();
+                      } else {
+                        e.preventDefault();
+                      }
+                    }
+                  }}
                 />
-                <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="search-icon"
+                  onClick={() => {
+                    handleBookSearch(searchTerm, searchOption);
+                  }}
+                />
               </div>
             </Form>
           )}

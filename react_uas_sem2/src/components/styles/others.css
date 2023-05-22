@@ -1,0 +1,126 @@
+.main-box{
+    margin: auto;
+    margin-top: 50px;
+    width: 90%;
+}
+
+.float-left{
+    text-align: left;
+}
+
+.filter-box{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 40px;
+    margin-top: 30px;
+}
+
+/*filter button*/
+.AllFilters{
+    
+}
+
+#search-filter{
+    background-color: transparent;
+    border-radius: 20px;
+    padding: 5px 10px;
+    cursor: none;
+}
+
+.filter-button{
+    text-align: left;
+}
+
+/*sort button*/
+#search-sort{
+    background-color: transparent;
+    border-radius: 20px;
+    padding: 5px 10px;
+    cursor: none;
+}
+
+.sort-button{
+    text-align: right;
+}
+
+/*content section*/
+.content-box{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.book-item{
+    max-height: 300px;
+    border-radius: 10px;
+    background-color: azure;
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.book-cover{
+    margin-top: 10px;
+}
+
+.book-title{
+    margin-bottom: 10px;
+}
+
+.book-author{
+    margin-bottom: 10px;
+}
+
+.book-rating{
+    margin-bottom: 10px;
+}
+/*Page buttons*/
+.muchmore{
+    text-align: left;
+    margin-top: 30px;
+}
+
+.slider-buttonsO {
+  align-content: baseline;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.slider-buttonO {
+  margin-top: 10px;
+  background-color: rgba(34, 34, 34, 0.075);
+  border: 0;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.slider-buttonO:hover {
+    background-color: rgba(34, 34, 34, 0.2);   
+}
+
+.page-buttonsO{
+  align-content: baseline;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.page-button{
+  border-radius: 50%;
+  margin-right: 10px;
+  width: 37px;
+  height: 37px;
+  background-color: rgba(34, 34, 34, 0.075);
+  color: black;
+  font-weight: bold;
+  display: flex;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.page-button.active {
+  border: 2px solid black; /* Add black border */
+}
