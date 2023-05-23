@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Form, FormControl } from "react-bootstrap";
-import "./styles/genreBar.css"
+import "./styles/leftBar.css"
 
 export default function GenreBar(){
     return (

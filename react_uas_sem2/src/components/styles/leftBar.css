@@ -57,10 +57,8 @@ border-bottom: 2px solid black;
 }
 
 .search-bar {
-  margin: auto;
   margin-bottom: 10px;
-  justify-content: center;
-  max-width: 30em;
+  max-width: 10em;
   border-radius: 20px;
 }
 

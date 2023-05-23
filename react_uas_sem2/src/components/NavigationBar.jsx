@@ -27,15 +27,20 @@ function NavigationBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [show, setShow] = useState(false);
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
+  
   const showDropdown = (e) => {
     clearTimeout(dropdownTimeout);
     setShow(true);
   };
+  
   const hideDropdown = (e) => {
-    setTimeout(() => {
+    clearTimeout(dropdownTimeout);
+    setDropdownTimeout(setTimeout(() => {
       setShow(false);
-    }, 300); // Delay the dropdown menu closing by 0.5 seconds
+    }, 100));
   };
+  
+
   const [show2, setShow2] = useState(false);
 
   const showDropdown2 = (e) => {
@@ -201,14 +206,14 @@ function NavigationBar() {
 
         <div id="navCollapse" className={navCollapseClass}>
           <Nav className="my-2 my-lg-0" style={{ maxHeight: "100px" }}>
-            <NavDropdown
-              title="Browse"
-              id="dropdown-autoclose-outside"
-              className="genreDropdown"
-              show={show}
-              onMouseEnter={showDropdown}
-              onMouseLeave={hideDropdown}
-            >
+          <NavDropdown
+            title="Browse"
+            id="dropdown-autoclose-outside"
+            className="genreDropdown dropdown-cursor"
+            show={show}
+            onMouseEnter={showDropdown}
+            onMouseLeave={hideDropdown}
+          >
               <div className="dropdownedItem">
 
               <NavDropdown.Item>Popular</NavDropdown.Item>

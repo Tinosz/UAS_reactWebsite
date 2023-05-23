@@ -11,118 +11,136 @@
 }
 
   
-  .upper-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center; 
-  }
+.upper-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center; 
+}
   
 .topic-box{
     display: grid;
     grid-template-columns: auto 1fr;
 }
 
-  .case {
-    color: white;
-    text-align: left;
-    padding: 5px;
-  }
+.case {
+  color: white;
+  text-align: left;
+  padding: 5px;
+}
 
-  .redirect-button{
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    border: 2px solid purple;
-    width: 37px;
-    height: 37px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-      
-  }
-  
-  .slider-buttons {
-    color: white;
-    display: flex;
-    justify-content: flex-end; 
-    align-items: center; 
-  }
-  
-  .slider-prev {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    border: 2px solid purple;
-    width: 37px;
-    height: 37px;
-    margin-right: 10px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-  
-  .slider-next {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    border: 2px solid purple;
-    width: 37px;
-    height: 37px;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-  
-  .slider-box {
-    position: relative;
-    width: 95%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.5s ease;
-  }
-  
-  .slider-content {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    height: 320px;
-    margin: auto;
-    transition: transform 0.5s ease;
-  }
-  
-  .slide {
-    flex: 0 0 calc(100% / 5);
-    height: 100%;
-  }
-  
-  .cover-box {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .title-box {
-    flex: 1;
-    padding: 20px;
-    color: white;
-  }
-  
-  .image-box {
-    width: 150px;
-    height: 200px;
-  }
+.case:hover{
+  border-bottom: 3px solid white;
+  border-radius: 2px;
+}
 
-  .progress-box {
-    border-radius: 10px;
-    padding: 3px;
-    background-color: white;
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .progress-bar {
-    border-radius: 10px;
-    height: 5px;
-    background-color: purple;
-    transition: width 0.3s ease;
-  }
+.redirect-button{
+  font-weight: bold;
+  font-size: x-large ;
+  color: white;
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+  justify-content: center;
+  display: flex;
+  padding: 5px;
+}
+
+.slider-buttons {
+  color: white;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+}
+
+.slider-prev {
+  font-weight: bold;
+  font-size: x-large ;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border: 2px solid purple;
+  width: 37px;
+  height: 37px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.slider-next {
+  font-weight: bold;
+  font-size: x-large ;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border: 2px solid purple;
+  width: 37px;
+  height: 37px;
+  justify-content: center;
+  align-items:center;
+  display: flex;
+}
+
+.slider-box {
+  position: relative;
+  width: 95%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+
+
+.slider-content {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 320px;
+  margin: auto;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  border-radius: 10px;
+  flex: 0 0 calc(100% / 5);
+  height: 100%;
+}
+
+.slide:hover{
+  background-color: rgba(78, 71, 71, 0.4);
+  box-shadow: 0 5px 15px 0 rgba(160, 148, 148, 0.4);
+  border: 2px solid black;
+}
+
+.cover-box {
+  flex: 1;
+  padding: 20px;
+}
+
+.title-box {
+  flex: 1;
+  padding: 20px;
+  color: white;
+}
+
+.image-box {
+  width: 150px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.progress-box {
+  border-radius: 10px;
+  padding: 3px;
+  background-color: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  height: 5px;
+  background-color: purple;
+  transition: width 0.3s ease;
+}
   
   
   

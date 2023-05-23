@@ -37,14 +37,10 @@
     top: 30%;
     height: auto;
   }
-}
+} 
 
 .genre-dropdown .dropdown-menu {
   margin-top: -10px; /* Adjust the value as per your requirements */
-}
-
-.dropdown-toggle{
-  cursor: none;
 }
 
 .navigationBar {

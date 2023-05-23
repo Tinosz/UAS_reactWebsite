@@ -13,8 +13,9 @@ const CustomCursor = () => {
     const handleMouseOver = (event) => {
       const targetElement = event.target;
       const clickableElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'SVG', 'IMG', 'LI'];
-
-      if (clickableElements.includes(targetElement.tagName)) {
+      const isElementWithC = targetElement.classList.contains('C');
+    
+      if (clickableElements.includes(targetElement.tagName) || isElementWithC) {
         setIsActive(true);
       } else {
         const clickableAncestor = clickableElements.some((element) =>
@@ -23,6 +24,7 @@ const CustomCursor = () => {
         setIsActive(clickableAncestor);
       }
     };
+    
 
     const handleMouseOut = () => {
       setIsActive(false);

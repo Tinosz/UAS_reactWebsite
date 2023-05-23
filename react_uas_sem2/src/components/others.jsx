@@ -3,6 +3,8 @@ import "./styles/others.css";
 
 export default function Others() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
+  const navbarRef = useRef(null);
 
   const slides = [
     {
@@ -274,6 +276,10 @@ export default function Others() {
 
   const currentSlides = slides.slice(startIndex, endIndex);
 
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
+
   return (
     <div className="main-box">
       {/* Header */}
@@ -288,7 +294,7 @@ export default function Others() {
         <div className="AllFilters">
           {/* Navbar for filter */}
           <div className="filter-button">
-            <button id="search-filter">
+            <button id="search-filter" onClick={toggleFilters}>
               <span className="filter-image"></span>
               <span className="filter-text">All Filters</span>
             </button>
@@ -306,15 +312,24 @@ export default function Others() {
         </div>
       </div>
 
+      {/* Left navbar for filters */}
+      {showFilters && (
+        <div className={`left-navbar ${showFilters ? "show" : ""}`}>
+        {/* Add your desired content for the filters navbar */}
+        <h3>Filters</h3>
+        {/* Add more filter options */}
+        </div>
+      )}
+
       {/* Content section */}
       <div className="content-box">
         {currentSlides.map((slide, index) => (
-          <div key={index} className="book-item">
-            <img src={slide.image} alt={slide.title} className="book-cover" />
-            <div className="book-details">
-              <h3 className="book-title">{slide.title}</h3>
-              <p className="book-author">Author: {slide.author}</p>
-              <p className="book-rating">Rating: {slide.rating}</p>
+          <div key={index} className="book-item C">
+            <img src={slide.image} alt={slide.title} className="book-cover C" />
+            <div className="book-details C">
+              <h3 className="book-title C">{slide.title}</h3>
+              <p className="book-author C">Author: {slide.author}</p>
+              <p className="book-rating C">Rating: {slide.rating}</p>
             </div>
           </div>
         ))}
@@ -322,34 +337,37 @@ export default function Others() {
 
       {/* Page navigation */}
       <h6 className="muchmore">There's so much more for you to discover</h6>
-        <div className="slider-buttonsO">
-            
+      <div className="slider-buttonsO">
         <div
-            className={`slider-buttonO slider-prev ${currentSlide === 0 ? "disabled" : ""}`}
-            onClick={handleClickPrev}
+          className={`slider-buttonO slider-prev ${
+            currentSlide === 0 ? "disabled" : ""
+          }`}
+          onClick={handleClickPrev}
         >
-            <span>&lt;</span>
+          <span>&lt;</span>
         </div>
         <div className="page-buttonsO">
-            {Array.from({ length: totalPages }, (_, index) => (
+          {Array.from({ length: totalPages }, (_, index) => (
             <div
-                key={index}
-                className={`slider-buttonO page-button ${currentSlide === index ? "active" : ""}`}
-                onClick={() => setCurrentSlide(index)}
+              key={index}
+              className={`slider-buttonO page-button ${
+                currentSlide === index ? "active" : ""
+              }`}
+              onClick={() => setCurrentSlide(index)}
             >
-                {index + 1}
+              {index + 1}
             </div>
-            ))}
+          ))}
         </div>
         <div
-            className={`slider-buttonO slider-next ${
+          className={`slider-buttonO slider-next ${
             currentSlide === totalPages - 1 ? "disabled" : ""
-            }`}
-            onClick={handleClickNext}
+          }`}
+          onClick={handleClickNext}
         >
-            <span>&gt;</span>
+          <span>&gt;</span>
         </div>
-        </div>
+      </div>
     </div>
   );
 }

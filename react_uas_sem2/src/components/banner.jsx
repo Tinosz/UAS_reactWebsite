@@ -44,14 +44,14 @@ function Banner() {
     <div className="carousel-container">
       <div className="carousel-content">
         <div className="left-section">
-          <h2>{slides[currentSlide].title}</h2>
+          <h2 className='C'>{slides[currentSlide].title}</h2>
           <p>Rating: {slides[currentSlide].rating}</p>
           <p>Author: {slides[currentSlide].author}</p>
           <p>Genre: {slides[currentSlide].genre}</p>
           <p>{slides[currentSlide].summary}</p>
         </div>
         <div className="right-section">
-          <img src={slides[currentSlide].image} alt={slides[currentSlide].title} className="image-box" />
+          <img src={slides[currentSlide].image} alt={slides[currentSlide].title} className="image-box C" />
         </div>
       </div>
       <div className="carousel-buttons">

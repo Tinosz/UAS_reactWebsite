@@ -111,7 +111,7 @@ function TrenSlider() {
       <div className='upper-section'>
 
         <div className='topic-box'>
-          <h2 className='case'>Recommended For You</h2>
+          <h2 className='case C'>Recommended For You</h2>
           <div className="redirect-button" onClick={nextSlide}>
             <span>&gt;</span>
           </div>
@@ -119,11 +119,11 @@ function TrenSlider() {
 
 
         <div className="slider-buttons">
-          <div className="slider-button slider-prev" onClick={prevSlide}>
-            <span>&lt;</span>
+          <div className="slider-button slider-prev C" onClick={prevSlide}>
+            <span className='C'>&lt;</span>
           </div>
-          <div className="slider-button slider-next" onClick={nextSlide}>
-            <span>&gt;</span>
+          <div className="slider-button slider-next C" onClick={nextSlide}>
+            <span className='C'>&gt;</span>
           </div>
         </div>
       </div>
@@ -131,12 +131,12 @@ function TrenSlider() {
       <div className="slider-box" ref={sliderRef}>
         <div className="slider-content">
           {slides.slice(currentSlide, currentSlide + 5).map((slide, index) => (
-            <div key={index} className="slide">
-              <div className="cover-box">
-                <img src={slide.image} alt={slide.title} className="image-box" />
+            <div key={index} className="slide C">
+              <div className="cover-box C">
+                <img src={slide.image} alt={slide.title} className="image-box C" />
               </div>
-              <div className="title-box">
-                <h2>{slide.title}</h2>
+              <div className="title-box C">
+                <h2 className='C'>{slide.title}</h2>
               </div>
             </div>
           ))}
