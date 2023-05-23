@@ -1,49 +1,340 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios"
+import React, { useEffect, useState } from "react";
 import "./styles/others.css";
 
 export default function Others() {
-  
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from the API and set the books state
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch("your-api-endpoint");
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+    }
+  };
 
 
+    return(
+        <div className="main-box">
+            <div className="result-header">
+                <div className="float-left">
+                    <h2 className="text-heading">Find books that you love</h2>
+                </div>
+            </div>
+
+            <div className="filter-box">
+                <div className="AllFilters">
+                {/*navbar for filter*/}
+                    <div className="filter-button">
+                        <button id="search-filter">
+                            <span className="filter-image">
+                            </span>
+                            <span className="filter-text">All Filters</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div className="SortBy">
+                {/*navbar for sort by*/}
+                <div className="sort-button">
+                        <button id="search-sort">
+                            <span className="sort-image">
+                            </span>
+                            <span className="sort-text">Sort By</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Content section */}
+      <div className="content-box">
+        {books.map((book, index) => (
+          <div key={index} className="book-item">
+            <img src={book.cover} alt={book.title} className="book-cover" />
+            <div className="book-details">
+              <h3 className="book-title">{book.title}</h3>
+              <p className="book-author">Author: {book.author}</p>
+              <p className="book-rating">Rating: {book.rating}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// placeholder
+import React, { useEffect, useState, useRef } from "react";
+import "./styles/others.css";
+
+export default function Others() {
+  const slides = [
+    {
+      title: "Book 1",
+      rating: "4.5",
+      author: "Author 1",
+      genre: "Genre 1",
+      summary: "Summary 1",
+      image: "book1.jpg",
+    },
+    {
+      title: "Book 2",
+      rating: "4.2",
+      author: "Author 2",
+      genre: "Genre 2",
+      summary: "Summary 2",
+      image: "book2.jpg",
+    },
+    {
+      title: "Book 3",
+      rating: "4.8",
+      author: "Author 3",
+      genre: "Genre 3",
+      summary: "Summary 3",
+      image: "book3.jpg",
+    },
+    {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+      {
+        title: "Book 3",
+        rating: "4.8",
+        author: "Author 3",
+        genre: "Genre 3",
+        summary: "Summary 3",
+        image: "book3.jpg",
+      },
+    // Add more books to the 'slides' array as needed
+  ];
 
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [showAllGenres, setShowAllGenres] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const [showAuthorSelect, setShowAuthorSelect] = useState(false);
   const navbarRef = useRef(null);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    const url = "https://openlibrary.org/search.json?q=fiction";
-    axios
-      .get(url)
-      .then((response) => {
-        const docs = response.data.docs;
-        const slidesData = docs
-          .map((doc) => ({
-            title: doc.title || "Unknown Title",
-            author: doc.author_name?.[0] || "Unknown Author",
-            rating: doc.rating?.average || "N/A",
-            image: doc.cover_i
-              ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-              : null,
-          }))
-          .filter((slide) => slide.title && slide.author && slide.image !== null);
-  
-        setSlides(slidesData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const handleSelectChange = (event) => {
     const { value } = event.target;
@@ -280,7 +571,7 @@ export default function Others() {
           <div key={index} className="book-item C">
             <img src={slide.image} alt={slide.title} className="book-cover C" />
             <div className="book-details C">
-              <p className="book-title C">{slide.title}</p>
+              <h3 className="book-title C">{slide.title}</h3>
               <p className="book-author C">Author: {slide.author}</p>
               <p className="book-rating C">Rating: {slide.rating}</p>
             </div>
