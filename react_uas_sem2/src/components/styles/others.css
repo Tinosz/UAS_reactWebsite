@@ -31,6 +31,8 @@
     text-align: left;
 }
 
+/*left navbar*/
+
 .left-navbar {
     background-color: aqua;
     position: fixed;
@@ -43,11 +45,47 @@
     box-sizing: border-box;
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
-    z-index: 999;
-  }
+    z-index: 100;
+    overflow-y: auto;
+    transform: translateY(100%); /* Start the navbar offscreen */
+    transition: transform 0.5s ease; /* Add a transition effect to the transform property */
+}
   
   .left-navbar.show {
     transform: translateX(0);
+  }
+  
+  .filter-section{
+    text-align: left;
+    margin-top: 20px;
+  } 
+
+  /*navbar content*/
+  .navbar-title{
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .radio-text{
+    margin-left: 10px;
+  }
+
+  #genre-filter {
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    width: 200px;
+  }
+  
+  .custom-select {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  .custom-select option {
+    background-color: #fff;
+    color: #333;
   }
   
 
@@ -57,10 +95,16 @@
     border-radius: 20px;
     padding: 5px 10px;
     cursor: none;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .sort-button{
     text-align: right;
+}
+
+#search-sort:hover{
+  transform: scale(1.04);
+  box-shadow: 0 5px 15px 0 rgba(160, 148, 148, 0.4);
 }
 
 /*content section*/
@@ -98,6 +142,47 @@
 .book-rating{
     margin-bottom: 10px;
 }
+
+/*author search*/
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.select-menu {
+  position: relative;
+}
+
+.text-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+datalist {
+  position: absolute;
+  width: 100%;
+  top: 100%;  
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 0;
+  transform: translateY(100%);
+}
+
+option {
+  padding: 4px;
+}
+
+option:hover {
+  background-color: #f2f2f2;
+}
+
+
+
 /*Page buttons*/
 .muchmore{
     text-align: left;

@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./styles/others.css";
 
 export default function Others() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [showFilters, setShowFilters] = useState(false);
-  const navbarRef = useRef(null);
-
   const slides = [
     {
       title: "Book 1",
@@ -259,6 +255,20 @@ export default function Others() {
     // Add more books to the 'slides' array as needed
   ];
 
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showAllGenres, setShowAllGenres] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [showAuthorSelect, setShowAuthorSelect] = useState(false);
+  const navbarRef = useRef(null);
+
+  const handleSelectChange = (event) => {
+    const { value } = event.target;
+    setShowAllGenres(value === "");
+  };
+
   const itemsPerPage = 20;
 
   const totalPages = Math.ceil(slides.length / itemsPerPage);
@@ -278,6 +288,44 @@ export default function Others() {
 
   const toggleFilters = () => {
     setShowFilters(!showFilters);
+  };
+
+
+  /* close navbar*/
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target) &&
+        showFilters
+      ) {
+        setShowFilters(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showFilters]);
+
+/*search authors*/
+
+  const filteredSlides = slides.filter((slide) =>
+    slide.author.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleAuthorSelection = (e) => {
+    setSelectedAuthor(e.target.value);
+  };
+
+  const handleSearchBarClick = () => {
+    setShowAuthorSelect(true);
   };
 
   return (
@@ -314,11 +362,135 @@ export default function Others() {
 
       {/* Left navbar for filters */}
       {showFilters && (
-        <div className={`left-navbar ${showFilters ? "show" : ""}`}>
-        {/* Add your desired content for the filters navbar */}
-        <h3>Filters</h3>
-        {/* Add more filter options */}
+        <div ref={navbarRef} className={`left-navbar ${showFilters ? "show" : ""}`}>
+          <h3>Filters</h3>
+        
+        {/* Filter by genre */}
+        <div className="filter-section">
+          <h5>Filter by Genre</h5>
+          <select name="genre" id="genre-filter" onChange={handleSelectChange}>
+            {showAllGenres && <option value="" selected disabled hidden>All Genres</option>}
+            <option value="fantasy">Fantasy</option>
+            <option value="sci-fi">Science Fiction</option>
+            <option value="mystery">Mystery</option>
+            <option value="romance">Romance</option>
+            <option value="romance">Young Adult</option>
+            <option value="romance">Historical Fiction</option>
+            {/* Add more genre options as needed */}
+          </select>
         </div>
+
+
+        <div className="filter-section">
+          <h5>Filter by ratings</h5>
+          {/* Add a search input field for authors */}
+          {/* Display and update the list of selected authors */}
+        </div>
+      
+        {/* Filter by authors (with search functionality) */}
+        <div className="filter-section">
+          <h5>Authors</h5>
+          <div ref={navbarRef} className="select-menu">
+            {showAuthorSelect ? (
+              <div>
+                <input
+                  type="text"
+                  value={selectedAuthor}
+                  onChange={handleAuthorSelection}
+                  className="text-input"
+                  placeholder="Search by author"
+                  autoFocus
+                  list="authorOptions"
+                />
+                <datalist id="authorOptions">
+                  {filteredSlides.map((slide, index) => (
+                    <option key={index} value={slide.author} />
+                  ))}
+                </datalist>
+              </div>
+            ) : (
+              <input
+                type="text"
+                value={selectedAuthor}
+                onChange={handleAuthorSelection}
+                className="text-input"
+                placeholder="Search by author"
+                onClick={handleSearchBarClick}
+                readOnly
+              />
+            )}
+          </div>
+        </div>
+      
+        {/* Filter by last released */}
+        <div className="filter-section">
+          <h5>Last Released</h5>
+          {/* Add your last released filter options */}
+        </div>
+      
+        {/* Filter by book series */}
+        <div className="filter-section">
+          <h5>Book Series</h5>
+          <div>
+            <input type="radio" id="harry-potter" value="Harry Potter" name="book-series" />
+            <label htmlFor="harry-potter" className="radio-text">Harry Potter</label>
+          </div>
+          <div>
+            <input type="radio" id="game-of-thrones" value="Game of Thrones" name="book-series" />
+            <label htmlFor="game-of-thrones" className="radio-text">Game of Thrones</label>
+          </div>
+          <div>
+            <input type="radio" id="lord-of-the-rings" value="The Lord of the Rings" name="book-series" />
+            <label htmlFor="lord-of-the-rings" className="radio-text">The Lord of the Rings</label>
+          </div>
+          <div>
+            <input type="radio" id="hunger-games" value="The Hunger Games" name="book-series" />
+            <label htmlFor="hunger-games" className="radio-text">The Hunger Games</label>
+          </div>
+          <div>
+            <input type="radio" id="wheel-of-time" value="The Wheel of Time" name="book-series" />
+            <label htmlFor="wheel-of-time" className="radio-text">The Wheel of Time</label>
+          </div>
+        <div>
+          <input type="radio" id="millenium" value="The Millenium" name="book-series" />
+          <label htmlFor="millenium" className="radio-text">The Millenium</label>
+        </div>
+      </div>
+
+
+      <div className="filter-section">
+        <h5>Language</h5>
+        <div>
+          <input type="radio" id="english" value="English" name="language" />
+          <label htmlFor="english" className="radio-text">English</label>
+        </div>
+        <div>
+          <input type="radio" id="francais" value="Francais" name="language" />
+          <label htmlFor="francais" className="radio-text">Francais</label>
+        </div>
+        <div>
+          <input type="radio" id="deutsch" value="Deutsch" name="language" />
+          <label htmlFor="deutsch" className="radio-text">Deutsch</label>
+        </div>
+        <div>
+          <input type="radio" id="japanese" value="Japanese" name="language" />
+          <label htmlFor="japanese" className="radio-text">Japanese</label>
+        </div>
+        <div>
+          <input type="radio" id="chinese" value="Chinese" name="language" />
+          <label htmlFor="chinese" className="radio-text">Chinese</label>
+        </div>
+        <div>
+          <input type="radio" id="bahasa" value="Bahasa" name="language" />
+          <label htmlFor="bahasa" className="radio-text">Bahasa</label>
+        </div>
+      </div>
+
+
+      </div>
+
+      
+      
       )}
 
       {/* Content section */}
