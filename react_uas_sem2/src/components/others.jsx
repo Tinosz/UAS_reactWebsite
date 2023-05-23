@@ -4,10 +4,6 @@ import "./styles/others.css";
 
 export default function Others() {
   
-
-
-
-
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -21,28 +17,36 @@ export default function Others() {
     fetchData();
   }, []);
 
+  const genres = ["romance", "historical", "fantasy", "drama"];
   const fetchData = () => {
-    const url = "https://openlibrary.org/search.json?q=fiction";
-    axios
-      .get(url)
-      .then((response) => {
-        const docs = response.data.docs;
-        const slidesData = docs
-          .map((doc) => ({
-            title: doc.title || "Unknown Title",
-            author: doc.author_name?.[0] || "Unknown Author",
-            rating: doc.rating?.average || "N/A",
-            image: doc.cover_i
-              ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-              : null,
-          }))
-          .filter((slide) => slide.title && slide.author && slide.image !== null);
-  
-        setSlides(slidesData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const slidesData = [];
+
+    const fetchGenreData = (genre) => {
+      const url = `https://openlibrary.org/search.json?q=${genre}`;
+      axios
+        .get(url)
+        .then((response) => {
+          const docs = response.data.docs;
+          const genreSlides = docs
+            .map((doc) => ({
+              title: doc.title || "Unknown Title",
+              author: doc.author_name?.[0] || "Unknown Author",
+              rating: doc.rating?.average || "N/A",
+              image: doc.cover_i
+                ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                : null,
+            }))
+            .filter((slide) => slide.title && slide.author && slide.image !== null);
+
+          slidesData.push(...genreSlides);
+          setSlides(slidesData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    genres.forEach((genre) => fetchGenreData(genre));
   };
 
   const handleSelectChange = (event) => {
