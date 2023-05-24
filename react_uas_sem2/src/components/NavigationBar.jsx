@@ -22,7 +22,7 @@ import axios from "axios";
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isSearchOpen, setIsSeachOpen] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
   const [show, setShow] = useState(false);
@@ -42,19 +42,19 @@ function NavigationBar() {
 
   const handleBookSearch = async (searchTerm, searchOption) => {
     try {
-      let url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
-        searchTerm
-      )}`;
+      let url = `https://openlibrary.org/search.json?`;
 
-      if (searchOption !== "#") {
-        url += `+${searchOption}:${encodeURIComponent(searchTerm)}`;
+      if (searchOption === "inauthor") {
+        url += `author=${encodeURIComponent(searchTerm)}`;
+      } else if (searchOption === "intitle") {
+        url += `title=${encodeURIComponent(searchTerm)}`;
+      } else if (searchOption === "inpublisher") {
+        url += `publisher=${encodeURIComponent(searchTerm)}`;
+      } else {
+        url += `q=${encodeURIComponent(searchTerm)}`;
       }
 
-      const response = await axios.get(url, {
-        params: {
-          key: process.env.REACT_APP_APIKEY,
-        },
-      });
+      const response = await axios.get(url);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -99,13 +99,10 @@ function NavigationBar() {
   const toggleSearchBar = () => {
     if (window.innerWidth < 768) {
       if (isExpanded) {
-        // If search bar is expanded
         if (searchTerm.length > 0) {
-          // If there are characters in the input field, perform the search
           handleBookSearch(searchTerm, searchOption);
         }
       } else {
-        // If search bar is collapsed, toggle it
         setIsExpanded(true);
       }
     }
@@ -113,9 +110,16 @@ function NavigationBar() {
 
   const handleSearchBlur = () => {
     if (isExpanded && searchTerm.length === 0) {
-      // If search bar is expanded and there are no characters in the input field, toggle it
       setIsExpanded(false);
     }
+  };
+
+  const handleSearchTermChange = (value) => {
+    setSearchTerm(value);
+  };
+
+  const handleSearchOptionChange = (value) => {
+    setSearchOption(value);
   };
 
   return (
@@ -147,9 +151,8 @@ function NavigationBar() {
                   <select
                     id="searchBy"
                     className="mr-2"
-                    onChange={(e) => {
-                      setSearchOption(e.target.value);
-                    }}
+                    onChange={(e) => handleSearchOptionChange(e.target.value)}
+                    value={searchOption}
                   >
                     <option value="#">All</option>
                     <option value="inauthor">Authors</option>
@@ -162,10 +165,9 @@ function NavigationBar() {
                     type="text"
                     placeholder="Search"
                     className="flex-grow-1"
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                    }}
+                    onChange={(e) => handleSearchTermChange(e.target.value)}
                     onBlur={handleSearchBlur}
+                    value={searchTerm}
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
@@ -234,9 +236,8 @@ function NavigationBar() {
                 <select
                   id="searchBy"
                   className="mr-2"
-                  onChange={(e) => {
-                    setSearchOption(e.target.value);
-                  }}
+                  onChange={(e) => handleSearchOptionChange(e.target.value)}
+                  value={searchOption}
                 >
                   <option value="#">All</option>
                   <option value="inauthor">Authors</option>
@@ -249,9 +250,7 @@ function NavigationBar() {
                   type="text"
                   placeholder="Search"
                   className="flex-grow-1"
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                  }}
+                  onChange={(e) => handleSearchTermChange(e.target.value)}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       if (searchTerm.trim() !== "") {
@@ -262,6 +261,7 @@ function NavigationBar() {
                       }
                     }
                   }}
+                  value={searchTerm}
                 />
                 <FontAwesomeIcon
                   icon={faSearch}

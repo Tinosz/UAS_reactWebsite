@@ -1,14 +1,23 @@
+import logo from "./logo.svg";
+import "./App.css";
+import Axios from "axios";
+import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import logo from './logo.svg';
-import './App.css';
-import Axios from 'axios';
-import Home from './pages/Home';
+import HomePage from "./pages/HomePage";
+import TestPage from "./pages/TestPage";
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <Router>
+      <NavigationBar />
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/Test' element={<TestPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 
