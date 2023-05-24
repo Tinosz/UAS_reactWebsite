@@ -89,6 +89,13 @@
   width: 90%;
 }
 
+.Loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .background-image {
   position: absolute;
   top: 0;

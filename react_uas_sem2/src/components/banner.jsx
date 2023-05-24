@@ -327,7 +327,7 @@ function Banner() {
           </div>
         </div>
       ) : (
-        <p>Loading trending books...</p>
+        <p className="Loading">Loading trending books...</p>
       )}
       <div className="carousel-buttons">
         <div className="carousel-button carousel-prev" onClick={prevSlide}>
