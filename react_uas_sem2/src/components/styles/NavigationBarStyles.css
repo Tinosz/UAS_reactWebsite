@@ -36,8 +36,16 @@
     margin-left: -10px;
     top: 30%;
     height: auto;
-  }
+  } 
 } 
+
+.dropdown-toggle{
+  cursor: none;
+}
+
+.genre-dropdown{
+  cursor: none;
+}
 
 .genre-dropdown .dropdown-menu {
   margin-top: -10px; /* Adjust the value as per your requirements */
@@ -192,6 +200,7 @@
 
 .bookShelf {
   margin-right: auto;
+  cursor: none;
 }
 
 .rightSide {

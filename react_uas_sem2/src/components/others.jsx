@@ -21,29 +21,46 @@ export default function Others() {
     fetchData();
   }, []);
 
+  const genres = ["romance", "action", "adventure", "fantasy", "drama"];
   const fetchData = () => {
-    const url = "https://openlibrary.org/search.json?q=fiction";
-    axios
-      .get(url)
-      .then((response) => {
-        const docs = response.data.docs;
-        const slidesData = docs
-          .map((doc) => ({
-            title: doc.title || "Unknown Title",
-            author: doc.author_name?.[0] || "Unknown Author",
-            rating: doc.rating?.average || "N/A",
-            image: doc.cover_i
-              ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-              : null,
-          }))
-          .filter((slide) => slide.title && slide.author && slide.image !== null);
+    const slidesData = [];
   
-        setSlides(slidesData);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchGenreData = (genre) => {
+      const url = `https://openlibrary.org/search.json?q=subject%3A("${genre}")`;
+      axios
+        .get(url)
+        .then((response) => {
+          const docs = response.data.docs;
+          const genreSlides = docs
+            .map((doc) => ({
+              title: doc.title || "Unknown Title",
+              author: doc.author_name?.[0] || "Unknown Author",
+              ratingsAverage: doc.ratings_average,
+              ratingsCount: doc.ratings_count,
+              image: doc.cover_i
+                ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                : null,
+            }))
+            .filter(
+              (slide) =>
+                slide.title &&
+                slide.author &&
+                slide.ratingsCount > 0 &&
+                slide.image !== null
+            );
+    
+          slidesData.push(...genreSlides);
+          setSlides(slidesData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    
+  
+    genres.forEach((genre) => fetchGenreData(genre));
   };
+  
 
   const handleSelectChange = (event) => {
     const { value } = event.target;
@@ -276,17 +293,20 @@ export default function Others() {
 
       {/* Content section */}
       <div className="content-box">
-        {currentSlides.map((slide, index) => (
-          <div key={index} className="book-item C">
-            <img src={slide.image} alt={slide.title} className="book-cover C" />
-            <div className="book-details C">
-              <p className="book-title C">{slide.title}</p>
-              <p className="book-author C">Author: {slide.author}</p>
-              <p className="book-rating C">Rating: {slide.rating}</p>
-            </div>
+      {currentSlides.map((slide, index) => (
+        <div key={index} className="book-item C">
+          <img src={slide.image} alt={slide.title} className="book-cover C" />
+          <div className="book-details C">
+            <p className="book-title C">{slide.title}</p>
+            <p className="book-author C">Author: {slide.author}</p>
+            <p className="book-ratings C">
+              Ratings: {slide.ratingsAverage} (Total: {slide.ratingsCount})
+            </p>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
+
 
       {/* Page navigation */}
       <h6 className="muchmore">There's so much more for you to discover</h6>
