@@ -108,6 +108,19 @@
 }
 
 /*content section*/
+@media (max-width: 600px) {
+  .content-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* For screens between 600px and 900px */
+@media (min-width: 600px) and (max-width: 900px) {
+  .content-box {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .content-box{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;

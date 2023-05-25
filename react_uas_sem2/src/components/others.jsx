@@ -1,32 +1,34 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import "./styles/others.css";
+import { useNavigate } from "react-router-dom"
 
 export default function Others() {
   
 
 
 
-
+  
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [showAllGenres, setShowAllGenres] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedAuthor, setSelectedAuthor] = useState("");
-  const [showAuthorSelect, setShowAuthorSelect] = useState(false);
-  const navbarRef = useRef(null);
+  const [slides, setSlides] = useState([])
+  const [showFilters, setShowFilters] = useState(false)
+  const [showAllGenres, setShowAllGenres] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedAuthor, setSelectedAuthor] = useState("")
+  const [showAuthorSelect, setShowAuthorSelect] = useState(false)
+  const navbarRef = useRef(null)
+  const navigate = useNavigate
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const genres = ["romance", "action", "adventure", "fantasy", "drama"];
-  const fetchData = () => {
-    const slidesData = [];
+  const genres = ["romance", "action", "adventure", "fantasy", "drama"]
+  const fetchData = () => { 
+    const slidesData = []
   
     const fetchGenreData = (genre) => {
-      const url = `https://openlibrary.org/search.json?q=subject%3A("${genre}")`;
+      const url = `https://openlibrary.org/search.json?q=subject%3A("${genre}")`
       axios
         .get(url)
         .then((response) => {
@@ -177,13 +179,6 @@ export default function Others() {
             {/* Add more genre options as needed */}
           </select>
         </div>
-
-
-        <div className="filter-section">
-          <h5>Filter by ratings</h5>
-          {/* Add a search input field for authors */}
-          {/* Display and update the list of selected authors */}
-        </div>
       
         {/* Filter by authors (with search functionality) */}
         <div className="filter-section">
@@ -219,13 +214,57 @@ export default function Others() {
             )}
           </div>
         </div>
+
+        <div className="filter-section">
+          <h5>Filter by ratings</h5>
+          <div>
+            <input type="radio" value="5 Stars" name="ratings" />
+            <label htmlFor="5-stars" className="radio-text">4.5 ~ 5 Stars</label>
+          </div>
+          <div>
+            <input type="radio"  value="4 Stars" name="ratings" />
+            <label htmlFor="4-stars" className="radio-text">4 ~ 4.5 Stars</label>
+          </div>
+          <div>
+            <input type="radio" value="3 Stars" name="ratings" />
+            <label htmlFor="3-stars" className="radio-text">3 ~ 4 Stars</label>
+          </div>
+          
+        </div>
       
         {/* Filter by last released */}
         <div className="filter-section">
           <h5>Last Released</h5>
-          {/* Add your last released filter options */}
+          <div>
+            <input type="radio" value="5 Stars" name="ratings" />
+            <label htmlFor="5-stars" className="radio-text">Last 30 days</label>
+          </div>
+          <div>
+            <input type="radio"  value="4 Stars" name="ratings" />
+            <label htmlFor="4-stars" className="radio-text">Last 60 days</label>
+          </div>
+          <div>
+            <input type="radio" value="3 Stars" name="ratings" />
+            <label htmlFor="3-stars" className="radio-text">Last 90 days</label>
+          </div>
         </div>
-      
+          
+        <div className="filter-section">
+          <h5>Trending</h5>
+          <div>
+            <input type="radio" value="5 Stars" name="ratings" />
+            <label htmlFor="5-stars" className="radio-text">Weekly</label>
+          </div>
+          <div>
+            <input type="radio"  value="4 Stars" name="ratings" />
+            <label htmlFor="4-stars" className="radio-text">Monthly</label>
+          </div>
+          <div>
+            <input type="radio" value="3 Stars" name="ratings" />
+            <label htmlFor="3-stars" className="radio-text">Yearly</label>
+          </div>
+        </div>
+
         {/* Filter by book series */}
         <div className="filter-section">
           <h5>Book Series</h5>

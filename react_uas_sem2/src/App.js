@@ -5,6 +5,7 @@ import Axios from 'axios';
 import { MouseContext } from './components/Cursor/mouse-context';
 import CustomCursor from './components/Cursor/CustomCursor';
 import Home from './pages/Home';
+import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
 
 function App() {
   const { cursorType, cursorChangeHandler } = useContext(MouseContext);
