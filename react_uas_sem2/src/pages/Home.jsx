@@ -5,6 +5,7 @@ import Footer from "../components/footer";
 import TrenSlider from "../components/TrenSlider";
 import GenreBar from "../components/leftBar";
 import Others from "../components/others";
+import RecommendedSlider from "../components/RecommendedSlider";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <GenreBar />
       <Banner />
       <TrenSlider />
+      <RecommendedSlider />
       <Others />
       <Footer />
     </div>

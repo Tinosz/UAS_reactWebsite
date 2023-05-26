@@ -3,12 +3,12 @@ import axios from 'axios';
 import './styles/bannerStyles.css';
 import './styles/slider.css';
 
-function TrenSlider() {
+function RecommendedSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sliderRef = useRef(null);
   const [data, setData] = useState(null);
-  const url = 'https://openlibrary.org/trending/daily.json';
+  const url = 'https://openlibrary.org/trending/daily.json'; // Masukin url recommended sini
 
   useEffect(() => {
     fetchData();
@@ -28,17 +28,25 @@ function TrenSlider() {
 
   const works = data?.works?.slice(0, 20) || [];
 
-  const slideWidth = 20; // Adjust the slide width based on your CSS
-
   const nextSlide = () => {
-    const nextSlideIndex = (currentSlide + 1) % (works.length - 4);
-    setCurrentSlide(nextSlideIndex);
+    const nextSlideIndex = currentSlide + 5;
+    if (nextSlideIndex >= works.length) {
+      // Reached the end of the slides
+      // Add logic to handle "View More" action here
+      console.log('View More');
+    } else {
+      setCurrentSlide(nextSlideIndex);
+    }
   };
-
+  
   const prevSlide = () => {
-    const prevSlideIndex = (currentSlide - 1 + (works.length - 4)) % (works.length - 4);
+    const prevSlideIndex = currentSlide - 5;
+    if (prevSlideIndex < 0) {
+      return; // Do nothing if already on the first slide
+    }
     setCurrentSlide(prevSlideIndex);
   };
+  
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
@@ -66,8 +74,7 @@ function TrenSlider() {
     };
   }, []);
 
-  const progress = (currentSlide / (works.length - 4)) * 100;
-  const transformValue = `translateX(-${currentSlide * slideWidth}%)`;
+  const progress = ((currentSlide + 1) / works.length) * 100;
 
   return (
     <div className="slider-vase">
@@ -88,12 +95,12 @@ function TrenSlider() {
         </div>
       </div>
       <div className="slider-box" ref={sliderRef}>
-        <div className="slider-content" style={{ transform: transformValue }}>
-          {works.map((work, index) => (
+        <div className="slider-content">
+        {works.slice(currentSlide, currentSlide + 5).map((work, index) => (
             <div key={work.key} className="slide C">
               <div className="cover-box C">
                 <img
-                  src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`}
+                  src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`} //masukin work key
                   alt={work.title}
                   className="image-box C"
                 />
@@ -112,4 +119,4 @@ function TrenSlider() {
   );
 }
 
-export default TrenSlider;
+export default RecommendedSlider;
