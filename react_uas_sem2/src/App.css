@@ -2,6 +2,7 @@
   text-align: center;
   width: auto;
   cursor: none;
+  background-color:rgb(230, 221, 199);
 }
 
 * {
@@ -9,18 +10,17 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0.5em;
+  width: 0em;
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgb(40, 50, 50);
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #991997;
   border-radius: 5px;
-  box-shadow: 0 0 10px #a832a7;
 }
 
 .circle-cursor {

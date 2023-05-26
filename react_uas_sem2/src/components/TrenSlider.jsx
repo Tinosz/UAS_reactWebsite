@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import './styles/bannerStyles.css';
-import './styles/slider.css';
+import './styles/trenSlider.css';
 
 function TrenSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sliderRef = useRef(null);
   const [data, setData] = useState(null);
+  const [descriptions, setDescriptions] = useState({});
   const url = 'https://openlibrary.org/trending/daily.json';
 
   useEffect(() => {
@@ -31,14 +31,27 @@ function TrenSlider() {
   const slideWidth = 20; // Adjust the slide width based on your CSS
 
   const nextSlide = () => {
-    const nextSlideIndex = (currentSlide + 1) % (works.length - 4);
-    setCurrentSlide(nextSlideIndex);
+    const numColumns = Math.min(Math.floor(window.innerWidth / 200), 4); // Maximum 4 columns
+    const slideWidth = Math.floor(window.innerWidth / numColumns); // Width of each slide item
+    const maxSlide = works.length - numColumns;
+    if (currentSlide >= maxSlide) {
+      // Reached the end of the slides
+      // Add logic to handle "View More" action here
+      console.log("View More");
+    } else {
+      setCurrentSlide((prevSlide) => prevSlide + numColumns);
+    }
   };
-
+  
   const prevSlide = () => {
-    const prevSlideIndex = (currentSlide - 1 + (works.length - 4)) % (works.length - 4);
-    setCurrentSlide(prevSlideIndex);
+    const numColumns = Math.min(Math.floor(window.innerWidth / 200), 4); // Maximum 4 columns
+    const slideWidth = Math.floor(window.innerWidth / numColumns); // Width of each slide item
+    if (currentSlide <= 0) {
+      return; // Do nothing if already on the first slide
+    }
+    setCurrentSlide((prevSlide) => prevSlide - numColumns);
   };
+  
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
@@ -66,47 +79,95 @@ function TrenSlider() {
     };
   }, []);
 
-  const progress = (currentSlide / (works.length - 4)) * 100;
+  const progress = (currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100;
   const transformValue = `translateX(-${currentSlide * slideWidth}%)`;
 
-  return (
-    <div className="slider-vase">
-      <div className="upper-section">
-        <div className="topic-box">
-          <h2 className="case C">Trending Today</h2>
-          <div className="redirect-button" onClick={nextSlide}>
-            <span>&gt;</span>
+  const fetchDescription = async (key) => {
+    try {
+      const response = await axios.get(`https://openlibrary.org${key}.json`);
+      return response.data.description?.value || '';
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
+  };
+
+  useEffect(() => {
+    const fetchDescriptions = async () => {
+      const descriptionsData = {};
+
+      for (const work of works) {
+        const description = await fetchDescription(work.key);
+        descriptionsData[work.key] = description;
+      }
+
+      setDescriptions(descriptionsData);
+    };
+
+    fetchDescriptions();
+  }, [works]);
+
+  const renderSlides = () => {
+    return works.map((work, index) => {
+      const description = descriptions[work.key] || '';
+
+      const handlePopupClick = (e) => {
+        e.stopPropagation();
+      };
+
+      return (
+        <div key={work.key} className="slide">
+          <div className="cover-box C">
+            <img
+              src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`}
+              alt={work.title}
+              className="image-box C"
+            />
           </div>
-        </div>
-        <div className="slider-buttons">
-          <div className="slider-button slider-prev C" onClick={prevSlide}>
-            <span className="C">&lt;</span>
-          </div>
-          <div className="slider-button slider-next C" onClick={nextSlide}>
-            <span className="C">&gt;</span>
-          </div>
-        </div>
-      </div>
-      <div className="slider-box" ref={sliderRef}>
-        <div className="slider-content" style={{ transform: transformValue }}>
-          {works.map((work, index) => (
-            <div key={work.key} className="slide C">
-              <div className="cover-box C">
-                <img
-                  src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`}
-                  alt={work.title}
-                  className="image-box C"
-                />
-              </div>
-              <div className="title-box C">
-                <h5 className="C">{work.title}</h5>
+          <div className="title-box C">
+            <h5 className="C">{work.title}</h5>
+            <div
+              className="slide-popup"
+              onClick={handlePopupClick} // Stop click propagation to allow scrolling
+            >
+              <div className="slide-popup-content">
+                <h5>{work.title}</h5>
+                <h6>by {work.author_name?.[0]}</h6>
+                <p>{description}</p>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-      <div className="progress-box">
-        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+      );
+    });
+  };
+
+  return (
+    <div>
+      <hr className="separator" />
+
+      <div className="slider-vase">
+        <div className="upper-section">
+          <div className="topic-box">
+            <h2 className="case C">Trending Today</h2>
+          </div>
+          <div className="slider-buttons">
+            <div className="slider-button slider-prev C" onClick={prevSlide}>
+              <span className="C">&lt;</span>
+            </div>
+            <div className="slider-button slider-next C" onClick={nextSlide}>
+              <span className="C">&gt;</span>
+            </div>
+          </div>
+        </div>
+        <div className="slider-box" ref={sliderRef}>
+          <div className="slider-content" style={{ transform: transformValue }}>
+            {renderSlides()}
+          </div>
+        </div>
+        <div className="progress-box">
+          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        </div>
       </div>
     </div>
   );

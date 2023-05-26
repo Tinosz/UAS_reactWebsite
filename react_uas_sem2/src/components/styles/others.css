@@ -16,15 +16,18 @@
 }
 
 /*filter button*/
-.AllFilters{
-    
-}
 
 #search-filter{
     background-color: transparent;
     border-radius: 20px;
     padding: 5px 10px;
     cursor: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#search-filter:hover{
+  transform: scale(1.04);
+  box-shadow: 0 5px 15px 0 rgba(160, 148, 148, 0.4);
 }
 
 .filter-button{
@@ -108,22 +111,28 @@
 }
 
 /*content section*/
+.content-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr  ;
+  margin: auto;
+}
+
+@media (max-width: 1210px) {
+  .content-box {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .content-box {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
   .content-box {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-}
-
-/* For screens between 600px and 900px */
-@media (min-width: 600px) and (max-width: 900px) {
-  .content-box {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.content-box{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .loading-animation {
@@ -153,6 +162,7 @@
     max-height: 450px;
     border-radius: 10px;
     background-color: #f7f7f7;
+    margin: auto;
     margin-top: 20px;
     margin-right: 10px;
     padding: 10px;
@@ -169,7 +179,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin: 10px;
   width: 200px;
   max-height: none;
@@ -194,6 +203,8 @@
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
+  max-height: 50px;
+  overflow: hidden;
 }
 
 .book-author {
