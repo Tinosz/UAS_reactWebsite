@@ -1,83 +1,175 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios"
+import axios from "axios";
 import "./styles/others.css";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 export default function Others() {
-  
-
-
-
-  
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([])
-  const [showFilters, setShowFilters] = useState(false)
-  const [showAllGenres, setShowAllGenres] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedAuthor, setSelectedAuthor] = useState("")
-  const [showAuthorSelect, setShowAuthorSelect] = useState(false)
-  const navbarRef = useRef(null)
-  const navigate = useNavigate
+  const [slides, setSlides] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showAllGenres, setShowAllGenres] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [showAuthorSelect, setShowAuthorSelect] = useState(false);
+  const navbarRef = useRef(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
-    fetchData();
+    // Initial fetch data will be handled by the next and previous buttons
   }, []);
 
-  const genres = ["romance", "action", "adventure", "fantasy", "drama"]
-  const fetchData = () => { 
-    const slidesData = []
-  
-    const fetchGenreData = (genre) => {
-      const url = `https://openlibrary.org/search.json?q=subject%3A("${genre}")`
-      axios
-        .get(url)
-        .then((response) => {
-          const docs = response.data.docs;
-          const genreSlides = docs
-            .map((doc) => ({
-              title: doc.title || "Unknown Title",
-              author: doc.author_name?.[0] || "Unknown Author",
-              ratingsAverage: doc.ratings_average,
-              ratingsCount: doc.ratings_count,
-              image: doc.cover_i
-                ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-                : null,
-            }))
-            .filter(
-              (slide) =>
-                slide.title &&
-                slide.author &&
-                slide.ratingsCount > 0 &&
-                slide.image !== null
-            );
-    
-          slidesData.push(...genreSlides);
-          setSlides(slidesData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    
-  
-    genres.forEach((genre) => fetchGenreData(genre));
+  const genres = ["romance", "action", "adventure", "fantasy", "drama"];
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(slides.length / itemsPerPage);
+
+  const fetchData = (genre, page) => {
+    const url = `https://openlibrary.org/search.json?q=subject%3A("${genre}")&page=${page}`;
+    axios
+      .get(url)
+      .then((response) => {
+        const docs = response.data.docs;
+        const genreSlides = docs
+          .map((doc) => ({
+            title: doc.title || "Unknown Title",
+            author: doc.author_name?.[0] || "Unknown Author",
+            ratingsAverage: doc.ratings_average,
+            ratingsCount: doc.ratings_count,
+            image: doc.cover_i
+              ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+              : null,
+          }))
+          .filter(
+            (slide) =>
+              slide.title &&
+              slide.author &&
+              slide.ratingsCount > 0 &&
+              slide.image !== null
+          );
+
+        setSlides((prevSlides) => [...prevSlides, ...genreSlides]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   
+
+  const fetchDataForPage = (page) => {
+    genres.forEach((genre) => fetchData(genre, page));
+  };
 
   const handleSelectChange = (event) => {
     const { value } = event.target;
     setShowAllGenres(value === "");
   };
 
-  const itemsPerPage = 20
-  const totalPages = Math.ceil(slides.length / itemsPerPage);
-
   const handleClickNext = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % totalPages);
+    setCurrentSlide((prevSlide) => {
+      const nextPage = (prevSlide + 1) % totalPages;
+      if ((nextPage + 1) * itemsPerPage > slides.length) {
+        fetchDataForPage(nextPage + 1);
+      }
+      return nextPage;
+    });
   };
 
   const handleClickPrev = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + totalPages) % totalPages);
+    setCurrentSlide((prevSlide) => {
+      const prevPage = prevSlide === 0 ? totalPages - 1 : prevSlide - 1;
+      if ((prevPage + 1) * itemsPerPage > slides.length) {
+        fetchDataForPage(prevPage + 1);
+      }
+      return prevPage;
+    });
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setSearchQuery("");
+    navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+  };
+
+  const handleAuthorSelectChange = (event) => {
+    setSelectedAuthor(event.target.value);
+  };
+
+  const handleAuthorSelect = () => {
+    setShowAuthorSelect((prevState) => !prevState);
+  };
+
+  const handleFilterToggle = () => {
+    setShowFilters((prevState) => !prevState);
+  };
+
+  const filteredSlides = slides.filter((slide) => {
+    if (showAllGenres && !selectedAuthor && !searchQuery) {
+      return true;
+    }
+
+    if (!showAllGenres && selectedAuthor && searchQuery) {
+      return (
+        slide.author.toLowerCase().includes(selectedAuthor.toLowerCase()) &&
+        slide.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        genres[currentSlide % genres.length].toLowerCase() ===
+          slide.genre.toLowerCase()
+      );
+    }
+
+    if (!showAllGenres && selectedAuthor) {
+      return (
+        slide.author.toLowerCase().includes(selectedAuthor.toLowerCase()) &&
+        genres[currentSlide % genres.length].toLowerCase() ===
+          slide.genre.toLowerCase()
+      );
+    }
+
+    if (!showAllGenres && searchQuery) {
+      return (
+        slide.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        genres[currentSlide % genres.length].toLowerCase() ===
+          slide.genre.toLowerCase()
+      );
+    }
+
+    if (selectedAuthor && searchQuery) {
+      return (
+        slide.author.toLowerCase().includes(selectedAuthor.toLowerCase()) &&
+        slide.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (!showAllGenres) {
+      return (
+        genres[currentSlide % genres.length].toLowerCase() ===
+        slide.genre.toLowerCase()
+      );
+    }
+
+    if (selectedAuthor) {
+      return slide.author.toLowerCase().includes(selectedAuthor.toLowerCase());
+    }
+
+    if (searchQuery) {
+      return slide.title.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+
+    return true;
+  });
+
+  const renderSlides = () => {
+    const startIndex = currentSlide * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentSlides = filteredSlides.slice(startIndex, endIndex);
+
+    return currentSlides.map((slide, index) => (
+      <div key={index}>
+        <h3>{slide.title}</h3>
+        <p>{slide.author}</p>
+        <p>Ratings: {slide.ratingsAverage}</p>
+        <p>Ratings Count: {slide.ratingsCount}</p>
+        <img src={slide.image} alt={slide.title} />
+      </div>
+    ));
   };
 
   const startIndex = currentSlide * itemsPerPage;
@@ -109,14 +201,6 @@ export default function Others() {
   }, [showFilters]);
 
 /*search authors*/
-
-  const filteredSlides = slides.filter((slide) =>
-    slide.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   const handleAuthorSelection = (e) => {
     setSelectedAuthor(e.target.value);

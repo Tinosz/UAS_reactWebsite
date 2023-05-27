@@ -136,7 +136,7 @@
 }
 
 .slide-popup-content {
-  overflow-x: visible;
+  overflow-x: hidden;
   overflow-y: scroll;
   height: 100%;
   pointer-events: auto;
