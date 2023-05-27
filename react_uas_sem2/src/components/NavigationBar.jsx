@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Navbar, NavDropdown, Nav, Container, Form, FormControl, Image } from "react-bootstrap";
+import {
+  Navbar,
+  NavDropdown,
+  Nav,
+  Container,
+  Form,
+  FormControl,
+  Image,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb as faLightbulbBold, faMoon, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLightbulb as faLightbulbBold,
+  faMoon,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import logo from "../Assets/BookhavenLogo.png";
+import logo from "./styles/Assets/BookhavenLogo.png";
 
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
@@ -141,10 +153,18 @@ function NavigationBar() {
   }, []);
 
   return (
-    <Navbar expand="md" className={visible ? "navigationBar" : "navigationBar navbar-hidden"}>
+    <Navbar
+      expand="md"
+      className={visible ? "navigationBar" : "navigationBar navbar-hidden"}
+    >
       <Container>
         <Navbar.Brand className="mr-auto">
-          <Image src={logo} alt="logo" className="logo-image" onClick={() => navigate("/")} />
+          <Image
+            src={logo}
+            alt="logo"
+            className="logo-image"
+            onClick={() => navigate("/")}
+          />
         </Navbar.Brand>
         <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
           <FontAwesomeIcon

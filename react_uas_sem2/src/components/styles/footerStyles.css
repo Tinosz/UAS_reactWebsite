@@ -186,19 +186,19 @@ a:hover {
 }
 
 #facebook:hover {
-  background-image: url("../Assets/facebook.png");
+  background-image: url("./Assets/facebook.png");
 }
 
 #instagram:hover {
-  background-image: url("../Assets/insta.jpg");
+  background-image: url("./Assets/insta.jpg");
 }
 
 #twitter:hover {
-  background-image: url("../Assets/twitter.png");
+  background-image: url("./Assets/twitter.png");
 }
 
 #youtube:hover {
-  background-image: url("../Assets/youtube.png");
+  background-image: url("./Assets/youtube.png");
   background-size: 30px auto;
 }
 

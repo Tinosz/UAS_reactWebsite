@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useMemo, useRef } from "react";
-import "./bannerStyles.css";
+import "./styles/bannerStyles.css";
 import Carousel from "react-bootstrap/Carousel";
 import axios from "axios";
 import { AppContext } from "../store";
