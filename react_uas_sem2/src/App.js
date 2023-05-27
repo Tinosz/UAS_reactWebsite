@@ -7,17 +7,21 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import TestPage from "./pages/TestPage";
+import BookshelfPage from "./pages/BooshelfPage";
 
 function App() {
   return (
-    <Router>
-      <NavigationBar />
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/Test' element={<TestPage />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <div>
+      <Router>
+        <NavigationBar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/MyBookshelf" element={<BookshelfPage />} />
+          <Route path="/Test" element={<TestPage />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </div>
   );
 }
 

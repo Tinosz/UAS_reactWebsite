@@ -1,31 +1,34 @@
-import {
-  Navbar,
-  NavDropdown,
-  Dropdown,
-  Nav,
-  Container,
-  Form,
-  FormControl,
-  Image,
-} from "react-bootstrap";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Navbar, NavDropdown, Nav, Container, Form, FormControl, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLightbulb as faLightbulbBold,
-  faMoon,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb as faLightbulbBold, faMoon, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import logo from "../Assets/BookhavenLogo.png";
 
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
+  const [visible, setVisible] = useState(true);
+
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    setVisible(prevScrollPos > currentScrollPos);
+    setPrevScrollPos(currentScrollPos);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const showDropdown = (e) => {
     setShow(!show);
   };
@@ -95,6 +98,7 @@ function NavigationBar() {
     : "collapse navbar-collapse";
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const formRef = useRef(null);
 
   const toggleSearchBar = () => {
     if (window.innerWidth < 768) {
@@ -122,14 +126,54 @@ function NavigationBar() {
     setSearchOption(value);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <Navbar expand="md" className="navigationBar">
+    <Navbar expand="md" className={visible ? "navigationBar" : "navigationBar navbar-hidden"}>
       <Container>
-        <Navbar.Brand href="#home" className="mr-auto">
-          Logo
+        <Navbar.Brand className="mr-auto">
+          <Image src={logo} alt="logo" className="logo-image" onClick={() => navigate("/")} />
         </Navbar.Brand>
-        <div className="wholeSearchBarToggler">
+        <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
+          <FontAwesomeIcon
+            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
+            onClick={lightModeClick}
+            className="themeMode"
+          />
+        </div>
+
+        <button
+          type="button"
+          className={`toggler ${isNavOpen ? "active" : ""}`}
+          onClick={toggleNav}
+        >
+          <span className="spanBar"></span>
+          <span className="spanBar"></span>
+          <span className="spanBar"></span>
+        </button>
+
+        <div
+          id="navCollapse"
+          className={navCollapseClass}
+          style={{
+            height: isNavOpen ? "auto" : 0,
+            transition: "height 0.3s ease-in-out",
+          }}
+        >
           <Form
+            ref={formRef}
             className={`d-flex rounded-pill align-items-center ${
               isExpanded ? "search-form active" : ""
             }`}
@@ -178,26 +222,6 @@ function NavigationBar() {
               </>
             )}
           </Form>
-        </div>
-        <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
-          <FontAwesomeIcon
-            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-            onClick={lightModeClick}
-            className="themeMode"
-          />
-        </div>
-
-        <button
-          type="button"
-          className={`toggler ${isNavOpen ? "active" : ""}`}
-          onClick={toggleNav}
-        >
-          <span className="spanBar"></span>
-          <span className="spanBar"></span>
-          <span className="spanBar"></span>
-        </button>
-
-        <div id="navCollapse" className={navCollapseClass}>
           <Nav className="my-2 my-lg-0" style={{ maxHeight: "100px" }}>
             <NavDropdown
               title="Browse"
@@ -285,7 +309,14 @@ function NavigationBar() {
           )}
 
           <Nav className="rightSide">
-            <Nav.Link className="bookShelf">My Bookshelf</Nav.Link>
+            <Nav.Link
+              className="bookShelf"
+              onClick={() => {
+                navigate("/MyBookshelf");
+              }}
+            >
+              My Bookshelf
+            </Nav.Link>
             <Image
               src="https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg"
               className="profilePic"
