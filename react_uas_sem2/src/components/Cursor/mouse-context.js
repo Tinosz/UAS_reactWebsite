@@ -1,5 +1,4 @@
-// mouse-context.js
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const MouseContext = createContext({
   cursorType: "",
@@ -12,6 +11,15 @@ const MouseContextProvider = (props) => {
   const cursorChangeHandler = (cursorType) => {
     setCursorType(cursorType);
   };
+
+  useEffect(() => {
+    // Update the document's cursor style based on the cursorType
+    if (cursorType) {
+      document.body.style.cursor = cursorType;
+    } else {
+      document.body.style.cursor = "auto";
+    }
+  }, [cursorType]);
 
   return (
     <MouseContext.Provider

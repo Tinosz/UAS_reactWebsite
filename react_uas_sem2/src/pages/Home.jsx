@@ -6,19 +6,17 @@ import TrenSlider from "../components/TrenSlider";
 import GenreBar from "../components/leftBar";
 import Others from "../components/others";
 import RecommendedSlider from "../components/RecommendedSlider";
-import { BrowserRouter as Router, useNavigate } from "react-router-dom";
 
 const Home = () => {
   return (
-    <Router>
-      <NavigationBar />
+    <div>
       <GenreBar />
       <Banner />
       <TrenSlider />
       <RecommendedSlider />
       <Others />
-      <Footer />
-    </Router>
+
+    </div>
   );
 };
 

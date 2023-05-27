@@ -1,23 +1,26 @@
 import { useContext } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MouseContext } from './components/Cursor/mouse-context';
 import CustomCursor from './components/Cursor/CustomCursor';
-import Home from './pages/Home';
-import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
+import TestPage from './pages/TestPage';
+import HomePage from './pages/HomePage';
+import "./App.css"
+import NavigationBar from './components/NavigationBar';
+import Footer from './components/footer';
 
 function App() {
   const { cursorType, cursorChangeHandler } = useContext(MouseContext);
+
   return (
-    <div className="App">
-      <a><CustomCursor /></a>
-      <div className="container">
-        
-      </div>
-      <div className="container" style={{ background: "peachpuff" }}></div>
-      <Home />
-    </div>
+    <Router>
+      <NavigationBar />
+      <CustomCursor cursorType={cursorType} />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/BookInfo" element={<TestPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

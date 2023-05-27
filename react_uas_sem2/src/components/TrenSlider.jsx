@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './styles/trenSlider.css';
+import { useNavigate } from "react-router-dom";
 
 function TrenSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -8,6 +9,7 @@ function TrenSlider() {
   const sliderRef = useRef(null);
   const [data, setData] = useState(null);
   const [descriptions, setDescriptions] = useState({});
+  const navigate = useNavigate()
   const url = 'https://openlibrary.org/trending/daily.json';
 
   useEffect(() => {
@@ -96,15 +98,20 @@ function TrenSlider() {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
 
-      for (const work of works) {
-        const description = await fetchDescription(work.key);
-        descriptionsData[work.key] = description;
-      }
+      const fetchDescriptionsSequentially = async () => {
+        for (const work of works) {
+          const description = await fetchDescription(work.key);
+          descriptionsData[work.key] = description;
+        }
+        setDescriptions(descriptionsData);
+      };
 
-      setDescriptions(descriptionsData);
+      fetchDescriptionsSequentially();
     };
 
-    fetchDescriptions();
+    if (works.length > 0) {
+      fetchDescriptions();
+    }
   }, [works]);
 
   const renderSlides = () => {
@@ -130,7 +137,7 @@ function TrenSlider() {
               className="slide-popup"
               onClick={handlePopupClick} // Stop click propagation to allow scrolling
             >
-              <div className="slide-popup-content">
+              <div className="slide-popup-content" onClick={() => navigate('/BookInfo')}>
                 <h5>{work.title}</h5>
                 <h6>by {work.author_name?.[0]}</h6>
                 <p>{description}</p>

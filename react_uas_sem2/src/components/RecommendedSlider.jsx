@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './styles/genSlider.css';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 
 function Recommended() {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sliderRef = useRef(null);
@@ -38,12 +40,12 @@ function Recommended() {
     if (currentSlide >= maxSlide) {
       // Reached the end of the slides
       // Add logic to handle "View More" action here
-      console.log("View More");
+      console.log('View More');
     } else {
       setCurrentSlide((prevSlide) => prevSlide + numColumns);
     }
   };
-  
+
   const prevSlide = () => {
     const numColumns = Math.min(Math.floor(window.innerWidth / 200), 4); // Maximum 5 columns
     const slideWidth = Math.floor(window.innerWidth / numColumns); // Width of each slide item
@@ -52,7 +54,6 @@ function Recommended() {
     }
     setCurrentSlide((prevSlide) => prevSlide - numColumns);
   };
-  
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
@@ -112,13 +113,11 @@ function Recommended() {
   const renderSlides = () => {
     return works.map((work, index) => {
       const description = descriptions[work.key] || '';
-  
+
       const handlePopupClick = (e) => {
         e.stopPropagation();
       };
 
-      
-  
       return (
         <div key={work.key} className="gen-slide">
           <div className="gen-cover-box C">
@@ -134,7 +133,7 @@ function Recommended() {
               className="gen-slide-popup"
               onClick={handlePopupClick} // Stop click propagation to allow scrolling
             >
-              <div className="gen-slide-popup-content">
+              <div className="gen-slide-popup-content" onClick={() => navigate('/BookInfo')}>
                 <h5>{work.title}</h5>
                 <h6>by {work.author_name?.[0]}</h6>
                 <p>{description}</p>
@@ -145,7 +144,6 @@ function Recommended() {
       );
     });
   };
-  
 
   return (
     <div>

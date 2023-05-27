@@ -14,7 +14,7 @@ const CustomCursor = () => {
       const targetElement = event.target;
       const clickableElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'SVG', 'IMG', 'LI'];
       const isElementWithC = targetElement.classList.contains('C');
-    
+
       if (clickableElements.includes(targetElement.tagName) || isElementWithC) {
         setIsActive(true);
       } else {
@@ -24,11 +24,10 @@ const CustomCursor = () => {
         setIsActive(clickableAncestor);
       }
     };
-    
 
     const handleMouseOut = () => {
       setIsActive(false);
-      shrinkCursor(); // Call the shrinkCursor function when cursor moves out of a clickable element
+      shrinkCursor();
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -40,7 +39,7 @@ const CustomCursor = () => {
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
     };
-  }, []);
+  }, []); // Empty dependency array to run the effect only once
 
   useEffect(() => {
     if (isActive) {
@@ -55,7 +54,7 @@ const CustomCursor = () => {
     rings.classList.add('shrink');
     setTimeout(() => {
       rings.classList.remove('shrink');
-    }, 300); // Adjust the timeout value to match the duration of the shrink transition
+    }, 300);
   }
 
   return (
