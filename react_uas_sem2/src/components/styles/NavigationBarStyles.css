@@ -11,7 +11,7 @@
   .wholeSearchBarToggler {
     display: none;
   }
-  .themeModeWrapperToggler{
+  .themeModeWrapperToggler {
     display: none;
   }
   .genre-dropdown .dropdown-menu {
@@ -24,8 +24,8 @@
     border-right: 1px solid #ccc;
     width: 100%;
     max-width: 100px;
-    
   }
+  
 }
 
 @media (max-width: 576px) {
@@ -51,12 +51,28 @@
   margin-top: -10px; /* Adjust the value as per your requirements */
 }
 
+
+
+.container {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .navigationBar {
   background-color: rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   text-align: center;
   cursor: none;
+  justify-content: space-evenly;
+}
+
+.logo-image{
+  max-width: 100px;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    width: 100px;
+  }
 }
 
 .wholeSearchBarToggler {
@@ -194,7 +210,7 @@
   margin-left: 10px;
 }
 
-.itemGenreDropdownr{
+.itemGenreDropdownr {
   position: absolute;
   z-index: 1000;
 }

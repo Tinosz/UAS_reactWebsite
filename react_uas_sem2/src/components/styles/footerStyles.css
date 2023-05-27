@@ -48,7 +48,6 @@
 }
 
 .box {
-  margin-top: 100px;
   padding: 80px 60px;
   background: black;
   bottom: 0;
@@ -74,10 +73,9 @@
   margin-bottom: 20px;
   flex-wrap: wrap;
   justify-content: center;
-  width: 80%;
+  width: 100%;
   max-height: none;
   justify-content: space-evenly;
-  margin: auto;
 }
 
 .centered {
@@ -153,11 +151,12 @@
   font-weight: bold;
   text-align: center;
   margin-left: auto;
+  margin-right: 10%;
   max-width: 800px;
 }
 
 .topic {
-  font-size: 24px;
+  font-size: 18px;
   color: #fff;
   margin-bottom: 15px;
   font-weight: bold;
@@ -166,13 +165,13 @@
 .column a {
   color: white;
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 16px;
   text-decoration: none;
 }
 
 a:hover {
   color: rgb(207, 82, 207);
-  transition: 100ms ease-in;
+  transition: 200ms ease-in;
 }
 
 .social {
@@ -186,21 +185,20 @@ a:hover {
   background-size: 20px auto;
 }
 
-
 #facebook:hover {
-  background-image: url("../../Assets/facebook.png");
+  background-image: url("./Assets/facebook.png");
 }
 
 #instagram:hover {
-  background-image: url("../../Assets/insta.jpg");
+  background-image: url("./Assets/insta.jpg");
 }
 
 #twitter:hover {
-  background-image: url("../../Assets/twitter.png");
+  background-image: url("./Assets/twitter.png");
 }
 
 #youtube:hover {
-  background-image: url("../../Assets/youtube.png");
+  background-image: url("./Assets/youtube.png");
   background-size: 30px auto;
 }
 
@@ -211,4 +209,32 @@ a:hover {
   font-size: 12px;
   text-decoration: none;
   margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel-container.slideLeft {
+  animation: slideLeft 0.5s ease-in-out;
+}
+
+.carousel-container.slideRight {
+  animation: slideRight 0.5s ease-in-out;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

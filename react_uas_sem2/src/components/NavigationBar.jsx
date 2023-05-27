@@ -1,14 +1,13 @@
+import React, { useState, useEffect, useRef } from "react";
 import {
   Navbar,
   NavDropdown,
-  Dropdown,
   Nav,
   Container,
   Form,
   FormControl,
   Image,
 } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLightbulb as faLightbulbBold,
@@ -19,9 +18,14 @@ import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg
 import "./styles/NavigationBarStyles.css";
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+import logo from "./styles/Assets/BookhavenLogo.png";
+
+
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
+
   const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,6 +55,37 @@ function NavigationBar() {
     setTimeout(() => {
       setShow2(false);
     }, 300); // Delay the dropdown menu closing by 0.5 seconds
+
+  const [isSearchOpen, setIsSearchOpen] = useState(true);
+  const [searchOption, setSearchOption] = useState("#");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [show, setShow] = useState(false);
+  const [dropdownTimeout, setDropdownTimeout] = useState(null);
+  
+  const showDropdown = (e) => {
+    clearTimeout(dropdownTimeout);
+    setShow(true);
+  };
+  
+  const hideDropdown = (e) => {
+    clearTimeout(dropdownTimeout);
+    setDropdownTimeout(setTimeout(() => {
+      setShow(false);
+    }, 100));
+  };
+  
+
+  const [show2, setShow2] = useState(false);
+
+  const showDropdown2 = (e) => {
+    clearTimeout(dropdownTimeout);
+    setShow2(true);
+  };
+  const hideDropdown2 = (e) => {
+    setTimeout(() => {
+      setShow2(false);
+    }, 300); // Delay the dropdown menu closing by 0.5 seconds
+
   };
 
   const handleBookSearch = async (searchTerm, searchOption) => {
@@ -108,6 +143,8 @@ function NavigationBar() {
     : "collapse navbar-collapse";
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const formRef = useRef(null);
+
 
   const toggleSearchBar = () => {
     if (window.innerWidth < 768) {
@@ -127,14 +164,70 @@ function NavigationBar() {
     }
   };
 
+  const handleSearchTermChange = (value) => {
+    setSearchTerm(value);
+  };
+
+  const handleSearchOptionChange = (value) => {
+    setSearchOption(value);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <Navbar expand="md" className="navigationBar">
+    <Navbar
+      expand="md"
+      className={visible ? "navigationBar" : "navigationBar navbar-hidden"}
+    >
       <Container>
-        <Navbar.Brand href="#home" className="mr-auto">
-          Logo
+        <Navbar.Brand className="mr-auto">
+          <Image
+            src={logo}
+            alt="logo"
+            className="logo-image"
+            onClick={() => navigate("/")}
+          />
         </Navbar.Brand>
-        <div className="wholeSearchBarToggler">
+        <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
+          <FontAwesomeIcon
+            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
+            onClick={lightModeClick}
+            className="themeMode"
+          />
+        </div>
+
+        <button
+          type="button"
+          className={`toggler ${isNavOpen ? "active" : ""}`}
+          onClick={toggleNav}
+        >
+          <span className="spanBar"></span>
+          <span className="spanBar"></span>
+          <span className="spanBar"></span>
+        </button>
+
+        <div
+          id="navCollapse"
+          className={navCollapseClass}
+          style={{
+            height: isNavOpen ? "auto" : 0,
+            transition: "height 0.3s ease-in-out",
+          }}
+        >
           <Form
+            ref={formRef}
             className={`d-flex rounded-pill align-items-center ${
               isExpanded ? "search-form active" : ""
             }`}
@@ -156,9 +249,8 @@ function NavigationBar() {
                   <select
                     id="searchBy"
                     className="mr-2"
-                    onChange={(e) => {
-                      setSearchOption(e.target.value);
-                    }}
+                    onChange={(e) => handleSearchOptionChange(e.target.value)}
+                    value={searchOption}
                   >
                     <option value="#">All</option>
                     <option value="inauthor">Authors</option>
@@ -171,10 +263,9 @@ function NavigationBar() {
                     type="text"
                     placeholder="Search"
                     className="flex-grow-1"
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                    }}
+                    onChange={(e) => handleSearchTermChange(e.target.value)}
                     onBlur={handleSearchBlur}
+                    value={searchTerm}
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
@@ -185,37 +276,15 @@ function NavigationBar() {
               </>
             )}
           </Form>
-        </div>
-        <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
-          <FontAwesomeIcon
-            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-            onClick={lightModeClick}
-            className="themeMode"
-          />
-        </div>
-
-        <button
-          type="button"
-          className={`toggler ${isNavOpen ? "active" : ""}`}
-          onClick={toggleNav}
-        >
-          <span className="spanBar"></span>
-          <span className="spanBar"></span>
-          <span className="spanBar"></span>
-        </button>
-
-        <div id="navCollapse" className={navCollapseClass}>
           <Nav className="my-2 my-lg-0" style={{ maxHeight: "100px" }}>
-          <NavDropdown
-            title="Browse"
-            id="dropdown-autoclose-outside"
-            className="genreDropdown dropdown-cursor"
-            show={show}
-            onMouseEnter={showDropdown}
-            onMouseLeave={hideDropdown}
-          >
-              <div className="dropdownedItem">
-
+            <NavDropdown
+              title="Browse"
+              id="dropdown-autoclose-outside"
+              className="genreDropdown dropdown-cursor"
+              show={show}
+              onMouseEnter={showDropdown}
+              onMouseLeave={hideDropdown}
+            >
               <NavDropdown.Item>Popular</NavDropdown.Item>
               <NavDropdown.Item>Best-Sellers</NavDropdown.Item>
               <NavDropdown.Item>Recommended</NavDropdown.Item>
@@ -246,9 +315,8 @@ function NavigationBar() {
                 <select
                   id="searchBy"
                   className="mr-2"
-                  onChange={(e) => {
-                    setSearchOption(e.target.value);
-                  }}
+                  onChange={(e) => handleSearchOptionChange(e.target.value)}
+                  value={searchOption}
                 >
                   <option value="#">All</option>
                   <option value="inauthor">Authors</option>
@@ -261,9 +329,7 @@ function NavigationBar() {
                   type="text"
                   placeholder="Search"
                   className="flex-grow-1"
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                  }}
+                  onChange={(e) => handleSearchTermChange(e.target.value)}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       if (searchTerm.trim() !== "") {
@@ -274,6 +340,7 @@ function NavigationBar() {
                       }
                     }
                   }}
+                  value={searchTerm}
                 />
                 <FontAwesomeIcon
                   icon={faSearch}
@@ -297,7 +364,14 @@ function NavigationBar() {
           )}
 
           <Nav className="rightSide">
-            <Nav.Link className="bookShelf">My Bookshelf</Nav.Link>
+            <Nav.Link
+              className="bookShelf"
+              onClick={() => {
+                navigate("/MyBookshelf");
+              }}
+            >
+              My Bookshelf
+            </Nav.Link>
             <Image
               src="https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg"
               className="profilePic"
