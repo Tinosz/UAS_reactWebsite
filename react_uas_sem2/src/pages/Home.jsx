@@ -7,7 +7,6 @@ import RecommendedSlider from "../components/RecommendedSlider";
 const Home = () => {
   return (
     <div>
-      <GenreBar />
       <Banner />
       <TrenSlider />
       <RecommendedSlider />

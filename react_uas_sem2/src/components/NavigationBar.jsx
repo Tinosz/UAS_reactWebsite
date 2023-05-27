@@ -1,37 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Navbar,
-  NavDropdown,
-  Nav,
-  Container,
-  Form,
-  FormControl,
-  Image,
-} from "react-bootstrap";
+import { Navbar, NavDropdown, Nav, Container, Form, FormControl, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLightbulb as faLightbulbBold,
-  faMoon,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLightbulb as faLightbulbBold, faMoon, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom";
 import logo from "./styles/Assets/BookhavenLogo.png";
-
 
 function NavigationBar() {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
-
   const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
   const [show, setShow] = useState(false);
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
-  
+  const [show2, setShow2] = useState(false);
+  const navigate = useNavigate();
+
   const showDropdown = (e) => {
     clearTimeout(dropdownTimeout);
     setShow(true);
@@ -43,49 +30,16 @@ function NavigationBar() {
       setShow(false);
     }, 100));
   };
-  
-
-  const [show2, setShow2] = useState(false);
 
   const showDropdown2 = (e) => {
     clearTimeout(dropdownTimeout);
     setShow2(true);
   };
+
   const hideDropdown2 = (e) => {
     setTimeout(() => {
       setShow2(false);
     }, 300); // Delay the dropdown menu closing by 0.5 seconds
-
-  const [isSearchOpen, setIsSearchOpen] = useState(true);
-  const [searchOption, setSearchOption] = useState("#");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [show, setShow] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState(null);
-  
-  const showDropdown = (e) => {
-    clearTimeout(dropdownTimeout);
-    setShow(true);
-  };
-  
-  const hideDropdown = (e) => {
-    clearTimeout(dropdownTimeout);
-    setDropdownTimeout(setTimeout(() => {
-      setShow(false);
-    }, 100));
-  };
-  
-
-  const [show2, setShow2] = useState(false);
-
-  const showDropdown2 = (e) => {
-    clearTimeout(dropdownTimeout);
-    setShow2(true);
-  };
-  const hideDropdown2 = (e) => {
-    setTimeout(() => {
-      setShow2(false);
-    }, 300); // Delay the dropdown menu closing by 0.5 seconds
-
   };
 
   const handleBookSearch = async (searchTerm, searchOption) => {
@@ -145,7 +99,6 @@ function NavigationBar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef(null);
 
-
   const toggleSearchBar = () => {
     if (window.innerWidth < 768) {
       if (isExpanded) {
@@ -189,7 +142,7 @@ function NavigationBar() {
   return (
     <Navbar
       expand="md"
-      className={visible ? "navigationBar" : "navigationBar navbar-hidden"}
+      className="navigationBar"
     >
       <Container>
         <Navbar.Brand className="mr-auto">
@@ -302,7 +255,6 @@ function NavigationBar() {
                   <NavDropdown.Item>test</NavDropdown.Item>
                 </div>
               </NavDropdown>
-              </div>
             </NavDropdown>
           </Nav>
           {!isNavOpen && (

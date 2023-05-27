@@ -97,17 +97,18 @@ function Recommended() {
   useEffect(() => {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
-
+  
       for (const work of works) {
         const description = await fetchDescription(work.key);
         descriptionsData[work.key] = description;
       }
-
+  
       setDescriptions(descriptionsData);
     };
-
+  
     fetchDescriptions();
   }, [works]);
+  
 
   // Render the slides with the popup
   const renderSlides = () => {
