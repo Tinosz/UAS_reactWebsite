@@ -1,0 +1,172 @@
+button {
+    cursor: none;
+}
+
+.container2 {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px 60px 50px 30px;
+}
+
+img {
+  width: 200px;
+  border: 2px solid #000;
+  border-radius: 20px;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+}
+
+.book-image {
+  margin-top: 25px;
+  max-width: 100%;
+  margin-bottom: 40px;
+}
+
+.book-details {
+  width: 100%;
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+}
+
+.author-details {
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+.author-details h2 {
+  margin-bottom: 5px;
+}
+
+.author-details p {
+  margin: 0;
+}
+
+.deschead,
+.rechead {
+  background-color: lightgray;
+  display: inline;
+  border-radius: 10px;
+  padding: 5px;
+  padding-bottom: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.descbord,
+.recbord {
+  border: 2px solid #000;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.descbody,
+.recbody {
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+}
+
+.author-container {
+  background-color: lightgray;
+  padding: 20px;
+  border-radius: 30px;
+}
+
+.author-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 50%;
+}
+
+button {
+  background-color: violet;
+  padding: 3px;
+}
+
+/* Responsive styles for mobile devices */
+
+@media (max-width: 510px) {
+  .container {
+    padding: 10px;
+  }
+
+  .asu-button {
+    margin-bottom: 40px;
+  }
+
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .book-image {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 80%;
+  }
+
+  .book-details {
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .author-details {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+
+  .deschead,
+  .rechead {
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  .descbody,
+  .recbody {
+    padding-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .author-container {
+    padding: 10px;
+  }
+
+  .author-image {
+    width: 100%;
+    max-width: 70%;
+    margin-top: 10px;
+  }
+}

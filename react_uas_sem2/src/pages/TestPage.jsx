@@ -1,7 +1,9 @@
-import Test from "./Test"
+
+import React from "react"
+import BookInfo from "./BookInfo"
 
 const TestPage = () => {
-    return <Test />
+    return <BookInfo />
 }
 
 export default TestPage;

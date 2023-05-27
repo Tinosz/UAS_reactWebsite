@@ -1,0 +1,192 @@
+.gen-separator {
+  background-color: aquamarine;
+  margin: auto;
+  margin-top: 40px;
+  width: 90%;
+}
+
+.gen-slider-vase {
+  position: relative;
+  width: 90%;
+  min-height: 400px;
+  height: fit-content;
+  margin: auto;
+  margin-top: 40px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.gen-upper-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.gen-topic-box {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.gen-case {
+  color: white;
+  text-align: left;
+  padding: 5px;
+}
+
+.gen-case:hover {
+  border-bottom: 3px solid white;
+  border-radius: 2px;
+}
+
+.gen-redirect-button {
+  font-weight: bold;
+  font-size: x-large;
+  color: white;
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+  justify-content: center;
+  display: flex;
+  padding: 5px;
+}
+
+.gen-slider-buttons {
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.gen-slider-prev {
+  font-weight: bold;
+  font-size: x-large;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border: 2px solid purple;
+  width: 37px;
+  height: 37px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.gen-slider-next {
+  font-weight: bold;
+  font-size: x-large;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border: 2px solid purple;
+  width: 37px;
+  height: 37px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.gen-slider-box {
+  position: relative;
+  width: 95%;
+  height: 100%;
+  margin: auto;
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: transform 0.5s ease;
+}
+
+.gen-slider-content {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 320px;
+  margin: auto;
+  transition: transform 1s ease-in-out;
+}
+
+.gen-slide {
+  border-radius: 10px;
+  flex: 0 0 20%;
+  height: 100%;
+}
+
+.gen-slide:hover {
+  background-color: rgba(78, 71, 71, 0.4);
+  box-shadow: 0 5px 15px 0 rgba(160, 148, 148, 0.4);
+  border: 2px solid black;
+}
+
+.gen-slide.clicked{
+  transform: scale(1.1);
+}
+
+.gen-slide-popup {
+  position: absolute;
+  margin: auto;
+  border-radius: 10px;
+  top: 10px;
+  width: 300px;
+  height: 250px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s, left 0.3s, right 0.3s; /* Added 'right' property */
+  z-index: 999;
+  overflow: hidden;
+  text-align: left;
+  pointer-events: none;
+}
+
+.gen-slide-popup-right { /* Added class for displaying popup on the right */
+  right: 10px;
+  left: unset;
+}
+
+.gen-slide-popup-content {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 100%;
+  pointer-events: auto;
+}
+
+
+.gen-slide:hover .gen-slide-popup {
+  opacity: 1;
+}
+
+
+.gen-cover-box {
+  flex: 1;
+  padding: 20px;
+}
+
+.gen-title-box {
+  flex: 1;
+  padding: 20px;
+  padding-top: 0px;
+  color: white;
+}
+
+.gen-image-box {
+  width: 150px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.gen-progress-box {
+  border-radius: 10px;
+  padding: 3px;
+  background-color: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.gen-progress-bar {
+  border-radius: 10px;
+  height: 5px;
+  background-color: purple;
+  transition: width 1s ease;
+}

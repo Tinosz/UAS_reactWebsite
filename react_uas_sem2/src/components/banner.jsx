@@ -5,6 +5,7 @@ import axios from "axios";
 import { AppContext } from "../store";
 import { useNavigate } from "react-router-dom";
 
+
 function Banner() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(null);

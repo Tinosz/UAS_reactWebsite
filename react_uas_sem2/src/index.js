@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AppProvider } from "./store";
+import MouseContextProvider from "./components/Cursor/mouse-context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AppProvider>
+  <MouseContextProvider>
       <App />
+  </MouseContextProvider>
     </AppProvider>
   </React.StrictMode>
 );

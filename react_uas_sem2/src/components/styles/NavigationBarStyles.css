@@ -18,6 +18,7 @@
     margin-left: 100px;
     top: 30%;
   }
+
   .select-container {
     padding: 0 10px;
     border-right: 1px solid #ccc;
@@ -35,7 +36,19 @@
     margin-left: -10px;
     top: 30%;
     height: auto;
-  }
+  } 
+} 
+
+.dropdown-toggle{
+  cursor: none;
+}
+
+.genre-dropdown{
+  cursor: none;
+}
+
+.genre-dropdown .dropdown-menu {
+  margin-top: -10px; /* Adjust the value as per your requirements */
 }
 
 
@@ -46,9 +59,11 @@
 }
 
 .navigationBar {
+  background-color: rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   text-align: center;
+  cursor: none;
   justify-content: space-evenly;
 }
 
@@ -70,7 +85,6 @@
 .themeModeWrapperToggler {
   margin-left: auto;
   margin-right: 20px;
-  cursor: pointer;
 }
 
 .navCollapseContainer {
@@ -91,7 +105,7 @@
   z-index: 1000;
   position: absolute;
 }
-
+.navigationBar
 .collapsedNav {
   display: flex;
   justify-content: center;
@@ -182,7 +196,6 @@
 .search-icon {
   padding: 10px;
   padding-right: 12px;
-  cursor: pointer;
   margin-right: 0;
   margin-left: auto;
 }
@@ -190,7 +203,6 @@
 .themeModeWrapper {
   margin-right: auto;
   margin-left: 20px;
-  cursor: pointer;
 }
 
 .custom-dropdown {
@@ -205,6 +217,7 @@
 
 .bookShelf {
   margin-right: auto;
+  cursor: none;
 }
 
 .rightSide {
@@ -272,4 +285,4 @@
   -webkit-transform-origin: 10% 90%;
   -ms-transform-origin: 10% 90%;
   transform-origin: 10% 90%;
-}
+} 
