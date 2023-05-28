@@ -56,6 +56,7 @@
   height: auto; /* Remove the fixed height */
   flex-direction: column;
   display: flex;
+  margin-top: 100px;
 }
 
 .topBox {

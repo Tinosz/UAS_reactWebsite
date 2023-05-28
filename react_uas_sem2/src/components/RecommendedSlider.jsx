@@ -9,9 +9,10 @@ function Recommended() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sliderRef = useRef(null);
-  const [data, setData] = useState(null);
+  const [works, setWorks] = useState([]);
   const [descriptions, setDescriptions] = useState({});
   const url = 'https://openlibrary.org/search.json?q=subject%3A(Romance)';
+  const itemsPerPage = 20;
 
   useEffect(() => {
     fetchData();
@@ -21,15 +22,14 @@ function Recommended() {
     axios
       .get(url)
       .then((response) => {
-        setData(response.data);
-        console.log(response.data);
+        const initialWorks = response.data.docs.slice(0, itemsPerPage);
+        setWorks(initialWorks);
+        fetchDescriptions(initialWorks);
       })
       .catch((error) => {
         console.log(error);
       });
   }
-
-  const works = data?.docs?.slice(0, 20) || [];
 
   const slideWidth = 20; // Adjust the slide width based on your CSS
 
@@ -94,23 +94,17 @@ function Recommended() {
     }
   };
 
-  useEffect(() => {
-    const fetchDescriptions = async () => {
-      const descriptionsData = {};
-  
-      for (const work of works) {
-        const description = await fetchDescription(work.key);
-        descriptionsData[work.key] = description;
-      }
-  
-      setDescriptions(descriptionsData);
-    };
-  
-    fetchDescriptions();
-  }, [works]);
-  
+  const fetchDescriptions = async (worksData) => {
+    const descriptionsData = {};
 
-  // Render the slides with the popup
+    for (const work of worksData) {
+      const description = await fetchDescription(work.key);
+      descriptionsData[work.key] = description;
+    }
+
+    setDescriptions(descriptionsData);
+  };
+
   const renderSlides = () => {
     return works.map((work, index) => {
       const description = descriptions[work.key] || '';

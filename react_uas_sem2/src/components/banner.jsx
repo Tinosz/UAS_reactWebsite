@@ -5,7 +5,6 @@ import axios from "axios";
 import { AppContext } from "../store";
 import { useNavigate } from "react-router-dom";
 
-
 function Banner() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(null);
@@ -272,24 +271,22 @@ function Banner() {
     };
   }, []);
 
+  const handleClickBook = async (key) => {
+    const modifiedThumbnailUrl = trendingBooks[key].thumbnailUrl.replace(
+      "-L.jpg",
+      "-M.jpg"
+    );
+    console.log("Modified Thumbnail URL:", modifiedThumbnailUrl);
+    console.log("Key:", key);
+    navigate("/Test", {
+      state: { thumbnailUrl: modifiedThumbnailUrl, key: key },
+    });
+  };
+
   return (
     <div ref={carouselContainerRef} className="carousel-container">
       {trendingBooks.length > 0 ? (
-        <div
-          className="carousel-content"
-          onClick={() => {
-            const { thumbnailUrl, key } = trendingBooks[currentSlide];
-            const modifiedThumbnailUrl = thumbnailUrl.replace(
-              "-L.jpg",
-              "-M.jpg"
-            );
-            console.log("Modified Thumbnail URL:", modifiedThumbnailUrl);
-            console.log("Key:", key);
-            navigate("/Test", {
-              state: { thumbnailUrl: modifiedThumbnailUrl, key: key },
-            });
-          }}
-        >
+        <div className="carousel-content">
           <div className="background-tint-overlay"></div>
           <div
             className="background-image-container"
@@ -323,6 +320,7 @@ function Banner() {
                     ? "slide-out"
                     : ""
                 }`}
+                onClick={() => handleClickBook(currentSlide)}
               />
             </div>
           </div>

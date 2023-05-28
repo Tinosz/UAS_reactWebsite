@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../components/bookPageStyles/styles.css";
 
-const BookInfo = () => {
+const BookInfo = ({ bookKey }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [book, setBook] = useState(null); // Add the book state
 
-  const book = {
-    title: "Lorem Ipsum",
-    author: "F. Scott Fitzgerald",
-    image:
-      "https://pe-images.s3.amazonaws.com/basics/cc/image-size-resolution/resize-images-for-print/image-cropped-8x10.jpg",
-    rating: 4.5,
-    description:
-      "Lorem ipsum ."
+  // Retrieve the book object based on the book key
+  const getBookByKey = async (bookKey) => {
+    try {
+      const response = await fetch(`https://openlibrary.org/${bookKey}.json`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch book information");
+      }
+      const data = await response.json();
+      // Extract the required book details from the API response
+      const book = {
+        title: data.title,
+        author: data.author_name?.[0] || "Unknown Author",
+        image: `https://covers.openlibrary.org/b/id/${data.cover_i}-L.jpg`,
+        rating: 4.5, // You can set the actual rating here
+        description: data.description?.value || "No description available",
+      };
+      setBook(book); // Set the book state
+    } catch (error) {
+      console.error(error);
+      // Handle the error case accordingly (e.g., display an error message)
+    }
   };
+
+  useEffect(() => {
+    getBookByKey(bookKey); // Call the function when the component mounts or when bookKey changes
+  }, [bookKey]);
 
   const author = {
     name: "Lorem Ipsum",
@@ -46,6 +64,10 @@ const BookInfo = () => {
 
     return stars;
   };
+
+  if (!book) {
+    return null;
+  }
 
   return (
     <div>

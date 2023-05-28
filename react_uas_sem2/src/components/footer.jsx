@@ -1,7 +1,9 @@
 import React from "react";
 import "./styles/footerStyles.css";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate()
   return (
     <div className="box">
       <div className="topBox">
@@ -19,10 +21,10 @@ const Footer = () => {
       <div className="container">
         <div className="column">
           <h3 className="topic">About Us</h3>
-          <a href="#">Valen</a>
-          <a href="#">Axel</a>
-          <a href="#">Damar</a>
-          <a href="#">Daniel</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Valen</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Axel</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Damar</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Daniel</a>
         </div>
         <div className="column">
           <h3 className="topic">Discover</h3>

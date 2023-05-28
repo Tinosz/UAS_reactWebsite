@@ -58,6 +58,9 @@ function NavigationBar() {
 
       const response = await axios.get(url);
       console.log(response.data);
+
+      navigate("/Search", { state: { searchData: response.data, searchQuery: searchTerm } });
+
     } catch (error) {
       console.error(error);
     }
