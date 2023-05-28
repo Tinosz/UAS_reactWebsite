@@ -285,3 +285,12 @@
   -ms-transform-origin: 10% 90%;
   transform-origin: 10% 90%;
 } 
+
+.dark-mode {
+  background-color: #222;
+  color: #fff;
+}
+
+.navigationBar.dark-mode .navbar-brand img {
+  filter: invert(1);
+}
