@@ -1,7 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Navbar, NavDropdown, Nav, Container, Form, FormControl, Image } from "react-bootstrap";
+import {
+  Navbar,
+  NavDropdown,
+  Nav,
+  Container,
+  Form,
+  FormControl,
+  Image,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLightbulb as faLightbulbBold, faMoon, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLightbulb as faLightbulbBold,
+  faMoon,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { faLightbulb as faLightbulbRegular } from "@fortawesome/free-regular-svg-icons";
 import "./styles/NavigationBarStyles.css";
 import axios from "axios";
@@ -9,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "./styles/Assets/BookhavenLogo.png";
 
 function NavigationBar() {
-  const [lightModeOn, setLightModeOn] = useState(true);
+  const [darkModeOn, setDarkModeOn] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(true);
   const [searchOption, setSearchOption] = useState("#");
@@ -23,12 +35,14 @@ function NavigationBar() {
     clearTimeout(dropdownTimeout);
     setShow(true);
   };
-  
+
   const hideDropdown = (e) => {
     clearTimeout(dropdownTimeout);
-    setDropdownTimeout(setTimeout(() => {
-      setShow(false);
-    }, 100));
+    setDropdownTimeout(
+      setTimeout(() => {
+        setShow(false);
+      }, 100)
+    );
   };
 
   const showDropdown2 = (e) => {
@@ -63,9 +77,17 @@ function NavigationBar() {
     }
   };
 
-  const lightModeClick = () => {
-    setLightModeOn(!lightModeOn);
+  const darkModeClick = () => {
+    setDarkModeOn(!darkModeOn);
   };
+
+  useEffect(() => {
+    if (darkModeOn) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkModeOn]);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -140,10 +162,7 @@ function NavigationBar() {
   }, []);
 
   return (
-    <Navbar
-      expand="md"
-      className="navigationBar"
-    >
+    <Navbar expand="md" className={`navigationBar ${darkModeOn ? "dark-mode" : ""}`}>
       <Container>
         <Navbar.Brand className="mr-auto">
           <Image
@@ -155,8 +174,8 @@ function NavigationBar() {
         </Navbar.Brand>
         <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
           <FontAwesomeIcon
-            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-            onClick={lightModeClick}
+            icon={darkModeOn ? faLightbulbRegular : faLightbulbBold}
+            onClick={darkModeClick}
             className="themeMode"
           />
         </div>
@@ -308,8 +327,8 @@ function NavigationBar() {
           {!isNavOpen && (
             <div className="themeModeWrapper">
               <FontAwesomeIcon
-                icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-                onClick={lightModeClick}
+                icon={darkModeOn ? faLightbulbRegular : faLightbulbBold}
+                onClick={darkModeClick}
                 className="themeMode"
               />
             </div>
@@ -327,8 +346,7 @@ function NavigationBar() {
             <Image
               src="https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg"
               className="profilePic"
-            />
-            <Nav.Item className="username">Username</Nav.Item>
+            ></Image>
           </Nav>
         </div>
       </Container>
