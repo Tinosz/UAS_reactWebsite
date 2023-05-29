@@ -1,49 +1,61 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import "./styles/others.css";
-import { useNavigate } from "react-router-dom"
-//import { saveAs } from 'file-saver';
-import apiData from './API_data/apiData_Combination.json'; 
 
 export default function Others() {
   
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [slides, setSlides] = useState([])
-  const [showFilters, setShowFilters] = useState(false)
-  const [showAllGenres, setShowAllGenres] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedAuthor, setSelectedAuthor] = useState("")
-  const [showAuthorSelect, setShowAuthorSelect] = useState(false)
-  const navbarRef = useRef(null)
-  const navigate = useNavigate
-  const url = 'https://openlibrary.org/search.json?q=subject%3A(%22Romance%22+OR+%22Fantasy%22+OR+%22Action%22+OR+%22Thriller%22+OR+%22Drama%22)'
+  const [slides, setSlides] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showAllGenres, setShowAllGenres] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [showAuthorSelect, setShowAuthorSelect] = useState(false);
+  const navbarRef = useRef(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  function fetchData() {
-    axios
-      .get(url)
-      .then((response) => {
-        setData(response.data);
-        console.log(response.data);
-        // Save the data as a file
-        const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
-        //saveAs(blob, 'apiData.json');
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(error);
-      })
-      .finally(() => setLoading(false));
-  }
-  
+  const genres = ["romance", "historical", "fantasy", "drama"];
+  const fetchData = () => {
+    const slidesData = [];
 
-  const itemsPerPage = 20
+    const fetchGenreData = (genre) => {
+      const url = `https://openlibrary.org/search.json?q=${genre}`;
+      axios
+        .get(url)
+        .then((response) => {
+          const docs = response.data.docs;
+          const genreSlides = docs
+            .map((doc) => ({
+              title: doc.title || "Unknown Title",
+              author: doc.author_name?.[0] || "Unknown Author",
+              rating: doc.rating?.average || "N/A",
+              image: doc.cover_i
+                ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                : null,
+            }))
+            .filter((slide) => slide.title && slide.author && slide.image !== null);
+
+          slidesData.push(...genreSlides);
+          setSlides(slidesData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    genres.forEach((genre) => fetchGenreData(genre));
+  };
+
+  const handleSelectChange = (event) => {
+    const { value } = event.target;
+    setShowAllGenres(value === "");
+  };
+
+  const itemsPerPage = 20;
+
   const totalPages = Math.ceil(slides.length / itemsPerPage);
 
   const handleClickNext = () => {
@@ -133,7 +145,6 @@ export default function Others() {
   
     return buttons;
   };
-  
 
   return (
     <div className="main-box">
@@ -141,29 +152,6 @@ export default function Others() {
       <div className="result-header">
         <div className="float-left">
           <h2 className="text-heading">Find books that you love</h2>
-        </div>
-      </div>
-
-      {/* Filter section */}
-      <div className="filter-box">
-        <div className="AllFilters">
-          {/* Navbar for filter */}
-          <div className="filter-button">
-            <button id="search-filter" onClick={toggleFilters}>
-              <span className="filter-image"></span>
-              <span className="filter-text">All Filters</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="SortBy">
-          {/* Navbar for sort by */}
-          <div className="sort-button">
-            <button id="search-sort">
-              <span className="sort-image"></span>
-              <span className="sort-text">Sort By</span>
-            </button>
-          </div>
         </div>
       </div>
 
