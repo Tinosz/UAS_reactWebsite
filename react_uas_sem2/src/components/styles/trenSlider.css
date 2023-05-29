@@ -113,7 +113,19 @@
 
 .slide:hover{
   background-color: rgba(78, 71, 71, 0.4);
-  box-shadow: 0 5px 15px 0 rgba(160, 148, 148, 0.4);
+  box-shadow: 0 5px 15px 0 rgba(135, 201, 201, 0.4);
+  border: 2px solid black;
+}
+
+#romance-slide:hover{
+  background-color: rgba(78, 71, 71, 0.4);
+  box-shadow: 0 5px 15px 0 rgba(230, 159, 192, 0.781);
+  border: 2px solid black;
+}
+
+#thriller-slide:hover{
+  background-color: rgba(78, 71, 71, 0.4);
+  box-shadow: 0 5px 25px 0 rgba(151, 41, 41, 0.4);
   border: 2px solid black;
 }
 

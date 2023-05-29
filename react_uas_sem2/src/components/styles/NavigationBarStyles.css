@@ -18,14 +18,19 @@
     margin-left: 100px;
     top: 30%;
   }
-
+  .wholeSearchBar2 {
+    display: none;
+  }
   .select-container {
     padding: 0 10px;
     border-right: 1px solid #ccc;
     width: 100%;
     max-width: 100px;
   }
-  
+
+  .search-icon2 {
+    display: none;
+  }
 }
 
 @media (max-width: 576px) {
@@ -36,24 +41,24 @@
     margin-left: -10px;
     top: 30%;
     height: auto;
-  } 
-} 
-
-.dropdown-toggle{
-  cursor: none;
+  }
 }
 
-.genre-dropdown{
-  cursor: none;
+.dropdown-toggle {
+  /*cursor: none;*/
+  text-align: left;
+}
+
+.genre-dropdown {
+  /*cursor: none;*/
+  left: 0;
 }
 
 .genre-dropdown .dropdown-menu {
   margin-top: -10px; /* Adjust the value as per your requirements */
 }
 
-
-
-.container {
+.container-navbar {
   margin-right: 0;
   margin-left: 0;
 }
@@ -62,11 +67,11 @@
   display: flex;
   align-items: center;
   text-align: center;
-  cursor: none;
+  /*cursor: none;*/
   justify-content: space-evenly;
 }
 
-.logo-image{
+.logo-image {
   max-width: 100px;
   cursor: pointer;
   @media (max-width: 768px) {
@@ -104,8 +109,7 @@
   z-index: 1000;
   position: absolute;
 }
-.navigationBar
-.collapsedNav {
+.navigationBar .collapsedNav {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,9 +218,10 @@
   z-index: 1000;
 }
 
+
 .bookShelf {
   margin-right: auto;
-  cursor: none;
+  /*cursor: none;*/
 }
 
 .rightSide {
@@ -284,4 +289,4 @@
   -webkit-transform-origin: 10% 90%;
   -ms-transform-origin: 10% 90%;
   transform-origin: 10% 90%;
-} 
+}

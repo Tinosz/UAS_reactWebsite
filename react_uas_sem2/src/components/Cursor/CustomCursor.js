@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import '../styles/cursor.css';
 
 const CustomCursor = () => {
@@ -65,4 +65,4 @@ const CustomCursor = () => {
   );
 };
 
-export default CustomCursor;
+export default CustomCursor;*/

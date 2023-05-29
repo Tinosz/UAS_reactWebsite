@@ -1,0 +1,253 @@
+.App {
+  font-family: sans-serif;
+}
+
+.book-info-page {
+  display: flex;
+  justify-content: center;
+}
+
+.book-info-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px 60px 50px 30px;
+  max-width: 1250px;
+  width: 100%;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+}
+
+.book-info-title {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.book-info-rating-container {
+  display: flex;
+}
+
+.book-info-rating {
+  margin-left: 2%;
+}
+
+.book-info-author {
+  font-size: 24px;
+}
+
+.book-image {
+  margin-top: 25px;
+  max-width: 300px;
+  margin-bottom: 40px;
+}
+
+.book-details-info {
+  width: 100%;
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+}
+
+.author-details {
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+.author-details h2 {
+  margin-bottom: 5px;
+}
+
+.author-details p {
+  margin: 0;
+}
+
+.deschead,
+.rechead {
+  display: inline-block;
+  background-color: lightgray;
+  padding: 5px 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.descbord,
+.recbord {
+  background-color: lightgray;
+  border-radius: 0px 0px 20px 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.descbody,
+.recbody {
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.tab {
+  display: inline-block;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 10px 10px 0 0;
+  color: black;
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: lightgray;
+  color: black;
+}
+
+.author-container {
+  background-color: lightgray;
+  padding: 20px;
+  border-radius: 30px;
+}
+
+.author-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  width: 200px;
+  border: 2px solid #000;
+}
+
+/* Responsive styles for mobile devices */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  .book-info-rating-containter {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .book-info-rating {
+    margin-left: none;
+  }
+
+  .book-info-title {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .asu-button {
+    margin-bottom: 40px;
+  }
+
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .book-image {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 65%;
+  }
+
+  .book-details-info {
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .author-details {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+
+  .deschead,
+  .rechead {
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  .descbody,
+  .recbody {
+    padding-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .author-container {
+    padding: 10px;
+  }
+
+  .author-image {
+    width: 100%;
+    max-width: 70%;
+    margin-top: 10px;
+  }
+}
+
+/* Styles for the popup */
+
+.bookshelf-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}
+
+.bookshelf-popup h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.bookshelf-popup h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.bookshelf-popup button {
+  padding: 5px 10px;
+  background-color: lightgray;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.bookshelf-popup button:last-child {
+  margin-right: 0;
+}
+
+.popup-add {
+  align-self: right;
+}

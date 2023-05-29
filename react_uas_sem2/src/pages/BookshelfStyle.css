@@ -251,11 +251,61 @@
 }
 
 .edit-popup-container {
+  position: relative; /* Add position relative to the container */
   width: 400px;
   background-color: #fff;
   padding: 20px;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgb(230, 221, 199);
   z-index: 99999;
   justify-content: center;
+}
+
+.edit-popup-close {
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  font-size: 30px;
+}
+
+.edit-popup-title{
+  font-weight: bolder;
+  text-align: center;
+}
+
+.edit-page{
+  margin-bottom: 5px;
+}
+
+.page-input-row{
+  display: flex;
+}
+
+.page-input{
+  max-width: 100px;
+  margin-right: 10px;
+  max-height: 20px;
+  margin-top: 4px;
+  border: 0.2px solid;
+  outline: none;
+}
+
+
+.edit-popup-button{
+  border-radius: 10%;
+  border: solid #C07F00;
+  background-color: white;
+}
+
+.edit-popup-select{
+  margin-bottom: 5px;
+}
+
+.edit-popup-button-container{
+  display: flex;
+  justify-content: center;
+}
+
+.edit-status{
+  margin-bottom: 5px;
 }

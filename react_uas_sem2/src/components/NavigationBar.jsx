@@ -144,7 +144,7 @@ function NavigationBar() {
       expand="md"
       className="navigationBar"
     >
-      <Container>
+      <Container className="container-navbar">
         <Navbar.Brand className="mr-auto">
           <Image
             src={logo}
@@ -181,7 +181,7 @@ function NavigationBar() {
         >
           <Form
             ref={formRef}
-            className={`d-flex rounded-pill align-items-center ${
+            className={`d-flex rounded-pill align-items-center wholeSearchBar2 ${
               isExpanded ? "search-form active" : ""
             }`}
             onSubmit={(e) => {
@@ -192,7 +192,7 @@ function NavigationBar() {
             }}
           >
             {!isExpanded && (
-              <div className="search-icon" onClick={toggleSearchBar}>
+              <div className="search-icon search-icon2" onClick={toggleSearchBar}>
                 <FontAwesomeIcon icon={faSearch} />
               </div>
             )}
@@ -241,20 +241,6 @@ function NavigationBar() {
               <NavDropdown.Item>Popular</NavDropdown.Item>
               <NavDropdown.Item>Best-Sellers</NavDropdown.Item>
               <NavDropdown.Item>Recommended</NavDropdown.Item>
-              <NavDropdown
-                title="Genre"
-                id="genreDropdown"
-                className="genre-dropdown custom-dropdown"
-                show={show2}
-                onMouseEnter={showDropdown2}
-                onMouseLeave={hideDropdown2}
-              >
-                <div className="itemGenreDropdown">
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                </div>
-              </NavDropdown>
             </NavDropdown>
           </Nav>
           {!isNavOpen && (

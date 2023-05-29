@@ -4,7 +4,7 @@ import Carousel from "react-bootstrap/Carousel";
 import axios from "axios";
 import { AppContext } from "../store";
 import { useNavigate } from "react-router-dom";
-
+import apiData from "./API_data/apiData.json"; // Assuming the downloaded file is named 'apiData.json'
 
 function Banner() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -163,10 +163,7 @@ function Banner() {
         return;
       }
 
-      const url = "https://openlibrary.org/trending/weekly.json";
-      console.log("Fetching trending books:", url);
-      const response = await axios.get(url);
-      const trendingWorks = response.data.works.slice(0, 6);
+      const trendingWorks = apiData.works.slice(0, 6);
       const trendingBooksData = await Promise.all(
         trendingWorks.map(async (work) => {
           const { title, author_name, key, cover_edition_key, edition_key } =
@@ -279,14 +276,10 @@ function Banner() {
           className="carousel-content"
           onClick={() => {
             const { thumbnailUrl, key } = trendingBooks[currentSlide];
-            const modifiedThumbnailUrl = thumbnailUrl.replace(
-              "-L.jpg",
-              "-M.jpg"
-            );
-            console.log("Modified Thumbnail URL:", modifiedThumbnailUrl);
+            console.log("Thumbnail URL:", thumbnailUrl);
             console.log("Key:", key);
             navigate("/Test", {
-              state: { thumbnailUrl: modifiedThumbnailUrl, key: key },
+              state: { thumbnailUrl, key },
             });
           }}
         >
@@ -316,7 +309,7 @@ function Banner() {
               <img
                 src={trendingBooks[currentSlide].thumbnailUrl}
                 alt={trendingBooks[currentSlide].title}
-                className={`image-box ${
+                className={`image-box-banner ${
                   direction === "slide-left"
                     ? "slide-in"
                     : direction === "slide-right"

@@ -16,7 +16,7 @@ const Footer = () => {
         <div className="right-layer"></div>
       </div>
 
-      <div className="container">
+      <div className="container-footer">
         <div className="column">
           <h3 className="topic">About Us</h3>
           <a href="#">Valen</a>
