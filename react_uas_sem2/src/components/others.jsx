@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import "./styles/others.css";
 import { useNavigate } from "react-router-dom"
-import { saveAs } from 'file-saver';
+//import { saveAs } from 'file-saver';
 import apiData from './API_data/apiData_Combination.json'; 
 
 export default function Others() {
@@ -33,7 +33,7 @@ export default function Others() {
         console.log(response.data);
         // Save the data as a file
         const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
-        saveAs(blob, 'apiData.json');
+        //saveAs(blob, 'apiData.json');
       })
       .catch((error) => {
         console.log(error);

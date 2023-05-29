@@ -13,6 +13,8 @@ import HomePage from "./pages/HomePage";
 import BookInfoPage from "./pages/BookInfoPage";
 import BookshelfPage from "./pages/BooshelfPage";
 import LandingPage from "./pages/LandingPage";
+import AboutUsPage from "./pages/AboutUsPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   /*const { cursorType, cursorChangeHandler } = useContext(MouseContext);*/
@@ -29,6 +31,8 @@ function App() {
           <Route path="/MyBookshelf" element={<BookshelfPage />} />
           <Route path="/Test" element={<BookInfoPage />} />
           <Route path="/BookInfo" element={<BookInfoPage />} />
+          <Route path="/AboutUs" element={<AboutUsPage />} />
+          <Route path="/Search" element={<SearchPage />} />
         </Routes>
         <Footer />
       </Router>
