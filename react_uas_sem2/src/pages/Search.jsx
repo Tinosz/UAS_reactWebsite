@@ -20,9 +20,11 @@ const SearchResultPage = () => {
           author: book.author_name ? book.author_name[0] : "Unknown Author",
           publicationYear: book.publish_year ? book.publish_year[0] : "Unknown Year",
           editionKey: book.edition_key ? book.edition_key[0] : null,
+          description: book.description ? book.description.value : "No Description Available",
           key: book.key,
         }));
       setSearchResults(formattedResults);
+      console.log(formattedResults);
     }
   }, [searchData]);
 
@@ -33,9 +35,10 @@ const SearchResultPage = () => {
 
   return (
     <div className="search-results-page">
+      <div className="search-result-box">
       <div className="search-results-container">
         <div className="search-title">
-          {searchQuery && <span>"{searchQuery}"</span>}
+          {searchQuery && <span className="query-box">"{searchQuery}"</span>}
         </div>
         {searchResults.length === 0 ? (
           // Display a default book if no search results are available
@@ -52,11 +55,12 @@ const SearchResultPage = () => {
           searchResults.map((book) => (
             <div className="search-book-container" key={book.key}>
               <div className="search-book-cover">
-                {book.editionKey ? (
+                {book.editionKey && book.editionKey !== "nophoto" ? (
                   <img
                     src={`https://covers.openlibrary.org/b/OLID/${book.editionKey}-M.jpg`}
                     alt="Book Cover"
                     onError={handleImageError}
+                    className="search-book-image"
                   />
                 ) : (
                   <img
@@ -65,15 +69,18 @@ const SearchResultPage = () => {
                     className="no-cover-available"
                   />
                 )}
+
               </div>
               <div className="search-book-details">
-                <div className="search-book-title">{book.title}</div>
-                <div className="search-book-author">{book.author}</div>
+                <div className="search-book-title"><h2>{book.title}</h2></div>
+                <div className="search-book-author"><h6>{book.author}</h6></div>
                 <div className="search-book-year">{book.publicationYear}</div>
+                <div className="search-book-description">{book.description}</div>
               </div>
             </div>
           ))
         )}
+        </div>
       </div>
     </div>
   );

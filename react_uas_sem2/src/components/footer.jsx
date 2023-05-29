@@ -35,10 +35,10 @@ const Footer = () => {
         </div>
         <div className="column">
           <h3 className="topic">Other Genres</h3>
-          <a href="#">Romance</a>
-          <a href="#">Fantasy</a>
-          <a href="#">Coding</a>
-          <a href="#">Fiction</a>
+          <a href="#" onClick={() => navigate('/Search')}>Romance</a>
+          <a href="#" onClick={() => navigate('/Search')}>Fantasy</a>
+          <a href="#" onClick={() => navigate('/Search')}>Coding</a>
+          <a href="#" onClick={() => navigate('/Search')}>Fiction</a>
         </div>
         <div className="column">
           <h3 className="topic">Social Media</h3>

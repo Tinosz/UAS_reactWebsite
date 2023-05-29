@@ -1,44 +1,63 @@
+.search-result-box{
+  width: 90%;
+}
 
-  
+.search-title{
+  margin-bottom: 20px;
+}
+
+.query-box{
+  background-color:#dabbbb;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
   .search-book-image {
-    border: 1px solid #000;
+    border: 1px solid white;
+    box-shadow: 0 0 10px rgba(239, 232, 232, 0.5);
   }
   
   .search-results-page{
     display: flex;
     justify-content: center;
+    color: white;
   }
 
   .search-book-container {
     display: flex;
     flex-direction: row;
-    align-items: left;
-    text-align: left;
     max-width: 1250px;
-    width: 100%;
+    width: 95%;
+    background-color: rgba(0, 0, 0, 0.8);
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 10px;
   }
   
   .search-book-image {
-    max-width: 120px;
+    width: 180px;
+    height: 270px;
     margin-right: 15px;
-    margin-top: 20px;
+    border-radius: 20px;
   }
   
+.search-book-title{
+}
+
   .search-book-details {
-    display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 78%;
+    margin-top: 10px;
+    margin-left: 10px;
   }
   
   .no-cover-available {
     width: 180px;
-    height: 269px;
-    background-color: lightgray;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
+    height: 270px;
+    margin-right: 15px;
+    border-radius: 20px;
   }
   
   @media (max-width: 768px) {
