@@ -28,10 +28,10 @@ const Footer = () => {
         </div>
         <div className="column">
           <h3 className="topic">Discover</h3>
-          <a href="#">Home</a>
+          <a href="#" onClick={() => navigate('/Landing')}>Home</a>
           <a href="#">Trending</a>
-          <a href="#">Authors</a>
-          <a href="#">Your Wishlist</a>
+          <a href="#">Popular</a>
+          <a href="#">Nowhere</a>
         </div>
         <div className="column">
           <h3 className="topic">Other Genres</h3>

@@ -1,16 +1,40 @@
-import React from "react";
+import React, {createContext, useState, useEffect} from "react";
 import "./LandingStyle.css";
 import HomePage from "./HomePage"
+import { useNavigate } from "react-router-dom";
+import background from "./LandingPhotos/bg.svg"
+import avatar from "./LandingPhotos/avatar.svg"
+import spoiler from "./LandingPhotos/SPOILER_wave.png"
+import NavigationBar from "../components/NavigationBar";
+import axios from "axios";
+import {UsernameContext} from "./UsernameContext" 
 
 const Landing = () => {
-  const [username, setUsername] = React.useState("");
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState()
   const [showGenreSelection, setShowGenreSelection] = React.useState(false);
   const [selectedGenres, setSelectedGenres] = React.useState([]);
   const [showRecommendation, setShowRecommendation] = React.useState(false);
   const [showNotification, setShowNotification] = React.useState(false);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const savedUsername = localStorage.getItem("username");
+    if (savedUsername) {
+      setUsername(savedUsername);
+    }
+  }, []);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
+  };
+
+  const handleSaveUsername = () => {
+    localStorage.setItem("username", username);
+  };
+
+  const updateUsername = (newUsername) => {
+    setUsername(newUsername);
   };
 
   const handleLoginSubmit = (event) => {
@@ -36,48 +60,74 @@ const Landing = () => {
     }
   };
 
+  const handleNameSubmit = async e => {
+    e.preventDefault();
+    const user = { username };
+    // send the username and password to the server
+    const response = await axios.post(
+      "http://xyz/login",
+      user
+    );
+    // set the state of the user
+    setUser(response.data)
+    // store the user in localStorage
+    localStorage.setItem('username', response.data.username)
+    console.log(response.data)
+  };
+  
+
   const closeNotification = () => {
     setShowNotification(false);
   };
 
   return (
-    <div>
-      <img className="landing-headbox" src="#" alt="headbox" />
-      <div className="landing-container">
-        <div className="landing-img">
-          <img src="#" alt="Background" className="landing-page-image"/>
+    <div className="body">
+      
+      <div className="container-landing">
+
+      <div className="img-background">
+        <div className="img-spoiler">
+          <img className="headbox" src={spoiler} alt="headbox" />
         </div>
-        <div className="landing-login-content">
+        <img src={background} alt="Background" />
+      </div>
+
+
+        <div className="login-content">
           {!showGenreSelection && (
-            <form onSubmit={handleLoginSubmit}>
-              <img src="#" alt="Avatar" className="landing-page-img"/>
-              <h2 className="landing-title">Welcome to Book Haven</h2>
-              <div className={`input-div ${username ? "focus" : ""}`}>
-                <div className="landing-i">
-                  <i className="landing-fas fa-user"></i>
+            <UsernameContext.Provider value={username}>
+            <form className="login-form" onSubmit={handleLoginSubmit}>
+              {" "}
+              {/* Menambahkan class name "login-form" pada elemen form */}
+              <img src={avatar} alt="Avatar" />
+              <h2 className="title">Selamat Datang di BOOK HUB</h2>
+              <div className={`input-div-landing ${username ? "focus" : ""}`}>
+                <div className="i">
+                  <i className="fas fa-user"></i>
                 </div>
-                <div className="landing-div">
+                <div className="div">
                   <h5>Username</h5>
                   <input
                     type="text"
-                    className="landing-input"
+                    className="input"
                     value={username}
                     onChange={handleUsernameChange}
                   />
                 </div>
               </div>
-              <button className="landing-btn" type="submit">
+              <button className="btn-login-landing" type="submit" onClick={handleSaveUsername}>
                 Login
               </button>
             </form>
+            </UsernameContext.Provider>
           )}
           {showGenreSelection && (
-            <div className="landing-genre-selection">
+            <div className="genre-selection">
               {showNotification && (
                 <NotificationModal closeNotification={closeNotification} />
               )}
-              <h2 className="landing-title">What's Your Favorite Genres</h2>
-              <div className="landing-genre-buttons">
+              <h2 className="title">Pilih Genre Buku</h2>
+              <div className="genre-buttons">
                 <button
                   className={`genre-button ${
                     selectedGenres.includes("Fiction") ? "selected" : ""
@@ -88,31 +138,49 @@ const Landing = () => {
                 </button>
                 <button
                   className={`genre-button ${
-                    selectedGenres.includes("Non-Fiction") ? "selected" : ""
+                    selectedGenres.includes("Horror") ? "selected" : ""
                   }`}
-                  onClick={() => handleGenreSelect("Non-Fiction")}
+                  onClick={() => handleGenreSelect("Horror")}
                 >
-                  Non-Fiction
+                  Horror
                 </button>
                 <button
                   className={`genre-button ${
-                    selectedGenres.includes("Sci-Fi") ? "selected" : ""
+                    selectedGenres.includes("Fantasy") ? "selected" : ""
                   }`}
-                  onClick={() => handleGenreSelect("Sci-Fi")}
+                  onClick={() => handleGenreSelect("Fantasy")}
                 >
-                  Sci-Fi
+                  Fantasy
+                </button>
+                <button
+                  className={`genre-button ${
+                    selectedGenres.includes("Romance") ? "selected" : ""
+                  }`}
+                  onClick={() => handleGenreSelect("Romance")}
+                >
+                  Romance
+                </button>
+                <button
+                  className={`genre-button ${
+                    selectedGenres.includes("Humor") ? "selected" : ""
+                  }`}
+                  onClick={() => handleGenreSelect("Humor")}
+                >
+                  Humor
                 </button>
               </div>
               <button
-                className="landing-btn get-recommendation-btn"
-                onClick={handleSubmit}
+                className="btn get-recommendation-btn"
+                onClick={(event) => {
+                  handleSubmit(event);
+                  if (selectedGenres.length >= 3) {
+                    navigate('/Home');
+                  }
+                }}
               >
                 Get Recommendation
               </button>
             </div>
-          )}
-          {showRecommendation && (
-            <HomePage selectedGenres={selectedGenres} />
           )}
         </div>
       </div>
@@ -122,12 +190,12 @@ const Landing = () => {
 
 const NotificationModal = ({ closeNotification }) => {
   return (
-    <div className="landing-notification-container">
-      <div className="landing-notification-modal">
-        <div className="landing-notification-content">
-          <p>Mohon pilih setidaknya 3 genre</p>
-          <button className="landing-close-btn" onClick={closeNotification}>
-            <i className="landing-fas fa-times"></i>
+    <div className="notification-container">
+      <div className="notification-modal">
+        <div className="notification-content">
+          <p>Please select at least 3 genres</p>
+          <button className="close-btn" onClick={closeNotification}>
+            <i className="fas fa-times"></i>
           </button>
         </div>
       </div>

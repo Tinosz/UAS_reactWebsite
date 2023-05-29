@@ -2,21 +2,23 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './styles/trenSlider.css';
 import { useNavigate } from 'react-router-dom';
-import apiData from './API_data/apiData.json'; // Assuming the downloaded file is named 'apiData.json'
+import apiData from './API_data/apiData.json';
 
 function TrenSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sliderRef = useRef(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(apiData);
   const [descriptions, setDescriptions] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const url = 'https://openlibrary.org/trending/daily.json';
+  let thumbnailUrl;
+  let key;
 
   useEffect(() => {
-      setData(apiData);
+    fetchData();
   }, []);
 
   function fetchData() {
@@ -35,7 +37,6 @@ function TrenSlider() {
       })
       .finally(() => setLoading(false));
   }
-  
 
   const works = data?.works?.slice(0, 20) || [];
 
@@ -48,12 +49,12 @@ function TrenSlider() {
     if (currentSlide >= maxSlide) {
       // Reached the end of the slides
       // Add logic to handle "View More" action here
-      console.log("View More");
+      console.log('View More');
     } else {
       setCurrentSlide((prevSlide) => prevSlide + numColumns);
     }
   };
-  
+
   const prevSlide = () => {
     const numColumns = Math.min(Math.floor(window.innerWidth / 200), 4); // Maximum 4 columns
     const slideWidth = Math.floor(window.innerWidth / numColumns); // Width of each slide item
@@ -62,7 +63,6 @@ function TrenSlider() {
     }
     setCurrentSlide((prevSlide) => prevSlide - numColumns);
   };
-  
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientX);
@@ -90,14 +90,10 @@ function TrenSlider() {
     };
   }, []);
 
-  const progress = (currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100;
-  const transformValue = `translateX(-${currentSlide * slideWidth}%)`;
-
-
   useEffect(() => {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
-  
+
       const fetchDescriptionsParallel = async () => {
         const promises = works.map(async (work) => {
           try {
@@ -109,24 +105,22 @@ function TrenSlider() {
             return { key: work.key, description: '' };
           }
         });
-  
+
         const descriptions = await Promise.all(promises);
         descriptions.forEach(({ key, description }) => {
           descriptionsData[key] = description;
         });
-  
+
         setDescriptions(descriptionsData);
       };
-  
+
       if (works.length > 0) {
         fetchDescriptionsParallel();
       }
     };
-  
+
     fetchDescriptions();
   }, [works]);
-  
-
 
   const renderSlides = () => {
     return works.map((work, index) => {
@@ -149,9 +143,19 @@ function TrenSlider() {
             <h5 className="C">{work.title}</h5>
             <div
               className="slide-popup"
-              onClick={handlePopupClick} // Stop click propagation to allow scrolling
+      
+              onClick={() => {
+                console.log("Thumbnail URL:", work.cover_edition_key);
+                console.log("Key:", work.key);
+                thumbnailUrl = `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`;
+                key = work.key;
+                console.log("Thumbnail URL sent:", thumbnailUrl);
+                console.log("Key sent:", key);
+                navigate('/BookInfo', { 
+                  state: { thumbnailUrl, key} });
+              }}
             >
-              <div className="slide-popup-content" onClick={() => navigate('/BookInfo')}>
+              <div className="slide-popup-content">
                 <h5>{work.title}</h5>
                 <h6>by {work.author_name?.[0]}</h6>
                 <p>{description}</p>
@@ -182,12 +186,12 @@ function TrenSlider() {
           </div>
         </div>
         <div className="slider-box" ref={sliderRef}>
-          <div className="slider-content" style={{ transform: transformValue }}>
+          <div className="slider-content" style={{ transform: `translateX(-${currentSlide * slideWidth}%)` }}>
             {renderSlides()}
           </div>
         </div>
         <div className="progress-box">
-          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+          <div className="progress-bar" style={{ width: `${(currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100}%` }}></div>
         </div>
       </div>
     </div>

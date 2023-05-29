@@ -59,6 +59,40 @@ const BookInfo = () => {
     // Update the state for pages read or perform any other required logic...
   };
 
+  const renderRatingStars = () => {
+    const filledStars = Math.floor(book.rating);
+    const remainingStars = 5 - filledStars;
+    const hasHalfStar = book.rating % 1 >= 0.5;
+  
+    const stars = [];
+  
+    for (let i = 0; i < filledStars; i++) {
+      stars.push(
+        <span key={i}>
+          <FontAwesomeIcon icon={faStarBold} />
+        </span>
+      );
+    }
+  
+    if (hasHalfStar) {
+      stars.push(
+        <span key="half">
+          <FontAwesomeIcon icon={faStarHalfStroke} />
+        </span>
+      );
+    }
+  
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(
+        <span key={i + filledStars + 1}>
+          <FontAwesomeIcon icon={faStarRegular} />
+        </span>
+      );
+    }
+  
+    return stars;
+  };
+  
   useEffect(() => {
     const fetchBookDescription = async () => {
       try {
@@ -106,46 +140,11 @@ const BookInfo = () => {
       }
     };
 
-    if (key) {
+    if (key || thumbnailURL) {
       fetchBookDescription();
       fetchBookRating();
     }
-  }, [key]);
-
-  const renderRatingStars = () => {
-    const filledStars = Math.floor(book.rating);
-    const remainingStars = 5 - filledStars;
-    const hasHalfStar = book.rating % 1 >= 0.5;
-  
-    const stars = [];
-  
-    for (let i = 0; i < filledStars; i++) {
-      stars.push(
-        <span key={i}>
-          <FontAwesomeIcon icon={faStarBold} />
-        </span>
-      );
-    }
-  
-    if (hasHalfStar) {
-      stars.push(
-        <span key="half">
-          <FontAwesomeIcon icon={faStarHalfStroke} />
-        </span>
-      );
-    }
-  
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(
-        <span key={i + filledStars + 1}>
-          <FontAwesomeIcon icon={faStarRegular} />
-        </span>
-      );
-    }
-  
-    return stars;
-  };
-  
+  }, [key, thumbnailURL]);
 
   // Axios interceptor to log requests
   axios.interceptors.request.use((config) => {
@@ -179,7 +178,7 @@ const BookInfo = () => {
               <p>{renderRatingStars()}</p>
               <p className="book-info-rating"> {book.rating} ( {bookRatingCount} )</p>
             </div>
-            <div>
+            <div className="asu-box">
               <button className="asu-button" onClick={handleAddToBookshelf}>
                 +Add to bookshelf
               </button>
@@ -232,7 +231,7 @@ const BookInfo = () => {
         </div>
       </div>
       {showPopup && (
-        <div className="bookshelf-popup" fref={popupRef}>
+        <div className="bookshelf-popup" ref={popupRef}>
           <h2>Add to Bookshelf</h2>
           <h4>
             Pages read: {pagesRead}/{book.totalPages}

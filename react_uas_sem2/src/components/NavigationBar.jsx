@@ -7,8 +7,9 @@ import "./styles/NavigationBarStyles.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "./styles/Assets/BookhavenLogo.png";
-
-function NavigationBar() {
+import { useContext } from "react";
+        
+function NavigationBar({ username }) {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(true);
@@ -18,6 +19,7 @@ function NavigationBar() {
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
   const [show2, setShow2] = useState(false);
   const navigate = useNavigate();
+  
 
   const showDropdown = (e) => {
     clearTimeout(dropdownTimeout);
@@ -156,13 +158,6 @@ function NavigationBar() {
             onClick={() => navigate("/")}
           />
         </Navbar.Brand>
-        <div className={`themeModeWrapperToggler ${isNavOpen ? "active" : ""}`}>
-          <FontAwesomeIcon
-            icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-            onClick={lightModeClick}
-            className="themeMode"
-          />
-        </div>
 
         <button
           type="button"
@@ -241,9 +236,9 @@ function NavigationBar() {
               onMouseEnter={showDropdown}
               onMouseLeave={hideDropdown}
             >
-              <NavDropdown.Item>Popular</NavDropdown.Item>
-              <NavDropdown.Item>Best-Sellers</NavDropdown.Item>
-              <NavDropdown.Item>Recommended</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate("/Search")}>Popular</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate("/Search")}>Best-Sellers</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate("/Search")}>Recommended</NavDropdown.Item>
               <NavDropdown
                 title="Genre"
                 id="genreDropdown"
@@ -308,16 +303,6 @@ function NavigationBar() {
             </Form>
           )}
 
-          {!isNavOpen && (
-            <div className="themeModeWrapper">
-              <FontAwesomeIcon
-                icon={lightModeOn ? faLightbulbRegular : faLightbulbBold}
-                onClick={lightModeClick}
-                className="themeMode"
-              />
-            </div>
-          )}
-
           <Nav className="rightSide">
             <Nav.Link
               className="bookShelf"
@@ -327,11 +312,13 @@ function NavigationBar() {
             >
               My Bookshelf
             </Nav.Link>
-            <Image
-              src="https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg"
-              className="profilePic"
-            />
-            <Nav.Item className="username">Username</Nav.Item>
+            <div>
+              <Image
+                src="https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg"
+                className="profilePic"
+              />
+            </div>
+            <Nav.Item className="username">{username}</Nav.Item>
           </Nav>
         </div>
       </Container>

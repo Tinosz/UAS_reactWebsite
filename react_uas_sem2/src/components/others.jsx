@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import "./styles/others.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Others() {
   
@@ -11,7 +12,10 @@ export default function Others() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const [showAuthorSelect, setShowAuthorSelect] = useState(false);
+  const [selectedBookKey, setSelectedBookKey] = useState("");
   const navbarRef = useRef(null);
+  const navigate = useNavigate();
+  let thumbnailUrl;
 
   useEffect(() => {
     fetchData();
@@ -28,16 +32,20 @@ export default function Others() {
         .then((response) => {
           const docs = response.data.docs;
           const genreSlides = docs
-            .map((doc) => ({
-              title: doc.title || "Unknown Title",
-              author: doc.author_name?.[0] || "Unknown Author",
-              rating: doc.rating?.average || "N/A",
-              image: doc.cover_i
-                ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-                : null,
-            }))
+            .map((doc) => {
+              const key = doc.key; // Store the key in a variable
+              return {
+                key: key, // Assign the key value to the 'key' property
+                title: doc.title || "Unknown Title",
+                author: doc.author_name?.[0] || "Unknown Author",
+                rating: doc.rating?.average || "N/A",
+                image: doc.cover_i
+                  ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                  : null,
+              };
+            })
             .filter((slide) => slide.title && slide.author && slide.image !== null);
-
+    
           slidesData.push(...genreSlides);
           setSlides(slidesData);
         })
@@ -158,14 +166,17 @@ export default function Others() {
       {/* Content section */}
       <div className="content-box">
       {currentSlides.map((slide, index) => (
-        <div key={index} className="book-item C">
+        <div key={index} className="book-item C"onClick={() => {
+          console.log("Thumbnail URL:", slide.image);
+          console.log("Key:", slide.key);
+          navigate("/BookInfo", {
+            state: { thumbnailUrl: slide.image, key: slide.key },
+          });
+        }} >
           <img src={slide.image} alt={slide.title} className="book-cover C" />
           <div className="book-details C">
             <p className="book-title C">{slide.title}</p>
             <p className="book-author C">Author: {slide.author}</p>
-            <p className="book-ratings C">
-              Ratings: {slide.ratingsAverage} (Total: {slide.ratingsCount})
-            </p>
           </div>
         </div>
       ))}
