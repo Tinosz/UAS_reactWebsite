@@ -1,5 +1,5 @@
 button {
-    cursor: none;
+    /*cursor: none;*/
 }
 
 .container2 {
@@ -99,10 +99,10 @@ button {
   border-radius: 50%;
 }
 
-button {
+/*button {
   background-color: violet;
   padding: 3px;
-}
+}*/
 
 /* Responsive styles for mobile devices */
 

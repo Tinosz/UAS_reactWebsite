@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './styles/trenSlider.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import apiData from './API_data/apiData.json'; // Assuming the downloaded file is named 'apiData.json'
 
 function TrenSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -9,11 +10,13 @@ function TrenSlider() {
   const sliderRef = useRef(null);
   const [data, setData] = useState(null);
   const [descriptions, setDescriptions] = useState({});
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const url = 'https://openlibrary.org/trending/daily.json';
 
   useEffect(() => {
-    fetchData();
+      setData(apiData);
   }, []);
 
   function fetchData() {
@@ -22,11 +25,17 @@ function TrenSlider() {
       .then((response) => {
         setData(response.data);
         console.log(response.data);
+        // Save the data as a file
+        const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+        //saveAs(blob, 'apiData.json');
       })
       .catch((error) => {
         console.log(error);
-      });
+        setError(error);
+      })
+      .finally(() => setLoading(false));
   }
+  
 
   const works = data?.works?.slice(0, 20) || [];
 
@@ -84,35 +93,40 @@ function TrenSlider() {
   const progress = (currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100;
   const transformValue = `translateX(-${currentSlide * slideWidth}%)`;
 
-  const fetchDescription = async (key) => {
-    try {
-      const response = await axios.get(`https://openlibrary.org${key}.json`);
-      return response.data.description?.value || '';
-    } catch (error) {
-      console.log(error);
-      return '';
-    }
-  };
 
   useEffect(() => {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
-
-      const fetchDescriptionsSequentially = async () => {
-        for (const work of works) {
-          const description = await fetchDescription(work.key);
-          descriptionsData[work.key] = description;
-        }
+  
+      const fetchDescriptionsParallel = async () => {
+        const promises = works.map(async (work) => {
+          try {
+            const response = await axios.get(`https://openlibrary.org${work.key}.json`);
+            const description = response.data.description?.value || '';
+            return { key: work.key, description };
+          } catch (error) {
+            console.log(error);
+            return { key: work.key, description: '' };
+          }
+        });
+  
+        const descriptions = await Promise.all(promises);
+        descriptions.forEach(({ key, description }) => {
+          descriptionsData[key] = description;
+        });
+  
         setDescriptions(descriptionsData);
       };
-
-      fetchDescriptionsSequentially();
+  
+      if (works.length > 0) {
+        fetchDescriptionsParallel();
+      }
     };
-
-    if (works.length > 0) {
-      fetchDescriptions();
-    }
+  
+    fetchDescriptions();
   }, [works]);
+  
+
 
   const renderSlides = () => {
     return works.map((work, index) => {

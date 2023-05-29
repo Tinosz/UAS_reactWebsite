@@ -3,6 +3,7 @@ import axios from 'axios';
 import './styles/genSlider.css';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
+import apiData from './API_data/apiData_Romance.json'; // Assuming the downloaded file is named 'apiData.json'
 
 function Recommended() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Recommended() {
   const url = 'https://openlibrary.org/search.json?q=subject%3A(Romance)';
 
   useEffect(() => {
-    fetchData();
+    setData(apiData);
   }, []);
 
   function fetchData() {
@@ -98,12 +99,29 @@ function Recommended() {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
   
-      for (const work of works) {
-        const description = await fetchDescription(work.key);
-        descriptionsData[work.key] = description;
-      }
+      const fetchDescriptionsParallel = async () => {
+        const promises = works.map(async (work) => {
+          try {
+            const response = await axios.get(`https://openlibrary.org${work.key}.json`);
+            const description = response.data.description?.value || '';
+            return { key: work.key, description };
+          } catch (error) {
+            console.log(error);
+            return { key: work.key, description: '' };
+          }
+        });
   
-      setDescriptions(descriptionsData);
+        const descriptions = await Promise.all(promises);
+        descriptions.forEach(({ key, description }) => {
+          descriptionsData[key] = description;
+        });
+  
+        setDescriptions(descriptionsData);
+      };
+  
+      if (works.length > 0) {
+        fetchDescriptionsParallel();
+      }
     };
   
     fetchDescriptions();
@@ -120,7 +138,7 @@ function Recommended() {
       };
 
       return (
-        <div key={work.key} className="gen-slide">
+        <div key={work.key} className="gen-slide" id='romance-slide'>
           <div className="gen-cover-box C">
             <img
               src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`}

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+/*import React, { createContext, useState, useEffect } from "react";
 
 export const MouseContext = createContext({
   cursorType: "",
@@ -34,4 +34,4 @@ const MouseContextProvider = (props) => {
   );
 };
 
-export default MouseContextProvider;
+export default MouseContextProvider;*/

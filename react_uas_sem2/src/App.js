@@ -5,28 +5,30 @@ import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { useContext } from 'react';
-import { MouseContext } from './components/Cursor/mouse-context';
+/*import { useContext } from 'react';*/
+/*import { MouseContext } from './components/Cursor/mouse-context';*/
 import CustomCursor from './components/Cursor/CustomCursor';
 
 import HomePage from "./pages/HomePage";
-import TestPage from "./pages/TestPage";
+import BookInfoPage from "./pages/BookInfoPage";
 import BookshelfPage from "./pages/BooshelfPage";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
-  const { cursorType, cursorChangeHandler } = useContext(MouseContext);
+  /*const { cursorType, cursorChangeHandler } = useContext(MouseContext);*/
 
   return (
 
     <div>
       <Router>
         <NavigationBar />
-        <CustomCursor cursorType={cursorType} />
+        {/*<CustomCursor cursorType={cursorType} />*/}
         <Routes>
+          <Route path="/Landing" element={<LandingPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/MyBookshelf" element={<BookshelfPage />} />
-          <Route path="/Test" element={<TestPage />} />
-          <Route path="/BookInfo" element={<TestPage />} />
+          <Route path="/Test" element={<BookInfoPage />} />
+          <Route path="/BookInfo" element={<BookInfoPage />} />
         </Routes>
         <Footer />
       </Router>

@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./BookshelfStyle.css";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Bookshelf = () => {
   const storedActiveTab = localStorage.getItem("activeTab");
   const [activeTab, setActiveTab] = useState(storedActiveTab || "all");
   const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
+  const [books, setBooks] = useState({
+    all: [],
+    planToRead: [],
+    reading: [],
+    completed: [],
+  });
   const editPopupRef = useRef(null);
 
   const handleActiveTabChange = (tab) => {
@@ -42,113 +51,69 @@ const Bookshelf = () => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  const readingCount = 3;
-  const planToReadCount = 2;
-  const completedCount = 0;
+  const handleBookUpdate = (bookIndex, newStatus) => {
+    setBooks((prevBooks) => {
+      const updatedBooks = { ...prevBooks };
+      const currentTabBooks = updatedBooks[activeTab];
+      const selectedTabBooks = updatedBooks[newStatus];
 
-  const books = getBooksForTab(activeTab);
+      const movedBook = currentTabBooks.splice(bookIndex, 1)[0];
+      selectedTabBooks.push(movedBook);
 
-  function getBooksForTab(tab) {
-    switch (tab) {
-      case "all":
-        return Array.from(
-          { length: readingCount + planToReadCount + completedCount },
-          (_, index) => {
-            let statusContainerClass = "status-container";
-            let statusText = "Unknown";
+      return updatedBooks;
+    });
+  };
 
-            if (index < planToReadCount) {
-              statusContainerClass += " status-container-plan";
-              statusText = "Plan To Read";
-            } else if (index < planToReadCount + readingCount) {
-              statusContainerClass += " status-container-reading";
-              statusText = "Reading";
-            } else {
-              statusContainerClass += " status-container-completed";
-              statusText = "Completed";
-            }
+  const readingCount = books.reading.length;
+  const planToReadCount = books.planToRead.length;
+  const completedCount = books.completed.length;
 
-            return (
-              <div className="books" key={index}>
-                <div className="top-section">
-                  <div className={statusContainerClass}>
-                    <p className="book-status">{statusText}</p>
-                  </div>
-                  <div
-                    className="edit-button-container"
-                    onClick={openEditButton}
-                  >
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      className="edit-button"
-                    />
-                  </div>
-                </div>
-                <div className="books-info">
-                  <p className="books-title">Book Title</p>
-                </div>
-              </div>
-            );
-          }
-        );
-      case "planToRead":
-        return Array.from({ length: planToReadCount }, (_, index) => (
-          <div className="books" key={index}>
-            <div className="top-section">
-              <div className="status-container-plan">
-                <p className="book-status">Plan To Read</p>
-              </div>
-              <div className="edit-button-container" onClick={openEditButton}>
-                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
-              </div>
+  const getBooksForTab = (tab) => {
+    return books[tab].map((book, index) => {
+      let statusContainerClass = "status-container";
+      let statusText = "Unknown";
+
+      if (tab === "planToRead") {
+        statusContainerClass += " status-container-plan";
+        statusText = "Plan To Read";
+      } else if (tab === "reading") {
+        statusContainerClass += " status-container-reading";
+        statusText = "Reading";
+      } else if (tab === "completed") {
+        statusContainerClass += " status-container-completed";
+        statusText = "Completed";
+      }
+
+      return (
+        <div className="books" key={index}>
+          <div className="top-section">
+            <div className={statusContainerClass}>
+              <p className="book-status">{statusText}</p>
             </div>
-            <div className="books-info">
-              <p className="books-title">Book Title</p>
-              <p className="page-read">Pages: (number of pages) /9999</p>
+            <div className="edit-button-container" onClick={openEditButton}>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                className="edit-button"
+              />
             </div>
           </div>
-        ));
-      case "reading":
-        return Array.from({ length: readingCount }, (_, index) => (
-          <div className="books" key={index}>
-            <div className="top-section">
-              <div className="status-container-reading">
-                <p className="book-status">Reading</p>
-              </div>
-              <div className="edit-button-container" onClick={openEditButton}>
-                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
-              </div>
-            </div>
-            <div className="books-info">
-              <p className="books-title">Book Title</p>
+          <div className="books-info">
+            <p className="books-title">Book Title</p>
+            {tab !== "all" && (
               <p className="page-read">Pages: (number of pages) /9999</p>
-            </div>
+            )}
           </div>
-        ));
-      case "completed":
-        return Array.from({ length: completedCount }, (_, index) => (
-          <div className="books" key={index}>
-            <div className="top-section">
-              <div className="status-container-completed">
-                <p className="book-status">Completed</p>
-              </div>
-              <div className="edit-button-container" onClick={openEditButton}>
-                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
-              </div>
-            </div>
-            <div className="books-info">
-              <p className="books-title">Book Title</p>
-              <p className="page-read">Pages: (number of pages) /9999</p>
-            </div>
-          </div>
-        ));
-      default:
-        return [];
-    }
-  }
+        </div>
+      );
+    });
+  };
 
   const renderBooks =
-    books.length > 0 ? books : <p>No books currently on this list</p>;
+    books[activeTab].length > 0 ? (
+      getBooksForTab(activeTab)
+    ) : (
+      <p>No books currently on this list</p>
+    );
 
   return (
     <div className="my-bookshelf-page">
@@ -203,16 +168,38 @@ const Bookshelf = () => {
         <div className="edit-popup">
           <div className="edit-popup-container" ref={editPopupRef}>
             <h4 className="edit-popup-title">Edit Book</h4>
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className="edit-popup-close"
+            />
             <div className="edit-popup-edit">
-              <p>Status: </p>
-              <select>
-                <option value="#">Plan to read</option>
-                <option value="#">Reading</option>
-                <option value="#">Completed</option>
+              <p className="edit-status">Status: </p>
+              <select className="edit-popup-select">
+                <option value="current">Current</option>
+                <option value="planToRead">Plan to read</option>
+                <option value="reading">Reading</option>
+                <option value="completed">Completed</option>
               </select>
-              <p>Pages: (number of pages) / 9999</p>
+              <p className="edit-page">Pages:</p>
+              <div className="page-input-row">
+                <input className="page-input"></input>
+                <p>/9999</p>
+              </div>
             </div>
-            <button>Apply</button>
+            <div className="edit-popup-button-container">
+              <button
+                className="edit-popup-button"
+                onClick={() => {
+                  const newStatus = document.querySelector(
+                    ".edit-popup-select"
+                  ).value;
+                  handleBookUpdate(0, newStatus); // Assuming book index 0, modify it as needed
+                  setIsEditPopupVisible(false);
+                }}
+              >
+                Apply
+              </button>
+            </div>
           </div>
         </div>
       )}
