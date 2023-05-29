@@ -27,7 +27,6 @@ function App() {
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/MyBookshelf" element={<BookshelfPage />} />
-          <Route path="/Test" element={<BookInfoPage />} />
           <Route path="/BookInfo" element={<BookInfoPage />} />
         </Routes>
         <Footer />

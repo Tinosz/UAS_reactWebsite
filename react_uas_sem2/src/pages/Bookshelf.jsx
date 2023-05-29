@@ -5,6 +5,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useLocation } from "react-router-dom";
 
 const Bookshelf = () => {
   const storedActiveTab = localStorage.getItem("activeTab");
@@ -17,6 +18,10 @@ const Bookshelf = () => {
     completed: [],
   });
   const editPopupRef = useRef(null);
+  const location = useLocation();
+  const { userInput } = location.state;
+
+  console.log(userInput);
 
   const handleActiveTabChange = (tab) => {
     setActiveTab(tab);
@@ -88,19 +93,16 @@ const Bookshelf = () => {
         <div className="books" key={index}>
           <div className="top-section">
             <div className={statusContainerClass}>
-              <p className="book-status">{statusText}</p>
+              <p className="book-status">{userInput.status}</p>
             </div>
             <div className="edit-button-container" onClick={openEditButton}>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                className="edit-button"
-              />
+              <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
             </div>
           </div>
           <div className="books-info">
-            <p className="books-title">Book Title</p>
+            <p className="books-title">{userInput.title}</p>
             {tab !== "all" && (
-              <p className="page-read">Pages: (number of pages) /9999</p>
+              <p className="page-read">Pages: {userInput.pages} /9999</p>
             )}
           </div>
         </div>
@@ -173,13 +175,15 @@ const Bookshelf = () => {
               className="edit-popup-close"
             />
             <div className="edit-popup-edit">
-              <p className="edit-status">Status: </p>
-              <select className="edit-popup-select">
-                <option value="current">Current</option>
-                <option value="planToRead">Plan to read</option>
-                <option value="reading">Reading</option>
-                <option value="completed">Completed</option>
-              </select>
+              <div className="edit-popup-status">
+                <p className="edit-status">Status: </p>
+                <select className="edit-popup-select">
+                  <option value="current">Current</option>
+                  <option value="planToRead">Plan to read</option>
+                  <option value="reading">Reading</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
               <p className="edit-page">Pages:</p>
               <div className="page-input-row">
                 <input className="page-input"></input>
@@ -190,9 +194,8 @@ const Bookshelf = () => {
               <button
                 className="edit-popup-button"
                 onClick={() => {
-                  const newStatus = document.querySelector(
-                    ".edit-popup-select"
-                  ).value;
+                  const newStatus =
+                    document.querySelector(".edit-popup-select").value;
                   handleBookUpdate(0, newStatus); // Assuming book index 0, modify it as needed
                   setIsEditPopupVisible(false);
                 }}

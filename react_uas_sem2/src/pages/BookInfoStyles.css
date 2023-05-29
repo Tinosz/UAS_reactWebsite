@@ -35,8 +35,9 @@
   margin-left: 2%;
 }
 
-.book-info-author {
-  font-size: 24px;
+.book-info-about-author {
+  font-size: 38px;
+  font-weight: bold;
 }
 
 .book-image {
@@ -79,13 +80,43 @@
   border-radius: 10px 10px 0 0;
 }
 
-.descbord,
-.recbord {
+.descbord {
   background-color: lightgray;
   border-radius: 0px 0px 20px 20px;
   margin-bottom: 20px;
   padding: 10px;
   width: 100%;
+}
+.recbord {
+  overflow-x: scroll;
+  white-space: nowrap;
+  background-color: lightgrey;
+  padding-bottom: 10px;
+  border-radius: 0px 0px 20px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.recbody-slider {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 30px;
+  align-items: center;
+}
+
+.recbody-item {
+  flex: 0 0 auto;
+  margin-right: 30px;
+  width: 300px;
+  cursor: pointer;
+}
+
+.recbody-item img{
+  width: 180px;
+  height: 270px;
+  box-shadow: ;
 }
 
 .descbody,
@@ -102,7 +133,6 @@
 }
 
 .tab {
-  display: inline-block;
   background-color: white;
   padding: 5px 10px;
   border-radius: 10px 10px 0 0;
@@ -113,6 +143,11 @@
 .tab.active {
   background-color: lightgray;
   color: black;
+}
+
+.false-recommendation-info{
+  text-align: center;
+  margin-top: 20px;
 }
 
 .author-container {
@@ -130,6 +165,10 @@
   border: 2px solid #000;
 }
 
+.book-info-author {
+  font-size: 32px;
+}
+
 /* Responsive styles for mobile devices */
 
 @media (max-width: 768px) {
@@ -141,7 +180,7 @@
     justify-content: center;
     flex-direction: column;
   }
-  
+
   .book-info-rating {
     margin-left: none;
   }
@@ -206,8 +245,13 @@
 
   .author-image {
     width: 100%;
-    max-width: 70%;
+    max-width: 50%;
     margin-top: 10px;
+  }
+  .book-info-about-author {
+    font-size: 28px;
+    text-align: center;
+    font-weight: bold;
   }
 }
 
