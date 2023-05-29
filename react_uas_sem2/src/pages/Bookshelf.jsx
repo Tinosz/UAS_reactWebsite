@@ -19,9 +19,9 @@ const Bookshelf = () => {
   });
   const editPopupRef = useRef(null);
   const location = useLocation();
-  const { userInput } = location.state;
+  //const { userInput } = location.state;
 
-  console.log(userInput);
+  //console.log(userInput);
 
   const handleActiveTabChange = (tab) => {
     setActiveTab(tab);
@@ -93,16 +93,16 @@ const Bookshelf = () => {
         <div className="books" key={index}>
           <div className="top-section">
             <div className={statusContainerClass}>
-              <p className="book-status">{userInput.status}</p>
+              <p className="book-status">p</p>
             </div>
             <div className="edit-button-container" onClick={openEditButton}>
               <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
             </div>
           </div>
           <div className="books-info">
-            <p className="books-title">{userInput.title}</p>
+            <p className="books-title">sdasd</p>
             {tab !== "all" && (
-              <p className="page-read">Pages: {userInput.pages} /9999</p>
+              <p className="page-read">Pages: 1 /9999</p>
             )}
           </div>
         </div>
