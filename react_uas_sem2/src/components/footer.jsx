@@ -28,9 +28,15 @@ const Footer = () => {
         </div>
         <div className="column">
           <h3 className="topic">Discover</h3>
-          <a href="#" onClick={() => navigate('/Landing')}>Home</a>
-          <a href="#">Trending</a>
-          <a href="#">Popular</a>
+          <a href="#" onClick={() => navigate('/Home')}>Home</a>
+          <a href="#" onClick={() => {
+                const useLink = 'https://openlibrary.org/trending/daily.json';
+                navigate("/GenreSearch", { state: { useLink } });
+                }}>Trending</a>
+          <a href="#" onClick={() => {
+                const useLink = 'https://openlibrary.org/trending/yearly.json';
+                navigate("/GenreSearch", { state: { useLink } });
+                }}>Popular</a>
           <a href="#">Nowhere</a>
         </div>
         <div className="column">

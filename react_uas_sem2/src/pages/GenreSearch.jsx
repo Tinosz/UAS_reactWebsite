@@ -1,14 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios"
-import "./styles/others.css";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import "./SearchStyles.css";
+import nophoto from "./Photos/nophoto.jpg";
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-import { useNavigate } from "react-router-dom"
-//import { saveAs } from 'file-saver';
-import apiData from './API_data/apiData_Combination.json'; 
-
-
-export default function Others() {
-  
+const GenreSearchPage = ({ apiURL }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slides, setSlides] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -16,49 +13,45 @@ export default function Others() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const [showAuthorSelect, setShowAuthorSelect] = useState(false);
-  const [selectedBookKey, setSelectedBookKey] = useState("");
+  const location = useLocation();
+  const { useLink } = location.state || {};
   const navbarRef = useRef(null);
   const navigate = useNavigate();
   let thumbnailUrl;
 
+  console.log("useLink gotten:", useLink);
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [useLink]);
 
-  const genres = ["romance", "historical", "fantasy", "drama"];
   const fetchData = () => {
     const slidesData = [];
 
-    const fetchGenreData = (genre) => {
-      const url = `https://openlibrary.org/search.json?q=${genre}`;
-      axios
-        .get(url)
-        .then((response) => {
-          const docs = response.data.docs;
-          const genreSlides = docs
-            .map((doc) => {
-              const key = doc.key; // Store the key in a variable
-              return {
-                key: key, // Assign the key value to the 'key' property
-                title: doc.title || "Unknown Title",
-                author: doc.author_name?.[0] || "Unknown Author",
-                rating: doc.rating?.average || "N/A",
-                image: doc.cover_i
-                  ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-                  : null,
-              };
-            })
-            .filter((slide) => slide.title && slide.author && slide.image !== null);
-    
-          slidesData.push(...genreSlides);
-          setSlides(slidesData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+    Axios.get(useLink)
+      .then((response) => {
+        const works = response.data.works;
+        const genreSlides = works
+          .map((work) => {
+            const key = work.key; // Store the key in a variable
+            return {
+              key: key, // Assign the key value to the 'key' property
+              title: work.title || "Unknown Title",
+              author: work.author_name?.[0] || "Unknown Author",
+              rating: work.rating?.average || "N/A",
+              image: work.cover_i
+                ? `https://covers.openlibrary.org/b/id/${work.cover_i}-M.jpg`
+                : null,
+            };
+          })
+          .filter((slide) => slide.title && slide.author && slide.image !== null);
 
-    genres.forEach((genre) => fetchGenreData(genre));
+        slidesData.push(...genreSlides);
+        setSlides(slidesData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleSelectChange = (event) => {
@@ -67,7 +60,6 @@ export default function Others() {
   };
 
   const itemsPerPage = 20;
-
 
   const totalPages = Math.ceil(slides.length / itemsPerPage);
 
@@ -82,11 +74,6 @@ export default function Others() {
   const startIndex = currentSlide * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentSlides = slides.slice(startIndex, endIndex);
-
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
-  };
-
 
   /* close navbar*/
   useEffect(() => {
@@ -107,7 +94,7 @@ export default function Others() {
     };
   }, [showFilters]);
 
-/*search authors*/
+  /*search authors*/
 
   const filteredSlides = slides.filter((slide) =>
     slide.author.toLowerCase().includes(searchQuery.toLowerCase())
@@ -127,11 +114,11 @@ export default function Others() {
 
   const renderPageButtons = () => {
     const buttons = [];
-  
+
     // Calculate the range of page numbers to display
     let start = Math.max(0, currentSlide - 3);
     let end = Math.min(totalPages - 1, start + 4);
-  
+
     // Add page buttons
     for (let i = start; i <= end; i++) {
       buttons.push(
@@ -146,7 +133,7 @@ export default function Others() {
         </div>
       );
     }
-  
+
     // Add '...' button if necessary
     if (end < totalPages - 1) {
       buttons.push(
@@ -155,7 +142,7 @@ export default function Others() {
         </div>
       );
     }
-  
+
     return buttons;
   };
 
@@ -170,24 +157,26 @@ export default function Others() {
 
       {/* Content section */}
       <div className="content-box">
-      {currentSlides.map((slide, index) => (
-        <div key={index} className="book-item C"
-          onClick={() => {
+        {currentSlides.map((slide, index) => (
+          <div
+            key={index}
+            className="book-item C"
+            onClick={() => {
               console.log("Thumbnail URL:", slide.image);
               console.log("Key:", slide.key);
               navigate("/BookInfo", {
                 state: { thumbnailUrl: slide.image, key: slide.key },
               });
-            }}>
-          <img src={slide.image} alt={slide.title} className="book-cover C" />
-          <div className="book-details C">
-            <p className="book-title C">{slide.title}</p>
-            <p className="book-author C">Author: {slide.author}</p>
+            }}
+          >
+            <img src={slide.image} alt={slide.title} className="book-cover C" />
+            <div className="book-details C">
+              <p className="book-title C">{slide.title}</p>
+              <p className="book-author C">Author: {slide.author}</p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-
+        ))}
+      </div>
 
       {/* Page navigation */}
       <h6 className="muchmore">There's so much more for you to discover</h6>
@@ -203,7 +192,6 @@ export default function Others() {
 
         <div className="page-buttonsO">{renderPageButtons()}</div>
 
-        
         <div
           className={`slider-buttonO slider-next ${
             currentSlide === totalPages - 1 ? "disabled" : ""
@@ -215,4 +203,6 @@ export default function Others() {
       </div>
     </div>
   );
-}
+};
+
+export default GenreSearchPage;
