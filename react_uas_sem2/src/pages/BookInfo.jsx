@@ -9,6 +9,8 @@ import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation } from "react-router-dom";
 import DefaultProfile from "./DefaultProfile.jpg";
+import { useNavigate } from "react-router-dom";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const BookInfo = () => {
   const [activeTab, setActiveTab] = useState("description");
@@ -19,12 +21,88 @@ const BookInfo = () => {
   const [bookImageURL, setBookImageURL] = useState("");
   const popupRef = useRef(null);
   const location = useLocation();
-  const { thumbnailURL, key } = location.state || {};
+  const { thumbnailUrl, key } = location.state || {};
   const [authorName, setAuthorName] = useState("");
   const [authorImageURL, setAuthorImageURL] = useState("");
   const [authorBio, setAuthorBio] = useState("");
   const [bookRating, setBookRating] = useState(0);
   const [bookRatingCount, setBookRatingCount] = useState(0);
+  const [extractedSubjects, setExtractedSubjects] = useState([]);
+  const [booksWithCovers, setBooksWithCovers] = useState([]);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
+  const editPopupRef = useRef(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [title, setTitle] = useState(""); // Provide an initial value for the title state variable
+
+
+  const handleApplyButtonClick = () => {
+    const selectedStatus = document.querySelector(".edit-popup-select").value;
+    let pageInput = document.querySelector(".page-input").value;
+  
+    // Check if pageInput is empty or not
+    if (pageInput === "") {
+      pageInput = 0; // Set pageInput to 0 if it's empty
+    }
+  
+    const bookData = {
+      key,
+      title,
+      thumbnailUrl,
+      selectedStatus,
+      pageInput
+    };
+  
+    let storedData = sessionStorage.getItem("bookData");
+    let parsedData = [];
+  
+    try {
+      parsedData = storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error("Error parsing stored data:", error);
+    }
+  
+    const existingBookIndex = parsedData.findIndex(book => book.key === key);
+  
+    if (existingBookIndex !== -1) {
+      parsedData[existingBookIndex] = bookData;
+    } else {
+      parsedData.push(bookData);
+    }
+  
+    sessionStorage.setItem("bookData", JSON.stringify(parsedData));
+  };
+  
+  
+  
+  
+  
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedStatus", selectedStatus);
+  }, [selectedStatus]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        editPopupRef.current &&
+        !editPopupRef.current.contains(event.target)
+      ) {
+        setIsEditPopupVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const book = {
     title: bookTitle,
@@ -42,21 +120,43 @@ const BookInfo = () => {
     book: "The Book",
   };
 
+  const [userInput, setUserInput] = useState({
+    coverImage: "",
+    title: "",
+    key: "",
+    status: "",
+    pages: 0,
+  });
+  const [bookshelfData, setBookshelfData] = useState([]);
+
+  const handleAddToBookshelf = () => {
+    const newBook = {
+      title: bookTitle,
+      pages: pagesRead,
+    };
+
+    // Add the new book to the bookshelf data array
+    setBookshelfData((prevBookshelfData) => [...prevBookshelfData, newBook]);
+
+    // Reset the input fields
+    setBookTitle("");
+    setPagesRead(0);
+  };
+
+  if (!authorImageURL) {
+    author.image = DefaultProfile;
+  }
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
-  const handleAddToBookshelf = () => {
-    setShowPopup(true);
+  const openEditButton = () => {
+    setIsEditPopupVisible(!isEditPopupVisible);
   };
 
-  const handlePopupClose = () => {
-    setShowPopup(false);
-    setPagesRead(0);
-  };
-
-  const handleAddPagesRead = () => {
-    // Update the state for pages read or perform any other required logic...
+  const closeEditButton = () => {
+    setIsEditPopupVisible(!isEditPopupVisible);
   };
 
   const renderRatingStars = () => {
@@ -97,31 +197,84 @@ const BookInfo = () => {
     const fetchBookDescription = async () => {
       try {
         const response = await axios.get(`https://openlibrary.org${key}.json`);
-        const { description, title, covers, authors } = response.data;
-        const modifiedDescription = description.replace(/\bhttp\S+/g, "");
+        const { description, title, covers, authors, subjects } = response.data;
+
+        setTitle(title);
+
+        let bookDescription = "";
+        if (description) {
+          if (typeof description === "string") {
+            bookDescription = description;
+          } else if (typeof description.value === "string") {
+            bookDescription = description.value;
+          }
+        }
+
+        const modifiedDescription = bookDescription.replace(/\bhttp\S+/g, "");
         setBookDescription(modifiedDescription);
         setBookTitle(title);
         if (covers && covers.length > 0) {
           const coverURL = `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg`;
           setBookImageURL(coverURL);
         }
-    
+
         // Fetch author's name and image using author_key
         if (authors && authors.length > 0) {
           const authorKey = authors[0].author.key;
-          const authorResponse = await axios.get(`https://openlibrary.org${authorKey}.json`);
+          const authorResponse = await axios.get(
+            `https://openlibrary.org${authorKey}.json`
+          );
           const authorName = authorResponse.data.name;
           setAuthorName(authorName);
-    
+
           // Fetch author's image using author_key
-          const authorImageKey = authorKey.split("/").pop();
-          const authorImageURL = `https://covers.openlibrary.org/a/olid/${authorImageKey}-L.jpg`;
-          setAuthorImageURL(authorImageURL);
-    
+          let authorImageURL = "";
+          if (
+            authorResponse.data.photos &&
+            authorResponse.data.photos.length > 0
+          ) {
+            const authorImageKey = authorKey.split("/").pop();
+            authorImageURL = `https://covers.openlibrary.org/a/olid/${authorImageKey}-L.jpg`;
+          }
+
+          setAuthorImageURL(authorImageURL || DefaultProfile);
+
           // Fetch author's bio
-          const authorBioResponse = await axios.get(`https://openlibrary.org${authorKey}.json`);
-          const authorBio = authorBioResponse.data.bio.value;
+          const authorBioResponse = await axios.get(
+            `https://openlibrary.org${authorKey}.json`
+          );
+          let authorBio = "";
+          if (authorBioResponse.data.bio) {
+            if (typeof authorBioResponse.data.bio === "string") {
+              authorBio = authorBioResponse.data.bio;
+            } else if (typeof authorBioResponse.data.bio.value === "string") {
+              authorBio = authorBioResponse.data.bio.value;
+            }
+          }
           setAuthorBio(authorBio);
+
+          let extractedSubjects = "";
+          if (subjects && subjects.length > 0) {
+            extractedSubjects = subjects.slice(0, 3);
+            setExtractedSubjects(extractedSubjects);
+
+            // Fetch recommended books after subjects are fetched
+            await fetchRecommendedBooks(extractedSubjects);
+          }
+
+          console.log("Location State:", location.state);
+          console.log("Book Key:", key);
+          console.log("Thumbnail URL:", thumbnailUrl);
+          console.log("Book Description:", modifiedDescription);
+          console.log("Book Title:", title);
+          console.log("Book Covers:", covers);
+          console.log("Authors:", authors);
+          console.log("Author Name:", authorName);
+          console.log("Author Image URL:", authorImageURL);
+          console.log("Author Bio:", authorBio);
+          console.log("Book Subjects:", subjects);
+          console.log("Extracted Book Subjects:", extractedSubjects);
+          setIsLoading(false);
         }
       } catch (error) {
         console.log("Error fetching book description:", error);
@@ -130,7 +283,9 @@ const BookInfo = () => {
 
     const fetchBookRating = async () => {
       try {
-        const response = await axios.get(`https://openlibrary.org${key}/ratings.json`);
+        const response = await axios.get(
+          `https://openlibrary.org${key}/ratings.json`
+        );
         const { average, count } = response.data.summary;
         const roundedAverage = average.toFixed(1); // Round up to 1 decimal place
         setBookRating(parseFloat(roundedAverage));
@@ -140,27 +295,131 @@ const BookInfo = () => {
       }
     };
 
-    if (key || thumbnailURL) {
+
+    const fetchRecommendedBooks = async (extractedSubjects) => {
+      try {
+        const subjectQuery = extractedSubjects
+          .map((subject) => `("${subject}")`)
+          .join("+OR+");
+        const searchURL = `https://openlibrary.org/search.json?q=subject%3A${subjectQuery}`;
+        const response = await axios.get(searchURL);
+        console.log(searchURL);
+        console.log("Search Books Recommended", searchURL.data);
+        console.log("Books Recommended:", response.data);
+
+        const recommendedBooks = response.data.docs;
+        const filteredBooks = recommendedBooks.filter(
+          (book) => book.cover_edition_key
+        );
+
+        setBooksWithCovers(filteredBooks);
+        console.log("Books with Covers:", filteredBooks);
+      } catch (error) {
+        console.log("Error fetching search results:", error);
+      }
+    };
+
+    if (key) {
+      setIsLoading(true);
       fetchBookDescription();
       fetchBookRating();
     }
-  }, [key, thumbnailURL]);
+  }, [key]);
 
-  // Axios interceptor to log requests
-  axios.interceptors.request.use((config) => {
-    return config;
-  }, (error) => {
-    console.log("Axios Request Error:", error);
-  });
-  
-  // Axios interceptor to log response data
-  axios.interceptors.response.use((response) => {
-    console.log("Axios Response Data:", response.data);
-    return response;
-  }, (error) => {
-    console.log("Axios Response Error:", error);
-    return Promise.reject(error);
-  });
+  const renderRatingStars = () => {
+    const filledStars = Math.floor(book.rating);
+    const remainingStars = 5 - filledStars;
+    const hasHalfStar = book.rating % 1 >= 0.5;
+
+    const stars = [];
+
+    for (let i = 0; i < filledStars; i++) {
+      stars.push(
+        <span key={i}>
+          <FontAwesomeIcon icon={faStarBold} />
+        </span>
+      );
+    }
+
+    if (hasHalfStar) {
+      stars.push(
+        <span key="half">
+          <FontAwesomeIcon icon={faStarHalfStroke} />
+        </span>
+      );
+    }
+
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(
+        <span key={i + filledStars + 1}>
+          <FontAwesomeIcon icon={faStarRegular} />
+        </span>
+      );
+    }
+
+    return stars;
+  };
+  const renderRecommendationSlider = () => {
+    // Check if subjects are available
+    if (extractedSubjects.length === 0) {
+      return (
+        <p className="false-recommendation-info">
+          No recommendation is available for this book
+        </p>
+      );
+    }
+
+    const numItems = 8; // Number of items (book covers)
+    const itemWidth = 180; // Width of each item in pixels
+    const itemHeight = 280; // Height of each item in pixels
+    const sliderWidth = numItems * itemWidth; // Total width of the slider
+
+    const sliderStyle = {
+      width: `${sliderWidth}px`,
+    };
+
+    const itemStyle = {
+      width: `${itemWidth}px`,
+      height: `${itemHeight}px`,
+    };
+
+    // Generate book covers with actual images
+    console.log("Books that are sent in the Slider:", booksWithCovers);
+    const bookCovers = booksWithCovers.slice(0, numItems).map((book, index) => {
+      const imageUrl = `https://covers.openlibrary.org/b/OLID/${book.cover_edition_key}-M.jpg`;
+      const thumbnailUrl = `https://covers.openlibrary.org/b/OLID/${book.cover_edition_key}-L.jpg`;
+      const key = book.key;
+      console.log("Book Thumbnail Url Sent:", thumbnailUrl);
+      console.log("Book Key sent:", key);
+
+      const handleClick = () => {
+        navigate("/BookInfo", {
+          state: {
+            thumbnailUrl: thumbnailUrl,
+            key: key,
+          },
+        });
+      };
+
+      return (
+        <div
+          className="recbody-item"
+          style={itemStyle}
+          key={index}
+          onClick={handleClick}
+        >
+          <img src={imageUrl} alt={`Book ${index + 1}`} />
+        </div>
+      );
+    });
+
+    // Return the book covers within the slider
+    return (
+      <div className="recbord" style={sliderStyle}>
+        {bookCovers}
+      </div>
+    );
+  };
 
   return (
     <div className="book-info-page">
@@ -168,7 +427,7 @@ const BookInfo = () => {
         <div className="book-info">
           <img
             className="book-image"
-            src={thumbnailURL || book.image}
+            src={thumbnailUrl || book.image}
             alt={book.title}
           />
           <div className="book-details-info">
@@ -176,10 +435,14 @@ const BookInfo = () => {
             <p className="book-info-author">{authorName}</p>
             <div className="book-info-rating-container">
               <p>{renderRatingStars()}</p>
-              <p className="book-info-rating"> {book.rating} ( {bookRatingCount} )</p>
+              <p className="book-info-rating">
+                {" "}
+                {book.rating} ( {bookRatingCount} )
+              </p>
             </div>
-            <div className="asu-box">
-              <button className="asu-button" onClick={handleAddToBookshelf}>
+
+            <div>
+              <button className="asu-button" onClick={openEditButton}>
                 +Add to bookshelf
               </button>
             </div>
@@ -210,12 +473,13 @@ const BookInfo = () => {
             </div>
           )}
           {activeTab === "recommendation" && (
-            <div className="recbord">
-              <p className="recbody">{book.recommendation}</p>
-            </div>
+            <div className="recbord">{renderRecommendationSlider()}</div>
           )}
         </div>
         <div className="author-container">
+          <div>
+            <h1 className="book-info-about-author">About the Author</h1>
+          </div>
           <div className="author-info">
             <img
               className="author-image"
@@ -224,22 +488,63 @@ const BookInfo = () => {
             />
             <div className="author-details">
               <h2>{authorName}</h2>
-              <p>Book Published: {author.book}</p>
-              <p className="book-info-author-description">{authorBio}</p>
+              <p className="book-info-author-description">
+                {authorBio || "Currently there is no biography for this Author"}
+              </p>
             </div>
           </div>
         </div>
       </div>
-      {showPopup && (
-        <div className="bookshelf-popup" ref={popupRef}>
-          <h2>Add to Bookshelf</h2>
-          <h4>
-            Pages read: {pagesRead}/{book.totalPages}
-          </h4>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button onClick={handleAddPagesRead} className="popup-add">
-              Add
-            </button>
+      {isEditPopupVisible && (
+        <div className="edit-popup">
+          <div className="edit-popup-container" ref={editPopupRef}>
+            <h4 className="edit-popup-title">Edit Book</h4>
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className="edit-popup-close"
+              onClick={closeEditButton}
+            />
+            <div className="edit-popup-edit">
+              <div className="edit-popup-status">
+                <p className="edit-status">Status: </p>
+                <select
+                  className="edit-popup-select"
+                  onChange={handleStatusChange}
+                >
+                  <option value="planToRead">Plan to read</option>
+                  <option value="reading">Reading</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div className="page-input-row">
+                <p className="edit-page">Pages:</p>
+                <input
+                  className="page-input"
+                  disabled={
+                    selectedStatus === "planToRead" ||
+                    selectedStatus === "completed"
+                  }
+                  placeholder={
+                    selectedStatus === "planToRead"
+                      ? "No Page Read"
+                      : selectedStatus === "completed"
+                      ? "Finished"
+                      : ""
+                  }
+                ></input>
+              </div>
+            </div>
+            <div className="edit-popup-button-container">
+              <button
+                className="edit-popup-button"
+                onClick={() => {
+                  setIsEditPopupVisible(false);
+                  handleApplyButtonClick();
+                }}
+              >
+                Apply
+              </button>
+            </div>
           </div>
         </div>
       )}

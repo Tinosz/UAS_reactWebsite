@@ -5,6 +5,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useLocation } from "react-router-dom";
 
 const Bookshelf = () => {
   const storedActiveTab = localStorage.getItem("activeTab");
@@ -17,6 +18,21 @@ const Bookshelf = () => {
     completed: [],
   });
   const editPopupRef = useRef(null);
+  const location = useLocation();
+  //const { userInput } = location.state;
+  const book = JSON.parse(sessionStorage.getItem('bookData'))
+
+
+  //console.log(userInput);
+
+  useEffect(() => {
+    const bookData = sessionStorage.getItem("BookData");
+    if (bookData) {
+      const parsedBookData = JSON.parse(bookData);
+      setBooks(parsedBookData);
+      console.log(parsedBookData);
+    }
+  }, []);
 
   const handleActiveTabChange = (tab) => {
     setActiveTab(tab);
@@ -68,48 +84,58 @@ const Bookshelf = () => {
   const planToReadCount = books.planToRead.length;
   const completedCount = books.completed.length;
 
+  const bookInfo = 
+  console.log("Book's gotten status:", book.selectedStatus);
+  
+
+  console.log(book)
+  if (book && book.length > 0) {
+    const selectedStatus = book[0].selectedStatus;
+    console.log(selectedStatus);
+  }
   const getBooksForTab = (tab) => {
-    return books[tab].map((book, index) => {
-      let statusContainerClass = "status-container";
-      let statusText = "Unknown";
+    const booksWithSelectedStatus = books.all.filter(
+      (book) => book.selectedStatus === tab
+    );
+  
+    return booksWithSelectedStatus.map((book, index) => {
+        let statusContainerClass = "status-container";
+        let statusText = "Unknown";
 
-      if (tab === "planToRead") {
-        statusContainerClass += " status-container-plan";
-        statusText = "Plan To Read";
-      } else if (tab === "reading") {
-        statusContainerClass += " status-container-reading";
-        statusText = "Reading";
-      } else if (tab === "completed") {
-        statusContainerClass += " status-container-completed";
-        statusText = "Completed";
-      }
+        if (tab === "planToRead") {
+          statusContainerClass += " status-container-plan";
+          statusText = "Plan To Read";
+        } else if (tab === "reading") {
+          statusContainerClass += " status-container-reading";
+          statusText = "Reading";
+        } else if (tab === "completed") {
+          statusContainerClass += " status-container-completed";
+          statusText = "Completed";
+        }
 
-      return (
-        <div className="books" key={index}>
-          <div className="top-section">
-            <div className={statusContainerClass}>
-              <p className="book-status">{statusText}</p>
+        return (
+          <div className="books" key={index}>
+            <div className="top-section">
+              <div className={statusContainerClass}>
+                <p className="book-status">{statusText}</p>
+              </div>
+              <div className="edit-button-container" onClick={openEditButton}>
+                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
+              </div>
             </div>
-            <div className="edit-button-container" onClick={openEditButton}>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                className="edit-button"
-              />
+            <div className="books-info">
+              <p className="books-title">{book.title}</p>
+              {tab !== "all" && (
+                <p className="page-read">Pages: {book.pageInput} / 9999</p>
+              )}
             </div>
           </div>
-          <div className="books-info">
-            <p className="books-title">Book Title</p>
-            {tab !== "all" && (
-              <p className="page-read">Pages: (number of pages) /9999</p>
-            )}
-          </div>
-        </div>
-      );
-    });
+        );
+      });
   };
 
   const renderBooks =
-    books[activeTab].length > 0 ? (
+    books.all.filter((book) => book.selectedStatus == activeTab).length > 0 ? (
       getBooksForTab(activeTab)
     ) : (
       <p>No books currently on this list</p>
@@ -173,13 +199,15 @@ const Bookshelf = () => {
               className="edit-popup-close"
             />
             <div className="edit-popup-edit">
-              <p className="edit-status">Status: </p>
-              <select className="edit-popup-select">
-                <option value="current">Current</option>
-                <option value="planToRead">Plan to read</option>
-                <option value="reading">Reading</option>
-                <option value="completed">Completed</option>
-              </select>
+              <div className="edit-popup-status">
+                <p className="edit-status">Status: </p>
+                <select className="edit-popup-select">
+                  <option value="current">Current</option>
+                  <option value="planToRead">Plan to read</option>
+                  <option value="reading">Reading</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
               <p className="edit-page">Pages:</p>
               <div className="page-input-row">
                 <input className="page-input"></input>
@@ -190,9 +218,8 @@ const Bookshelf = () => {
               <button
                 className="edit-popup-button"
                 onClick={() => {
-                  const newStatus = document.querySelector(
-                    ".edit-popup-select"
-                  ).value;
+                  const newStatus =
+                    document.querySelector(".edit-popup-select").value;
                   handleBookUpdate(0, newStatus); // Assuming book index 0, modify it as needed
                   setIsEditPopupVisible(false);
                 }}

@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios"
 import "./styles/others.css";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom"
+//import { saveAs } from 'file-saver';
+import apiData from './API_data/apiData_Combination.json'; 
+
 
 export default function Others() {
   
@@ -63,6 +67,7 @@ export default function Others() {
   };
 
   const itemsPerPage = 20;
+
 
   const totalPages = Math.ceil(slides.length / itemsPerPage);
 

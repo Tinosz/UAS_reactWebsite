@@ -22,6 +22,7 @@ function App() {
   useEffect(() => {
     const storedUsername = localStorage.getItem("username"); // Retrieve the username from local storage
 
+
     if (storedUsername) {
       setUsername(storedUsername); // Update the username state
     }

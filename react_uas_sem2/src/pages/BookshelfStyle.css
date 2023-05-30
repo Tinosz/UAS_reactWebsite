@@ -266,6 +266,7 @@
   right: -10px;
   top: -8px;
   font-size: 30px;
+  cursor: pointer;
 }
 
 .edit-popup-title{
@@ -281,6 +282,7 @@
   display: flex;
 }
 
+
 .page-input{
   max-width: 100px;
   margin-right: 10px;
@@ -288,17 +290,18 @@
   margin-top: 4px;
   border: 0.2px solid;
   outline: none;
+  margin-left: 10px;
 }
 
 
 .edit-popup-button{
   border-radius: 10%;
-  border: solid #C07F00;
   background-color: white;
 }
 
 .edit-popup-select{
   margin-bottom: 5px;
+  margin-left: 10px;
 }
 
 .edit-popup-button-container{
@@ -308,4 +311,8 @@
 
 .edit-status{
   margin-bottom: 5px;
+}
+
+.edit-popup-status{
+  display: flex;
 }

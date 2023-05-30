@@ -278,7 +278,7 @@ function Banner() {
             const { thumbnailUrl, key } = trendingBooks[currentSlide];
             console.log("Thumbnail URL:", thumbnailUrl);
             console.log("Key:", key);
-            navigate("/Test", {
+            navigate("/BookInfo", {
               state: { thumbnailUrl, key },
             });
           }}
