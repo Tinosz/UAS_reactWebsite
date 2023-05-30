@@ -13,6 +13,8 @@ function Recommended() {
   const [data, setData] = useState(null);
   const [descriptions, setDescriptions] = useState({});
   const url = 'https://openlibrary.org/search.json?q=subject%3A(Romance)';
+  let thumbnailUrl;
+  let key;
 
   useEffect(() => {
     setData(apiData);
@@ -152,7 +154,15 @@ function Recommended() {
               className="gen-slide-popup"
               onClick={handlePopupClick} // Stop click propagation to allow scrolling
             >
-              <div className="gen-slide-popup-content" onClick={() => navigate('/BookInfo')}>
+              <div 
+              className="gen-slide-popup-content" 
+              onClick={() => {
+                console.log("Thumbnail URL:", work.cover_edition_key);
+                console.log("Key:", work.key);
+                navigate('/BookInfo', { 
+                  state: { thumbnailURL: work.cover_edition_key ,key: work.key } });
+              }}
+              >
                 <h5>{work.title}</h5>
                 <h6>by {work.author_name?.[0]}</h6>
                 <p>{description}</p>

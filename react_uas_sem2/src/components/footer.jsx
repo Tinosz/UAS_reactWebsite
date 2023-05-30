@@ -1,7 +1,9 @@
 import React from "react";
 import "./styles/footerStyles.css";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate()
   return (
     <div className="box">
       <div className="topBox">
@@ -19,24 +21,24 @@ const Footer = () => {
       <div className="container-footer">
         <div className="column">
           <h3 className="topic">About Us</h3>
-          <a href="#">Valen</a>
-          <a href="#">Axel</a>
-          <a href="#">Damar</a>
-          <a href="#">Daniel</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Valen</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Axel</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Damar</a>
+          <a href="#" onClick={() => navigate('/AboutUs')}>Daniel</a>
         </div>
         <div className="column">
           <h3 className="topic">Discover</h3>
-          <a href="#">Home</a>
+          <a href="#" onClick={() => navigate('/Landing')}>Home</a>
           <a href="#">Trending</a>
-          <a href="#">Authors</a>
-          <a href="#">Your Wishlist</a>
+          <a href="#">Popular</a>
+          <a href="#">Nowhere</a>
         </div>
         <div className="column">
           <h3 className="topic">Other Genres</h3>
-          <a href="#">Romance</a>
-          <a href="#">Fantasy</a>
-          <a href="#">Coding</a>
-          <a href="#">Fiction</a>
+          <a href="#" onClick={() => navigate('/Search')}>Romance</a>
+          <a href="#" onClick={() => navigate('/Search')}>Fantasy</a>
+          <a href="#" onClick={() => navigate('/Search')}>Coding</a>
+          <a href="#" onClick={() => navigate('/Search')}>Fiction</a>
         </div>
         <div className="column">
           <h3 className="topic">Social Media</h3>

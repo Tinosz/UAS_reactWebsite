@@ -35,10 +35,6 @@
   padding: 5px;
 }
 
-.gen-case:hover {
-  border-bottom: 3px solid white;
-  border-radius: 2px;
-}
 
 .gen-redirect-button {
   font-weight: bold;
