@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "./styles/Assets/BookhavenLogo.png";
 import { useContext } from "react";
         
-function NavigationBar({ username }) {
+function NavigationBar({ username,  handleButtonClick }) {
   const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(true);
@@ -19,7 +19,18 @@ function NavigationBar({ username }) {
   const [dropdownTimeout, setDropdownTimeout] = useState(null);
   const [show2, setShow2] = useState(false);
   const navigate = useNavigate();
+  const handleClick = () => {
+    handleButtonClick();
+  }
   
+  
+
+  const handleClickPopular = () => {
+    // Call the handleButtonClick function passed as prop
+    handleButtonClick();
+
+    
+  };
 
   const showDropdown = (e) => {
     clearTimeout(dropdownTimeout);
@@ -231,9 +242,15 @@ function NavigationBar({ username }) {
               onMouseEnter={showDropdown}
               onMouseLeave={hideDropdown}
             >
-              <NavDropdown.Item onClick={() => navigate("/Search")}>Popular</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => navigate("/Search")}>Best-Sellers</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => navigate("/Search")}>Recommended</NavDropdown.Item>
+              <NavDropdown.Item  onClick={() => {
+                const useLink = 'https://openlibrary.org/trending/daily';
+                navigate("/GenreSearch", { state: { useLink } });
+                }}>Popular</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => {
+                const useLink = 'https://openlibrary.org/trending/yearly';
+                navigate("/GenreSearch", { state: { useLink } });
+                }}>Best-Sellers</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleClick}>Recommended</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           {!isNavOpen && (

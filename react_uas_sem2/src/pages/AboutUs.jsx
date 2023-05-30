@@ -3,14 +3,14 @@ import "./AboutUsStyle.css";
 import Axel from "./Photos/axel1.jpg"
 import Valen from "./Photos/valen2.jpg"
 import Daniel from "./Photos/daniel2.jpg"
-import Damar from "./Photos/damar-kece.jpg"
+import Damar from "./Photos/damar1.jpg"
 
 function AboutUs() {
   return (
     <div className="container3">
       <div className="about-banner">
         <h1>About Us</h1>
-        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."</p>
+        <p>"Kerja Keras adalah Satu-satunya jalan."</p>
       </div>
 
 
@@ -23,14 +23,14 @@ function AboutUs() {
             />
             <div className="biodesc">
               <h3>Axel</h3>
-              <p>"isi motto atau apalah."</p>
+              <p>"Rumah ternyaman adalah ketika berada bersama teman."</p>
             </div>
           </div>
 
           <div className="about-row">
             <div className="biodesc">
               <h3>Valen</h3>
-              <p>"isi motto atau apalah."</p>
+              <p>"Aku memang sechill itu bro."</p>
             </div>
             <img
               src={Valen}
@@ -45,7 +45,7 @@ function AboutUs() {
             />
             <div className="biodesc">
               <h3>Daniel</h3>
-              <p>"isi motto atau apalah."</p>
+              <p>"Sekip aja dulu."</p>
             </div>
           </div>
 
