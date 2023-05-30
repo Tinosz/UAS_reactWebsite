@@ -100,7 +100,7 @@ const Landing = () => {
               {" "}
               {/* Menambahkan class name "login-form" pada elemen form */}
               <img src={avatar} alt="Avatar" />
-              <h2 className="title">Selamat Datang di BOOK HUB</h2>
+              <h2 className="title">Selamat Datang di BOOKHAVEN</h2>
               <div className={`input-div-landing ${username ? "focus" : ""}`}>
                 <div className="i">
                   <i className="fas fa-user"></i>

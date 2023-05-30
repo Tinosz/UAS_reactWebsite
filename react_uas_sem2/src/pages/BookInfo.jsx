@@ -326,39 +326,7 @@ const BookInfo = () => {
     }
   }, [key]);
 
-  const renderRatingStars = () => {
-    const filledStars = Math.floor(book.rating);
-    const remainingStars = 5 - filledStars;
-    const hasHalfStar = book.rating % 1 >= 0.5;
-
-    const stars = [];
-
-    for (let i = 0; i < filledStars; i++) {
-      stars.push(
-        <span key={i}>
-          <FontAwesomeIcon icon={faStarBold} />
-        </span>
-      );
-    }
-
-    if (hasHalfStar) {
-      stars.push(
-        <span key="half">
-          <FontAwesomeIcon icon={faStarHalfStroke} />
-        </span>
-      );
-    }
-
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(
-        <span key={i + filledStars + 1}>
-          <FontAwesomeIcon icon={faStarRegular} />
-        </span>
-      );
-    }
-
-    return stars;
-  };
+  
   const renderRecommendationSlider = () => {
     // Check if subjects are available
     if (extractedSubjects.length === 0) {

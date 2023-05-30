@@ -155,7 +155,7 @@ function NavigationBar({ username }) {
             src={logo}
             alt="logo"
             className="logo-image"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/Home")}
           />
         </Navbar.Brand>
 
@@ -189,11 +189,6 @@ function NavigationBar({ username }) {
               }
             }}
           >
-            {!isExpanded && (
-              <div className="search-icon" onClick={toggleSearchBar}>
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            )}
             {isExpanded && (
               <>
                 <div className="select-containers">
@@ -239,20 +234,6 @@ function NavigationBar({ username }) {
               <NavDropdown.Item onClick={() => navigate("/Search")}>Popular</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate("/Search")}>Best-Sellers</NavDropdown.Item>
               <NavDropdown.Item onClick={() => navigate("/Search")}>Recommended</NavDropdown.Item>
-              <NavDropdown
-                title="Genre"
-                id="genreDropdown"
-                className="genre-dropdown custom-dropdown"
-                show={show2}
-                onMouseEnter={showDropdown2}
-                onMouseLeave={hideDropdown2}
-              >
-                <div className="itemGenreDropdown">
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                  <NavDropdown.Item>test</NavDropdown.Item>
-                </div>
-              </NavDropdown>
             </NavDropdown>
           </Nav>
           {!isNavOpen && (

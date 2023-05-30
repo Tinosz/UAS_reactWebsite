@@ -92,7 +92,7 @@ const SearchResultPage = () => {
                   console.log("Thumbnail URL:", book.editionKey);
                   console.log("Key:", book.key);
                   navigate("/Test", {
-                    state: { thumbnailUrl: book.editionKey, key: book.key },
+                    state: { thumbnailUrl: `https://covers.openlibrary.org/b/OLID/${book.editionKey}-M.jpg`, key: book.key },
                   });
                 }}
               >

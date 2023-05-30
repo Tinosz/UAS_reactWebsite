@@ -91,7 +91,7 @@ const Bookshelf = () => {
   console.log(book)
   if (book && book.length > 0) {
     const selectedStatus = book[0].selectedStatus;
-    console.log(selectedStatus);
+    console.log("Book's 0's status:",selectedStatus);
   }
   const getBooksForTab = (tab) => {
     const booksWithSelectedStatus = books.all.filter(

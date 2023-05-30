@@ -40,7 +40,7 @@
 }
 
 .headbox {
-  width: 100%;
+  width: 300%;
   height: 100%;
 }
 
@@ -52,6 +52,7 @@
 .img-spoiler {
   position: relative;
   z-index: 1;
+  display: none;
 }
 
 .img-spoiler img {
@@ -186,6 +187,9 @@
 
   .img img {
     width: 400px;
+  }
+  .img-background{
+    display: none;
   }
 }
 
