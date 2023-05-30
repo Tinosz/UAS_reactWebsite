@@ -52,7 +52,7 @@ function AboutUs() {
           <div className="about-row">
             <div className="biodesc">
               <h3>Damar</h3>
-              <p>"isi motto atau apalah."</p>
+              <p>"jika bisa dikerjakan nanti kenapa harus sekarang"</p>
             </div>
             <img
               src={Damar}
