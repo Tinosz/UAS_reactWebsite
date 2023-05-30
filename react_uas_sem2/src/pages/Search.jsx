@@ -18,6 +18,7 @@ const SearchResultPage = () => {
     if (searchData && searchData.docs) {
       const formattedResults = searchData.docs
         .slice(0, 20) // Limit the number of displayed books to 20
+        .filter((book) => book.cover_edition_key && book.cover_edition_key.length > 0) // Filter out results without editionKey
         .map((book) => ({
           title: book.title,
           author: book.author_name ? book.author_name[0] : "Unknown Author",

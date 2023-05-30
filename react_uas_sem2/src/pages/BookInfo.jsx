@@ -103,7 +103,6 @@ const BookInfo = () => {
         editPopupRef.current &&
         !editPopupRef.current.contains(event.target)
       ) {
-        setIsEditPopupVisible(false);
       }
     };
 
@@ -206,6 +205,7 @@ const BookInfo = () => {
   useEffect(() => {
     const fetchBookDescription = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(`https://openlibrary.org${key}.json`);
         const { description, title, covers, authors, subjects } = response.data;
 
@@ -284,7 +284,6 @@ const BookInfo = () => {
           console.log("Author Bio:", authorBio);
           console.log("Book Subjects:", subjects);
           console.log("Extracted Book Subjects:", extractedSubjects);
-          setIsLoading(false);
         }
       } catch (error) {
         console.log("Error fetching book description:", error);
@@ -326,10 +325,10 @@ const BookInfo = () => {
       } catch (error) {
         console.log("Error fetching search results:", error);
       }
+      setIsLoading(false);
     };
 
     if (key) {
-      setIsLoading(true);
       fetchBookDescription();
       fetchBookRating();
     }
@@ -399,80 +398,92 @@ const BookInfo = () => {
 
   return (
     <div className="book-info-page">
-      <div className="book-info-container">
-        <div className="book-info">
-          <img
-            className="book-image"
-            src={thumbnailUrl || book.image}
-            alt={book.title}
-          />
-          <div className="book-details-info">
-            <p className="book-info-title">{book.title}</p>
-            <p className="book-info-author">{authorName}</p>
-            <div className="book-info-rating-container">
-              <p>{renderRatingStars()}</p>
-              <p className="book-info-rating">
-                {" "}
-                {book.rating} ( {bookRatingCount} )
-              </p>
-            </div>
-
-            <div>
-              <button className="asu-button" onClick={openEditButton}>
-                +Add to bookshelf
-              </button>
-            </div>
+      {isLoading ? (
+        <div className="loader-container">
+          <div class="loader">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
           </div>
         </div>
-        <div className="tab-container">
-          <div
-            className={`deschead tab ${
-              activeTab === "description" ? "active" : ""
-            }`}
-            onClick={() => handleTabClick("description")}
-          >
-            Description
-          </div>
-          <div
-            className={`rechead tab ${
-              activeTab === "recommendation" ? "active" : ""
-            }`}
-            onClick={() => handleTabClick("recommendation")}
-          >
-            Recommendation
-          </div>
-        </div>
-        <div className="tab-content">
-          <div className="tab-content1">
-          {activeTab === "description" && (
-            <div className="descbord">
-              <p className="descbody">{book.description}</p>
-            </div>
-          )}
-          {activeTab === "recommendation" && (
-            <div className="recbord">{renderRecommendationSlider()}</div>
-          )}
-          </div>
-        </div>
-        <div className="author-container">
-          <div>
-            <h1 className="book-info-about-author">About the Author</h1>
-          </div>
-          <div className="author-info">
+      ) : (
+        <div className="book-info-container">
+          <div className="book-info">
             <img
-              className="author-image"
-              src={author.image}
-              alt={author.name}
+              className="book-image"
+              src={thumbnailUrl || book.image}
+              alt={book.title}
             />
-            <div className="author-details">
-              <h2>{authorName}</h2>
-              <p className="book-info-author-description">
-                {authorBio || "Currently there is no biography for this Author"}
-              </p>
+            <div className="book-details-info">
+              <p className="book-info-title">{book.title}</p>
+              <p className="book-info-author">{authorName}</p>
+              <div className="book-info-rating-container">
+                <p>{renderRatingStars()}</p>
+                <p className="book-info-rating">
+                  {" "}
+                  {book.rating} ( {bookRatingCount} )
+                </p>
+              </div>
+
+              <div>
+                <button className="asu-button" onClick={openEditButton}>
+                  +Add to bookshelf
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="tab-container">
+            <div
+              className={`deschead tab ${
+                activeTab === "description" ? "active" : ""
+              }`}
+              onClick={() => handleTabClick("description")}
+            >
+              Description
+            </div>
+            <div
+              className={`rechead tab ${
+                activeTab === "recommendation" ? "active" : ""
+              }`}
+              onClick={() => handleTabClick("recommendation")}
+            >
+              Recommendation
+            </div>
+          </div>
+          <div className="tab-content">
+            <div className="tab-content1">
+              {activeTab === "description" && (
+                <div className="descbord">
+                  <p className="descbody">{book.description || "Currently there are no descriptions for this book"}</p>
+                </div>
+              )}
+              {activeTab === "recommendation" && (
+                <div className="recbord">{renderRecommendationSlider()}</div>
+              )}
+            </div>
+          </div>
+          <div className="author-container">
+            <div>
+              <h1 className="book-info-about-author">About the Author</h1>
+            </div>
+            <div className="author-info">
+              <img
+                className="author-image"
+                src={author.image}
+                alt={author.name}
+              />
+              <div className="author-details">
+                <h2>{authorName}</h2>
+                <p className="book-info-author-description">
+                  {authorBio ||
+                    "Currently there is no biography for this Author"}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       {isEditPopupVisible && (
         <div className="edit-popup">
           <div className="edit-popup-container" ref={editPopupRef}>
