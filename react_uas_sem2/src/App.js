@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Axios from "axios";
 import NavigationBar from "./components/NavigationBar";
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import CustomCursor from './components/Cursor/CustomCursor';
