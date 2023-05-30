@@ -171,13 +171,14 @@ export default function Others() {
       {/* Content section */}
       <div className="content-box">
       {currentSlides.map((slide, index) => (
-        <div key={index} className="book-item C"onClick={() => {
-          console.log("Thumbnail URL:", slide.image);
-          console.log("Key:", slide.key);
-          navigate("/BookInfo", {
-            state: { thumbnailUrl: slide.image, key: slide.key },
-          });
-        }} >
+        <div key={index} className="book-item C"
+          onClick={() => {
+              console.log("Thumbnail URL:", slide.image);
+              console.log("Key:", slide.key);
+              navigate("/BookInfo", {
+                state: { thumbnailUrl: slide.image, key: slide.key },
+              });
+            }}>
           <img src={slide.image} alt={slide.title} className="book-cover C" />
           <div className="book-details C">
             <p className="book-title C">{slide.title}</p>
