@@ -33,6 +33,59 @@ const BookInfo = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
   const editPopupRef = useRef(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [title, setTitle] = useState(""); // Provide an initial value for the title state variable
+
+
+  const handleApplyButtonClick = () => {
+    const selectedStatus = document.querySelector(".edit-popup-select").value;
+    let pageInput = document.querySelector(".page-input").value;
+  
+    // Check if pageInput is empty or not
+    if (pageInput === "") {
+      pageInput = 0; // Set pageInput to 0 if it's empty
+    }
+  
+    const bookData = {
+      key,
+      title,
+      thumbnailUrl,
+      selectedStatus,
+      pageInput
+    };
+  
+    let storedData = sessionStorage.getItem("bookData");
+    let parsedData = [];
+  
+    try {
+      parsedData = storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error("Error parsing stored data:", error);
+    }
+  
+    const existingBookIndex = parsedData.findIndex(book => book.key === key);
+  
+    if (existingBookIndex !== -1) {
+      parsedData[existingBookIndex] = bookData;
+    } else {
+      parsedData.push(bookData);
+    }
+  
+    sessionStorage.setItem("bookData", JSON.stringify(parsedData));
+  };
+  
+  
+  
+  
+  
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedStatus", selectedStatus);
+  }, [selectedStatus]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -89,8 +142,6 @@ const BookInfo = () => {
     setBookTitle("");
     setPagesRead(0);
   };
-  
-  
 
   if (!authorImageURL) {
     author.image = DefaultProfile;
@@ -106,13 +157,15 @@ const BookInfo = () => {
 
   const closeEditButton = () => {
     setIsEditPopupVisible(!isEditPopupVisible);
-  }
+  };
 
   useEffect(() => {
     const fetchBookDescription = async () => {
       try {
         const response = await axios.get(`https://openlibrary.org${key}.json`);
         const { description, title, covers, authors, subjects } = response.data;
+
+        setTitle(title);
 
         let bookDescription = "";
         if (description) {
@@ -417,34 +470,47 @@ const BookInfo = () => {
               onClick={closeEditButton}
             />
             <div className="edit-popup-edit">
-            <div className="edit-popup-status">
+              <div className="edit-popup-status">
                 <p className="edit-status">Status: </p>
-                <select className="edit-popup-select">
+                <select
+                  className="edit-popup-select"
+                  onChange={handleStatusChange}
+                >
                   <option value="planToRead">Plan to read</option>
                   <option value="reading">Reading</option>
                   <option value="completed">Completed</option>
                 </select>
               </div>
               <div className="page-input-row">
-              <p className="edit-page">Pages:</p>
-                <input className="page-input"></input>
+                <p className="edit-page">Pages:</p>
+                <input
+                  className="page-input"
+                  disabled={
+                    selectedStatus === "planToRead" ||
+                    selectedStatus === "completed"
+                  }
+                  placeholder={
+                    selectedStatus === "planToRead"
+                      ? "No Page Read"
+                      : selectedStatus === "completed"
+                      ? "Finished"
+                      : ""
+                  }
+                ></input>
               </div>
             </div>
             <div className="edit-popup-button-container">
-            <button
-              className="edit-popup-button"
-              onClick={() => {
-                const newStatus = document.querySelector(".edit-popup-select")
-                  .value;
-                setIsEditPopupVisible(false);
-                //handleAddPagesRead(); // Call the handleAddPagesRead function here
-              }}
-            >
-              Apply
-            </button>
+              <button
+                className="edit-popup-button"
+                onClick={() => {
+                  setIsEditPopupVisible(false);
+                  handleApplyButtonClick();
+                }}
+              >
+                Apply
+              </button>
             </div>
           </div>
-          
         </div>
       )}
     </div>

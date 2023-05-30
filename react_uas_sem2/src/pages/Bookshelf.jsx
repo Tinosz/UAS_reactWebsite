@@ -20,8 +20,19 @@ const Bookshelf = () => {
   const editPopupRef = useRef(null);
   const location = useLocation();
   //const { userInput } = location.state;
+  const book = JSON.parse(sessionStorage.getItem('bookData'))
+
 
   //console.log(userInput);
+
+  useEffect(() => {
+    const bookData = sessionStorage.getItem("BookData");
+    if (bookData) {
+      const parsedBookData = JSON.parse(bookData);
+      setBooks(parsedBookData);
+      console.log(parsedBookData);
+    }
+  }, []);
 
   const handleActiveTabChange = (tab) => {
     setActiveTab(tab);
@@ -73,45 +84,58 @@ const Bookshelf = () => {
   const planToReadCount = books.planToRead.length;
   const completedCount = books.completed.length;
 
+  const bookInfo = 
+  console.log("Book's gotten status:", book.selectedStatus);
+  
+
+  console.log(book)
+  if (book && book.length > 0) {
+    const selectedStatus = book[0].selectedStatus;
+    console.log(selectedStatus);
+  }
   const getBooksForTab = (tab) => {
-    return books[tab].map((book, index) => {
-      let statusContainerClass = "status-container";
-      let statusText = "Unknown";
+    const booksWithSelectedStatus = books.all.filter(
+      (book) => book.selectedStatus === tab
+    );
+  
+    return booksWithSelectedStatus.map((book, index) => {
+        let statusContainerClass = "status-container";
+        let statusText = "Unknown";
 
-      if (tab === "planToRead") {
-        statusContainerClass += " status-container-plan";
-        statusText = "Plan To Read";
-      } else if (tab === "reading") {
-        statusContainerClass += " status-container-reading";
-        statusText = "Reading";
-      } else if (tab === "completed") {
-        statusContainerClass += " status-container-completed";
-        statusText = "Completed";
-      }
+        if (tab === "planToRead") {
+          statusContainerClass += " status-container-plan";
+          statusText = "Plan To Read";
+        } else if (tab === "reading") {
+          statusContainerClass += " status-container-reading";
+          statusText = "Reading";
+        } else if (tab === "completed") {
+          statusContainerClass += " status-container-completed";
+          statusText = "Completed";
+        }
 
-      return (
-        <div className="books" key={index}>
-          <div className="top-section">
-            <div className={statusContainerClass}>
-              <p className="book-status">p</p>
+        return (
+          <div className="books" key={index}>
+            <div className="top-section">
+              <div className={statusContainerClass}>
+                <p className="book-status">{statusText}</p>
+              </div>
+              <div className="edit-button-container" onClick={openEditButton}>
+                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
+              </div>
             </div>
-            <div className="edit-button-container" onClick={openEditButton}>
-              <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
+            <div className="books-info">
+              <p className="books-title">{book.title}</p>
+              {tab !== "all" && (
+                <p className="page-read">Pages: {book.pageInput} / 9999</p>
+              )}
             </div>
           </div>
-          <div className="books-info">
-            <p className="books-title">sdasd</p>
-            {tab !== "all" && (
-              <p className="page-read">Pages: 1 /9999</p>
-            )}
-          </div>
-        </div>
-      );
-    });
+        );
+      });
   };
 
   const renderBooks =
-    books[activeTab].length > 0 ? (
+    books.all.filter((book) => book.selectedStatus == activeTab).length > 0 ? (
       getBooksForTab(activeTab)
     ) : (
       <p>No books currently on this list</p>
