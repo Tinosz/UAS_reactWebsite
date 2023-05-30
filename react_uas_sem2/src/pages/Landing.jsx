@@ -43,11 +43,15 @@ const Landing = () => {
   };
 
   const handleGenreSelect = (genre) => {
+    let updatedSelectedGenres;
     if (selectedGenres.includes(genre)) {
-      setSelectedGenres(selectedGenres.filter((item) => item !== genre));
+      updatedSelectedGenres = selectedGenres.filter((item) => item !== genre);
     } else {
-      setSelectedGenres([...selectedGenres, genre]);
+      updatedSelectedGenres = [...selectedGenres, genre];
     }
+    
+    setSelectedGenres(updatedSelectedGenres);
+    localStorage.setItem("selectedGenres", JSON.stringify(updatedSelectedGenres));
   };
 
   const handleSubmit = (event) => {
@@ -100,7 +104,7 @@ const Landing = () => {
               {" "}
               {/* Menambahkan class name "login-form" pada elemen form */}
               <img src={avatar} alt="Avatar" />
-              <h2 className="title">Selamat Datang di BOOKHAVEN</h2>
+              <h2 className="title">Welcome Back to BOOKHAVEN</h2>
               <div className={`input-div-landing ${username ? "focus" : ""}`}>
                 <div className="i">
                   <i className="fas fa-user"></i>

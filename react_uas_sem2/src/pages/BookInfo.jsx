@@ -443,6 +443,7 @@ const BookInfo = () => {
           </div>
         </div>
         <div className="tab-content">
+          <div className="tab-content1">
           {activeTab === "description" && (
             <div className="descbord">
               <p className="descbody">{book.description}</p>
@@ -451,6 +452,7 @@ const BookInfo = () => {
           {activeTab === "recommendation" && (
             <div className="recbord">{renderRecommendationSlider()}</div>
           )}
+          </div>
         </div>
         <div className="author-container">
           <div>

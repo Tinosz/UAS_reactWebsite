@@ -13,7 +13,7 @@ const AboutUsPage = () => {
                 </div>
                 <h1>Groupe Valentino</h1>
                 <p>
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    "Tidur tidak perlu, Begadang No.1 Jangan buang waktu-mu secara sukarela, tapi kalau TEKKEN dulu Boleh La"
                 </p>
             </div>
 

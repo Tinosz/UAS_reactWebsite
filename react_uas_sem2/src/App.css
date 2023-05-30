@@ -10,7 +10,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0em;
+  width: 0.2em;
   background-color: transparent;
 }
 
@@ -19,8 +19,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #991997;
-  border-radius: 5px;
+  width: 1px;
+  background-color: grey;
+  border-radius: 20px;
 }
 
 .circle-cursor {
