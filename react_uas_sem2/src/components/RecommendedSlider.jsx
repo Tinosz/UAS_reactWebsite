@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-import './styles/genSlider.css';
-import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
-import apiData from './API_data/apiData_Romance.json'; // Assuming the downloaded file is named 'apiData.json'
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
+import "./styles/genSlider.css";
+import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
+import apiData from "./API_data/apiData_Romance.json"; // Assuming the downloaded file is named 'apiData.json'
 
 function Recommended() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function Recommended() {
   const sliderRef = useRef(null);
   const [data, setData] = useState(null);
   const [descriptions, setDescriptions] = useState({});
-  const url = 'https://openlibrary.org/search.json?q=subject%3A(Romance)';
+  const url = "https://openlibrary.org/search.json?q=subject%3A(Romance)";
   let thumbnailUrl;
   let key;
 
@@ -43,7 +43,7 @@ function Recommended() {
     if (currentSlide >= maxSlide) {
       // Reached the end of the slides
       // Add logic to handle "View More" action here
-      console.log('View More');
+      console.log("View More");
     } else {
       setCurrentSlide((prevSlide) => prevSlide + numColumns);
     }
@@ -75,72 +75,74 @@ function Recommended() {
   };
 
   useEffect(() => {
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
 
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
-  const progress = (currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100;
+  const progress =
+    (currentSlide / (works.length - Math.floor(window.innerWidth / 200))) * 100;
   const transformValue = `translateX(-${currentSlide * slideWidth}%)`;
 
   const fetchDescription = async (key) => {
     try {
       const response = await axios.get(`https://openlibrary.org${key}.json`);
-      return response.data.description?.value || '';
+      return response.data.description?.value || "";
     } catch (error) {
       console.log(error);
-      return '';
+      return "";
     }
   };
 
   useEffect(() => {
     const fetchDescriptions = async () => {
       const descriptionsData = {};
-  
+
       const fetchDescriptionsParallel = async () => {
         const promises = works.map(async (work) => {
           try {
-            const response = await axios.get(`https://openlibrary.org${work.key}.json`);
-            const description = response.data.description?.value || '';
+            const response = await axios.get(
+              `https://openlibrary.org${work.key}.json`
+            );
+            const description = response.data.description?.value || "";
             return { key: work.key, description };
           } catch (error) {
             console.log(error);
-            return { key: work.key, description: '' };
+            return { key: work.key, description: "" };
           }
         });
-  
+
         const descriptions = await Promise.all(promises);
         descriptions.forEach(({ key, description }) => {
           descriptionsData[key] = description;
         });
-  
+
         setDescriptions(descriptionsData);
       };
-  
+
       if (works.length > 0) {
         fetchDescriptionsParallel();
       }
     };
-  
+
     fetchDescriptions();
   }, [works]);
-  
 
   // Render the slides with the popup
   const renderSlides = () => {
     return works.map((work, index) => {
-      const description = descriptions[work.key] || '';
+      const description = descriptions[work.key] || "";
 
       const handlePopupClick = (e) => {
         e.stopPropagation();
       };
 
       return (
-        <div key={work.key} className="gen-slide" id='romance-slide'>
+        <div key={work.key} className="gen-slide" id="romance-slide">
           <div className="gen-cover-box C">
             <img
               src={`https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`}
@@ -152,16 +154,33 @@ function Recommended() {
             <h5 className="C">{work.title}</h5>
             <div
               className="gen-slide-popup"
-              onClick={handlePopupClick} // Stop click propagation to allow scrolling
-            >
-              <div 
-              className="gen-slide-popup-content" 
               onClick={() => {
                 console.log("Thumbnail URL:", work.cover_edition_key);
                 console.log("Key:", work.key);
-                navigate('/BookInfo', { 
-                  state: { thumbnailURL: work.cover_edition_key ,key: work.key } });
-              }}
+                thumbnailUrl = `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`;
+                key = work.key;
+                console.log("Thumbnail URL sent:", thumbnailUrl);
+                console.log("Key sent:", key);
+                navigate("/BookInfo", {
+                  state: { thumbnailUrl, key },
+                });
+              }} // Stop click propagation to allow scrolling
+            >
+              <div
+                className="gen-slide-popup-content"
+                onClick={() => {
+                  console.log(
+                    "Thumbnail URL:",
+                    `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-L.jpg`
+                  );
+                  console.log("Key:", work.key);
+                  navigate("/BookInfo", {
+                    state: {
+                      thumbnailURL: `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`,
+                      key: work.key,
+                    },
+                  });
+                }}
               >
                 <h5>{work.title}</h5>
                 <h6>by {work.author_name?.[0]}</h6>
@@ -184,21 +203,33 @@ function Recommended() {
             <h2 className="gen-case C">Romance</h2>
           </div>
           <div className="gen-slider-buttons">
-            <div className="gen-slider-button slider-prev C" onClick={prevSlide}>
+            <div
+              className="gen-slider-button slider-prev C"
+              onClick={prevSlide}
+            >
               <span className="C">&lt;</span>
             </div>
-            <div className="gen-slider-button slider-next C" onClick={nextSlide}>
+            <div
+              className="gen-slider-button slider-next C"
+              onClick={nextSlide}
+            >
               <span className="C">&gt;</span>
             </div>
           </div>
         </div>
         <div className="gen-slider-box" ref={sliderRef}>
-          <div className="gen-slider-content" style={{ transform: transformValue }}>
+          <div
+            className="gen-slider-content"
+            style={{ transform: transformValue }}
+          >
             {renderSlides()}
           </div>
         </div>
         <div className="gen-progress-box">
-          <div className="gen-progress-bar" style={{ width: `${progress}%` }}></div>
+          <div
+            className="gen-progress-bar"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
       </div>
     </div>

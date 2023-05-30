@@ -36,48 +36,58 @@ const BookInfo = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [title, setTitle] = useState(""); // Provide an initial value for the title state variable
 
+  const handlePageInputKeyDown = (event) => {
+    const validKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight"];
+    const isValidDigitKey = /^\d$/.test(event.key);
+    const isValidControlKey = validKeys.includes(event.key);
+
+    if (!isValidDigitKey && !isValidControlKey) {
+      event.preventDefault();
+    }
+  };
 
   const handleApplyButtonClick = () => {
     const selectedStatus = document.querySelector(".edit-popup-select").value;
     let pageInput = document.querySelector(".page-input").value;
-  
+
     // Check if pageInput is empty or not
     if (pageInput === "") {
       pageInput = 0; // Set pageInput to 0 if it's empty
     }
-  
+
+    if (selectedStatus === "planToRead") {
+      pageInput = "Not Read";
+    } else if (selectedStatus === "completed") {
+      pageInput = "Finished Reading";
+    }
+
     const bookData = {
       key,
       title,
       thumbnailUrl,
       selectedStatus,
-      pageInput
+      pageInput,
     };
-  
+
     let storedData = sessionStorage.getItem("bookData");
     let parsedData = [];
-  
+
     try {
       parsedData = storedData ? JSON.parse(storedData) : [];
     } catch (error) {
       console.error("Error parsing stored data:", error);
     }
-  
-    const existingBookIndex = parsedData.findIndex(book => book.key === key);
-  
+
+    const existingBookIndex = parsedData.findIndex((book) => book.key === key);
+
     if (existingBookIndex !== -1) {
       parsedData[existingBookIndex] = bookData;
     } else {
       parsedData.push(bookData);
     }
-  
+
     sessionStorage.setItem("bookData", JSON.stringify(parsedData));
   };
-  
-  
-  
-  
-  
 
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
@@ -163,9 +173,9 @@ const BookInfo = () => {
     const filledStars = Math.floor(book.rating);
     const remainingStars = 5 - filledStars;
     const hasHalfStar = book.rating % 1 >= 0.5;
-  
+
     const stars = [];
-  
+
     for (let i = 0; i < filledStars; i++) {
       stars.push(
         <span key={i}>
@@ -173,7 +183,7 @@ const BookInfo = () => {
         </span>
       );
     }
-  
+
     if (hasHalfStar) {
       stars.push(
         <span key="half">
@@ -181,7 +191,7 @@ const BookInfo = () => {
         </span>
       );
     }
-  
+
     for (let i = 0; i < remainingStars; i++) {
       stars.push(
         <span key={i + filledStars + 1}>
@@ -189,10 +199,10 @@ const BookInfo = () => {
         </span>
       );
     }
-  
+
     return stars;
   };
-  
+
   useEffect(() => {
     const fetchBookDescription = async () => {
       try {
@@ -295,7 +305,6 @@ const BookInfo = () => {
       }
     };
 
-
     const fetchRecommendedBooks = async (extractedSubjects) => {
       try {
         const subjectQuery = extractedSubjects
@@ -326,7 +335,6 @@ const BookInfo = () => {
     }
   }, [key]);
 
-  
   const renderRecommendationSlider = () => {
     // Check if subjects are available
     if (extractedSubjects.length === 0) {
@@ -509,6 +517,7 @@ const BookInfo = () => {
                   setIsEditPopupVisible(false);
                   handleApplyButtonClick();
                 }}
+                onKeyDown={handlePageInputKeyDown}
               >
                 Apply
               </button>
