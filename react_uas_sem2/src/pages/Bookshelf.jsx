@@ -139,6 +139,7 @@ const Bookshelf = () => {
     // Reset the selected book and status
     setSelectedBook(null);
     setSelectedStatus("");
+    setIsEditPopupVisible(false);
   };
 
   const handleApplyButtonClick = () => {
