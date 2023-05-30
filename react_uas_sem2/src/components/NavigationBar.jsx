@@ -157,7 +157,7 @@
 
     useEffect(() => {
       const selectedGenres = JSON.parse(localStorage.getItem("selectedGenres"));
-      if (selectedGenres) {
+      if (selectedGenres && Array.isArray(selectedGenres)) {
         // Update the state with the selected genres from local storage
         // ...
       }
@@ -260,11 +260,14 @@
                   navigate("/GenreSearch", { state: { useLink } });
                   }}>Best-Sellers</NavDropdown.Item>
 
-                <NavDropdown.Item onClick={() => {
-                    const selectedGenres = JSON.parse(localStorage.getItem("selectedGenres"));
-                    const useLink = `https://openlibrary.org/search.json?q=subject%3A(${selectedGenres.join("OR")})`;
+                <NavDropdown.Item
+                  onClick={() => {
+                    const useLink = 'https://openlibrary.org/trending/now.json';
                     navigate("/GenreSearch", { state: { useLink } });
-                  }}>Recommended</NavDropdown.Item>
+                  }}
+                >
+                  Recommended
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
             {!isNavOpen && (
