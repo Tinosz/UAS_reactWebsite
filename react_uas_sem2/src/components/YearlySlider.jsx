@@ -14,6 +14,8 @@ function YearlySlider() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const url = 'https://openlibrary.org/trending/yearly.json';
+  let thumbnailUrl;
+  let key;
 
   useEffect(() => {
     setData(apiData);
@@ -146,7 +148,16 @@ function YearlySlider() {
             <h5 className="C">{work.title}</h5>
             <div
               className="slide-popup"
-              onClick={handlePopupClick} // Stop click propagation to allow scrolling
+              onClick={() => {
+                console.log("Thumbnail URL:", work.cover_edition_key);
+                console.log("Key:", work.key);
+                thumbnailUrl = `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`;
+                key = work.key;
+                console.log("Thumbnail URL sent:", thumbnailUrl);
+                console.log("Key sent:", key);
+                navigate('/BookInfo', { 
+                  state: { thumbnailUrl, key} });
+              }} // Stop click propagation to allow scrolling
             >
               <div className="slide-popup-content" onClick={() => navigate('/BookInfo')}>
                 <h5>{work.title}</h5>

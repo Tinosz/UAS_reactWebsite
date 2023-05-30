@@ -13,6 +13,8 @@ function Thriller() {
   const [data, setData] = useState(null);
   const [descriptions, setDescriptions] = useState({});
   const url = 'https://openlibrary.org/search.json?q=subject%3A(Thriller)';
+  let thumbnailUrl;
+  let key;
 
   useEffect(() => {
     setData(apiData);
@@ -150,7 +152,16 @@ function Thriller() {
             <h5 className="C">{work.title}</h5>
             <div
               className="gen-slide-popup"
-              onClick={handlePopupClick} // Stop click propagation to allow scrolling
+              onClick={() => {
+                console.log("Thumbnail URL:", work.cover_edition_key);
+                console.log("Key:", work.key);
+                thumbnailUrl = `https://covers.openlibrary.org/b/olid/${work.cover_edition_key}-M.jpg`;
+                key = work.key;
+                console.log("Thumbnail URL sent:", thumbnailUrl);
+                console.log("Key sent:", key);
+                navigate('/BookInfo', { 
+                  state: { thumbnailUrl, key} });
+              }}
             >
               <div className="gen-slide-popup-content" onClick={() => navigate('/BookInfo')}>
                 <h5>{work.title}</h5>

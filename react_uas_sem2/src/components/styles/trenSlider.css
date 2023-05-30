@@ -35,11 +35,6 @@
   padding: 5px;
 }
 
-.case:hover{
-  border-bottom: 3px solid white;
-  border-radius: 2px;
-}
-
 .redirect-button{
   font-weight: bold;
   font-size: x-large ;

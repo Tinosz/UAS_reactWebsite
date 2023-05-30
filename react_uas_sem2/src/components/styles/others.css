@@ -273,6 +273,7 @@ option:hover {
   align-content: baseline;
   display: flex;
   justify-content: flex-start;
+  margin-bottom: 50px;
 }
 
 .slider-buttonO {
