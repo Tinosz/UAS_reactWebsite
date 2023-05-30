@@ -1,3 +1,5 @@
+
+
 @media (min-width: 768px) {
   .toggler {
     display: none;
@@ -6,7 +8,7 @@
     display: none;
   }
   .wholeSearchBar {
-    display: none;
+    display: none !important; 
   }
   .wholeSearchBarToggler {
     display: none;
@@ -18,7 +20,7 @@
     margin-left: 100px;
     top: 30%;
   }
-  .wholeSearchBar2 {
+  .wholeSearchBarResponsive{
     display: none;
   }
   .select-container {
@@ -42,6 +44,17 @@
     top: 30%;
     height: auto;
   }
+}
+
+.loading-ring-search{
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.spinner{
+  width: 5px;
 }
 
 .dropdown-toggle {
@@ -137,7 +150,7 @@
   width: 100%;
   max-width: 550px;
   margin-left: auto;
-  margin-right: 3px;
+  margin-right: auto;
 }
 
 .select-container {
