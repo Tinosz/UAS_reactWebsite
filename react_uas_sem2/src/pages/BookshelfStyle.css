@@ -20,6 +20,24 @@
   font-size: 14px;
 }
 
+.page-input-container{
+  display: flex;
+}
+
+.delete-popup-button{
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  color: red;
+}
+
+.delete-popup-button:hover {
+  color: darkred;
+}
+
 @media (max-width: 768px) {
   .bookshelf-title {
     flex-wrap: wrap;
@@ -59,11 +77,16 @@
   color: white;
 }
 
+.bookshelf-cover{
+  width: 100%;
+  height: 270px;
+}
+
 .books {
   background-color: grey;
   flex: 0 0 auto;
-  height: 250px;
-  width: 200px;
+  width: 180px;
+  height: 270px;
   margin: 20px 15px;
   align-items: center;
   cursor: pointer;
@@ -272,6 +295,7 @@
 .edit-popup-title{
   font-weight: bolder;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .edit-page{
@@ -297,6 +321,10 @@
 .edit-popup-button{
   border-radius: 10%;
   background-color: white;
+  margin-left: auto;
+  margin-right: 0;
+  width: 100px;
+  padding: 5px;
 }
 
 .edit-popup-select{

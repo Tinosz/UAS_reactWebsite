@@ -5,7 +5,8 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { parse } from "@fortawesome/fontawesome-svg-core";
 
 const Bookshelf = () => {
   const storedActiveTab = localStorage.getItem("activeTab");
@@ -19,18 +20,19 @@ const Bookshelf = () => {
   });
   const editPopupRef = useRef(null);
   const location = useLocation();
-  //const { userInput } = location.state;
-  const book = JSON.parse(sessionStorage.getItem('bookData'))
-
-
-  //console.log(userInput);
+  const book = JSON.parse(sessionStorage.getItem("bookData"));
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const navigate = useNavigate();
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
 
   useEffect(() => {
     const bookData = sessionStorage.getItem("BookData");
     if (bookData) {
       const parsedBookData = JSON.parse(bookData);
       setBooks(parsedBookData);
-      console.log(parsedBookData);
     }
   }, []);
 
@@ -42,7 +44,9 @@ const Bookshelf = () => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  const openEditButton = () => {
+  const openEditButton = (bookData) => {
+    setSelectedBook(bookData);
+    console.log(bookData);
     setIsEditPopupVisible(!isEditPopupVisible);
   };
 
@@ -67,75 +71,186 @@ const Bookshelf = () => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  const handleBookUpdate = (bookIndex, newStatus) => {
-    setBooks((prevBooks) => {
-      const updatedBooks = { ...prevBooks };
-      const currentTabBooks = updatedBooks[activeTab];
-      const selectedTabBooks = updatedBooks[newStatus];
+  const handleBookUpdate = () => {
+    const {
+      key,
+      title,
+      thumbnailUrl,
+      selectedStatus: currentSelectedStatus,
+    } = selectedBook;
+    const selectedStatus = document.querySelector(".edit-popup-select").value;
+    let pageInput = document.querySelector(".page-input").value;
 
-      const movedBook = currentTabBooks.splice(bookIndex, 1)[0];
-      selectedTabBooks.push(movedBook);
+    if (pageInput === "") {
+      pageInput = 0;
+    }
 
-      return updatedBooks;
-    });
+    if (selectedStatus === "planToRead") {
+      pageInput = "Not Read";
+    } else if (selectedStatus === "completed") {
+      pageInput = "Finished Reading";
+    }
+
+    const bookData = {
+      key,
+      title,
+      thumbnailUrl,
+      selectedStatus:
+        selectedStatus === "current" ? currentSelectedStatus : selectedStatus,
+      pageInput,
+    };
+
+    let storedData = sessionStorage.getItem("bookData");
+    let parsedData = [];
+
+    try {
+      parsedData = storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error("Error parsing stored data:", error);
+    }
+
+    const existingBookIndex = parsedData.findIndex((book) => book.key === key);
+
+    if (existingBookIndex !== -1) {
+      parsedData[existingBookIndex] = bookData;
+    } else {
+      parsedData.push(bookData);
+    }
+
+    sessionStorage.setItem("bookData", JSON.stringify(parsedData));
+  };
+
+  const handleDeleteButtonClick = () => {
+    const { key } = selectedBook;
+
+    // Remove the book from the session storage
+    let storedData = sessionStorage.getItem("bookData");
+    let parsedData = [];
+
+    try {
+      parsedData = storedData ? JSON.parse(storedData) : [];
+    } catch (error) {
+      console.error("Error parsing stored data:", error);
+    }
+
+    const updatedData = parsedData.filter((book) => book.key !== key);
+    sessionStorage.setItem("bookData", JSON.stringify(updatedData));
+
+    // Reset the selected book and status
+    setSelectedBook(null);
+    setSelectedStatus("");
+  };
+
+  const handleApplyButtonClick = () => {
+    const selectedStatus = document.querySelector(".edit-popup-select").value;
+    let pageInput = document.querySelector(".page-input").value;
+
+    // Check if pageInput is empty or not
+    if (pageInput === "") {
+      pageInput = 0; // Set pageInput to 0 if it's empty
+    }
+    console.log("Retrieved Book arrayssss:", selectedBook);
+    const bookData = {
+      key: selectedBook.key,
+      title: selectedBook.title,
+      thumbnailUrl: selectedBook.thumbnailUrl,
+      selectedStatus,
+      pageInput,
+    };
+
+    handleBookUpdate(bookData);
+    setIsEditPopupVisible(false);
+  };
+
+  const closeEditButton = () => {
+    setIsEditPopupVisible(!isEditPopupVisible);
   };
 
   const readingCount = books.reading.length;
   const planToReadCount = books.planToRead.length;
   const completedCount = books.completed.length;
 
-  const bookInfo = 
-  console.log("Book's gotten status:", book.selectedStatus);
-  
+  const bookInfo = book && book.length > 0 ? book : [];
 
-  console.log(book)
-  if (book && book.length > 0) {
-    const selectedStatus = book[0].selectedStatus;
-    console.log("Book's 0's status:",selectedStatus);
-  }
   const getBooksForTab = (tab) => {
-    const booksWithSelectedStatus = books.all.filter(
-      (book) => book.selectedStatus === tab
-    );
-  
-    return booksWithSelectedStatus.map((book, index) => {
-        let statusContainerClass = "status-container";
-        let statusText = "Unknown";
+    let statusContainerClass = "status-container";
+    let statusText = "Unknown";
 
-        if (tab === "planToRead") {
-          statusContainerClass += " status-container-plan";
-          statusText = "Plan To Read";
-        } else if (tab === "reading") {
-          statusContainerClass += " status-container-reading";
-          statusText = "Reading";
-        } else if (tab === "completed") {
-          statusContainerClass += " status-container-completed";
-          statusText = "Completed";
-        }
+    if (tab === "planToRead") {
+      statusContainerClass += " status-container-plan";
+      statusText = "Plan To Read";
+    } else if (tab === "reading") {
+      statusContainerClass += " status-container-reading";
+      statusText = "Reading";
+    } else if (tab === "completed") {
+      statusContainerClass += " status-container-completed";
+      statusText = "Completed";
+    }
 
-        return (
-          <div className="books" key={index}>
-            <div className="top-section">
-              <div className={statusContainerClass}>
-                <p className="book-status">{statusText}</p>
-              </div>
-              <div className="edit-button-container" onClick={openEditButton}>
-                <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
-              </div>
-            </div>
-            <div className="books-info">
-              <p className="books-title">{book.title}</p>
-              {tab !== "all" && (
-                <p className="page-read">Pages: {book.pageInput} / 9999</p>
-              )}
-            </div>
+    let filteredBooks = [];
+
+    if (tab === "all") {
+      filteredBooks = books.planToRead.concat(books.reading, books.completed);
+    } else {
+      filteredBooks = bookInfo.filter(
+        (bookData) => bookData.selectedStatus === tab
+      );
+    }
+
+    return filteredBooks.map((bookData, index) => (
+      <div className="books" key={index}>
+        <div className="top-section">
+          <div className={statusContainerClass}>
+            <p className="book-status">{statusText}</p>
           </div>
-        );
-      });
+          <img
+            src={bookData.thumbnailUrl}
+            className="bookshelf-cover"
+            alt={bookData.title}
+            onClick={() => {
+              console.log("BookData Key sent:", bookData.key);
+              console.log("Book Image sent:", bookData.thumbnailUrl);
+              navigate("/BookInfo", {
+                state: {
+                  key: bookData.key,
+                  thumbnailUrl: bookData.thumbnailUrl,
+                },
+              });
+            }}
+          />
+          <div
+            className="edit-button-container"
+            onClick={() => openEditButton(bookData, index)} // Pass bookData and index as arguments
+          >
+            <FontAwesomeIcon icon={faPenToSquare} className="edit-button" />
+          </div>
+        </div>
+        <div className="books-info">
+          <p className="books-title">{bookData.title}</p>
+          {tab !== "all" && (
+            <p className="page-read">Pages: {bookData.pageInput}</p>
+          )}
+        </div>
+      </div>
+    ));
   };
 
+  // Preload images from thumbnailUrl
+  useEffect(() => {
+    if (bookInfo && bookInfo.length > 0) {
+      bookInfo.forEach((bookData) => {
+        const img = new Image();
+        img.src = bookData.thumbnailUrl;
+      });
+    }
+  }, [bookInfo]);
+
+  const filteredBooks = bookInfo.filter(
+    (bookInfo) => bookInfo.selectedStatus === activeTab
+  );
+
   const renderBooks =
-    books.all.filter((book) => book.selectedStatus == activeTab).length > 0 ? (
+    filteredBooks.length > 0 ? (
       getBooksForTab(activeTab)
     ) : (
       <p>No books currently on this list</p>
@@ -146,11 +261,6 @@ const Bookshelf = () => {
       <div className="main-bookshelf-container">
         <div className="bookshelf-title">
           <h1 className="text-title">My Bookshelf</h1>
-          <input
-            type="text"
-            className="title-input"
-            placeholder="Enter Title"
-          />
         </div>
         <div className="navbar-container">
           <div className="navbar">
@@ -197,32 +307,51 @@ const Bookshelf = () => {
             <FontAwesomeIcon
               icon={faCircleXmark}
               className="edit-popup-close"
+              onClick={closeEditButton}
             />
             <div className="edit-popup-edit">
               <div className="edit-popup-status">
                 <p className="edit-status">Status: </p>
-                <select className="edit-popup-select">
+                <select
+                  className="edit-popup-select"
+                  onChange={handleStatusChange}
+                >
                   <option value="current">Current</option>
                   <option value="planToRead">Plan to read</option>
                   <option value="reading">Reading</option>
                   <option value="completed">Completed</option>
                 </select>
               </div>
-              <p className="edit-page">Pages:</p>
-              <div className="page-input-row">
-                <input className="page-input"></input>
-                <p>/9999</p>
+              <div className="page-input-container">
+                <p className="edit-page">Pages:</p>
+                <div className="page-input-row">
+                  <input
+                    className="page-input"
+                    disabled={
+                      selectedStatus === "planToRead" ||
+                      selectedStatus === "completed"
+                    }
+                    placeholder={
+                      selectedStatus === "planToRead"
+                        ? "No Page Read"
+                        : selectedStatus === "completed"
+                        ? "Finished"
+                        : ""
+                    }
+                  ></input>
+                </div>
               </div>
             </div>
             <div className="edit-popup-button-container">
+              <p
+                className="delete-popup-button"
+                onClick={() => handleDeleteButtonClick()}
+              >
+                Delete Book
+              </p>
               <button
                 className="edit-popup-button"
-                onClick={() => {
-                  const newStatus =
-                    document.querySelector(".edit-popup-select").value;
-                  handleBookUpdate(0, newStatus); // Assuming book index 0, modify it as needed
-                  setIsEditPopupVisible(false);
-                }}
+                onClick={() => handleApplyButtonClick()}
               >
                 Apply
               </button>

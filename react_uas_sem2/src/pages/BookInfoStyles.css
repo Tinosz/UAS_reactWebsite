@@ -89,9 +89,11 @@
   transition: width 1000ms;
 }
 
+
 .asu-button:hover::before {
   width: 250%;
 }
+
 
 .author-info {
   display: flex;
