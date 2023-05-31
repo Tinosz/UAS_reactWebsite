@@ -11,6 +11,7 @@ import { parse } from "@fortawesome/fontawesome-svg-core";
 const Bookshelf = () => {
   const storedActiveTab = localStorage.getItem("activeTab");
   const [activeTab, setActiveTab] = useState(storedActiveTab || "all");
+
   const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
   const [books, setBooks] = useState({
     all: [],
@@ -38,6 +39,8 @@ const Bookshelf = () => {
 
   const handleActiveTabChange = (tab) => {
     setActiveTab(tab);
+    sessionStorage.setItem("activeTab", tab);
+    console.log("clicked tab:", tab);
   };
 
   useEffect(() => {
@@ -173,7 +176,9 @@ const Bookshelf = () => {
 
   const bookInfo = book && book.length > 0 ? book : [];
 
-  const getBooksForTab = (tab) => {
+  const getBooksForTab = () => {
+    const tab = sessionStorage.getItem("activeTab");
+    console.log("Tab that was gotten:", tab);
     let statusContainerClass = "status-container";
     let statusText = "Unknown";
 
@@ -190,13 +195,15 @@ const Bookshelf = () => {
 
     let filteredBooks = [];
 
-    if (tab === "all") {
-      filteredBooks = books.planToRead.concat(books.reading, books.completed);
+    if (tab === "all" || tab === " ") {
+      filteredBooks = bookInfo;
     } else {
       filteredBooks = bookInfo.filter(
         (bookData) => bookData.selectedStatus === tab
       );
     }
+    console.log("BookInfo: ", filteredBooks);
+    console.log("active tab:", tab);
 
     return filteredBooks.map((bookData, index) => (
       <div className="books" key={index}>
@@ -265,12 +272,12 @@ const Bookshelf = () => {
         </div>
         <div className="navbar-container">
           <div className="navbar">
-            <div
+            {/*<div
               className={`navbar-tab ${activeTab === "all" ? "active" : ""}`}
               onClick={() => handleActiveTabChange("all")}
             >
               All
-            </div>
+  </div>*/}
             <div
               className={`navbar-tab ${
                 activeTab === "planToRead" ? "active" : ""
