@@ -170,6 +170,20 @@ function NavigationBar({ username, handleButtonClick }) {
     };
   }, []);
 
+
+const handleRecommendedClick = () => {
+  const pickedGenre = sessionStorage.getItem("pickedGenre");
+  if (pickedGenre) {
+    const genres = JSON.parse(pickedGenre);
+    const subjectQuery = genres
+      .map((genre) => `("${genre}")`)
+      .join("+OR+");
+    const searchURL = `https://openlibrary.org/search.json?q=subject%3A${subjectQuery}`;
+    console.log("Search URL:", searchURL);
+    navigate("/GenreSearch", { state: { useLink: searchURL } });
+  }
+};
+
   useEffect(() => {
     const selectedGenres = JSON.parse(localStorage.getItem("selectedGenres"));
     if (selectedGenres && Array.isArray(selectedGenres)) {
@@ -177,6 +191,8 @@ function NavigationBar({ username, handleButtonClick }) {
       // ...
     }
   }, []);
+
+  
 
   return (
     <Navbar expand="md" className="navigationBar">
@@ -350,10 +366,7 @@ function NavigationBar({ username, handleButtonClick }) {
               </NavDropdown.Item>
 
               <NavDropdown.Item
-                onClick={() => {
-                  const useLink = "https://openlibrary.org/trending/now.json";
-                  navigate("/GenreSearch", { state: { useLink } });
-                }}
+                onClick={handleRecommendedClick}
               >
                 Recommended
               </NavDropdown.Item>
