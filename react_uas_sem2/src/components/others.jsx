@@ -30,7 +30,7 @@ export default function Others() {
     const slidesData = [];
 
     const fetchGenreData = (genre) => {
-      const url = `https://openlibrary.org/search.json?q=${genre}`;
+      const url = `https://openlibrary.org/search.json?q=${genre}&limit=100`; // Add the 'limit' parameter to limit the number of books
       axios
         .get(url)
         .then((response) => {
@@ -57,8 +57,8 @@ export default function Others() {
           console.log(error);
         });
     };
-
-    genres.forEach((genre) => fetchGenreData(genre));
+    
+    genres.forEach((genre) => fetchGenreData(genre));    
   };
 
   const handleSelectChange = (event) => {

@@ -27,15 +27,32 @@ const GenreSearchPage = ({ apiURL }) => {
 
   const fetchData = () => {
     const slidesData = [];
-
+  
     Axios.get(useLink)
       .then((response) => {
-        const works = response.data.works;
+        console.log(response.data); // Inspect the response data
+  
+        let works;
+  
+        // Check the response structure based on the API endpoint
+        if (response.data.docs) {
+          // Extract works from the 'docs' property for /search.json response
+          works = response.data.docs;
+        } else if (response.data.works) {
+          // Extract works directly for /trending/yearly.json response
+          works = response.data.works;
+        } else {
+          // Handle unexpected response structure
+          throw new Error("Invalid response structure");
+        }
+  
+        console.log(works); // Check the value of the 'works' property
+  
         const genreSlides = works
           .map((work) => {
-            const key = work.key; // Store the key in a variable
+            const key = work.key;
             return {
-              key: key, // Assign the key value to the 'key' property
+              key: key,
               title: work.title || "Unknown Title",
               author: work.author_name?.[0] || "Unknown Author",
               rating: work.rating?.average || "N/A",
@@ -45,7 +62,7 @@ const GenreSearchPage = ({ apiURL }) => {
             };
           })
           .filter((slide) => slide.title && slide.author && slide.image !== null);
-
+  
         slidesData.push(...genreSlides);
         setSlides(slidesData);
       })
@@ -53,6 +70,8 @@ const GenreSearchPage = ({ apiURL }) => {
         console.log(error);
       });
   };
+  
+  
 
   const handleSelectChange = (event) => {
     const { value } = event.target;

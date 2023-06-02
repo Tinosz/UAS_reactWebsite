@@ -203,14 +203,19 @@ const BookInfo = () => {
   };
 
   useEffect(() => {
-    const fetchBookDescription = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`https://openlibrary.org${key}.json`);
-        const { description, title, covers, authors, subjects } = response.data;
-
+  
+        const [bookResponse, ratingResponse] = await Promise.all([
+          axios.get(`https://openlibrary.org${key}.json`),
+          axios.get(`https://openlibrary.org${key}/ratings.json`)
+        ]);
+  
+        const { description, title, covers, authors, subjects } = bookResponse.data;
+  
         setTitle(title);
-
+  
         let bookDescription = "";
         if (description) {
           if (typeof description === "string") {
@@ -219,121 +224,76 @@ const BookInfo = () => {
             bookDescription = description.value;
           }
         }
-
+  
         const modifiedDescription = bookDescription.replace(/\bhttp\S+/g, "");
         setBookDescription(modifiedDescription);
         setBookTitle(title);
+  
         if (covers && covers.length > 0) {
           const coverURL = `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg`;
           setBookImageURL(coverURL);
         }
-
-        // Fetch author's name and image using author_key
+  
         if (authors && authors.length > 0) {
           const authorKey = authors[0].author.key;
-          const authorResponse = await axios.get(
-            `https://openlibrary.org${authorKey}.json`
-          );
+          const authorResponse = await axios.get(`https://openlibrary.org${authorKey}.json`);
           const authorName = authorResponse.data.name;
           setAuthorName(authorName);
-
-          // Fetch author's image using author_key
+  
           let authorImageURL = "";
-          if (
-            authorResponse.data.photos &&
-            authorResponse.data.photos.length > 0
-          ) {
+          if (authorResponse.data.photos && authorResponse.data.photos.length > 0) {
             const authorImageKey = authorKey.split("/").pop();
             authorImageURL = `https://covers.openlibrary.org/a/olid/${authorImageKey}-L.jpg`;
           }
-
           setAuthorImageURL(authorImageURL || DefaultProfile);
-
-          // Fetch author's bio
-          const authorBioResponse = await axios.get(
-            `https://openlibrary.org${authorKey}.json`
-          );
+  
           let authorBio = "";
-          if (authorBioResponse.data.bio) {
-            if (typeof authorBioResponse.data.bio === "string") {
-              authorBio = authorBioResponse.data.bio;
-            } else if (typeof authorBioResponse.data.bio.value === "string") {
-              authorBio = authorBioResponse.data.bio.value;
+          if (authorResponse.data.bio) {
+            if (typeof authorResponse.data.bio === "string") {
+              authorBio = authorResponse.data.bio;
+            } else if (typeof authorResponse.data.bio.value === "string") {
+              authorBio = authorResponse.data.bio.value;
             }
           }
           setAuthorBio(authorBio);
-
+  
           let extractedSubjects = "";
           if (subjects && subjects.length > 0) {
             extractedSubjects = subjects.slice(0, 3);
             setExtractedSubjects(extractedSubjects);
-
-            // Fetch recommended books after subjects are fetched
-            await fetchRecommendedBooks(extractedSubjects);
+  
+            const recommendedBooksResponse = await fetchRecommendedBooks(extractedSubjects);
+            const recommendedBooks = recommendedBooksResponse.docs;
+            const filteredBooks = recommendedBooks.filter((book) => book.cover_edition_key);
+            setBooksWithCovers(filteredBooks);
           }
-
-          console.log("Location State:", location.state);
-          console.log("Book Key:", key);
-          console.log("Thumbnail URL:", thumbnailUrl);
-          console.log("Book Description:", modifiedDescription);
-          console.log("Book Title:", title);
-          console.log("Book Covers:", covers);
-          console.log("Authors:", authors);
-          console.log("Author Name:", authorName);
-          console.log("Author Image URL:", authorImageURL);
-          console.log("Author Bio:", authorBio);
-          console.log("Book Subjects:", subjects);
-          console.log("Extracted Book Subjects:", extractedSubjects);
         }
-      } catch (error) {
-        console.log("Error fetching book description:", error);
-      }
-    };
-
-    const fetchBookRating = async () => {
-      try {
-        const response = await axios.get(
-          `https://openlibrary.org${key}/ratings.json`
-        );
-        const { average, count } = response.data.summary;
+  
+        const { average, count } = ratingResponse.data.summary;
         const roundedAverage = average.toFixed(1); // Round up to 1 decimal place
         setBookRating(parseFloat(roundedAverage));
         setBookRatingCount(count);
       } catch (error) {
-        console.log("Error fetching book rating:", error);
+        console.log("Error fetching book description:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-
+  
     const fetchRecommendedBooks = async (extractedSubjects) => {
-      try {
-        const subjectQuery = extractedSubjects
-          .map((subject) => `("${subject}")`)
-          .join("+OR+");
-        const searchURL = `https://openlibrary.org/search.json?q=subject%3A${subjectQuery}`;
-        const response = await axios.get(searchURL);
-        console.log(searchURL);
-        console.log("Search Books Recommended", searchURL.data);
-        console.log("Books Recommended:", response.data);
-
-        const recommendedBooks = response.data.docs;
-        const filteredBooks = recommendedBooks.filter(
-          (book) => book.cover_edition_key
-        );
-
-        setBooksWithCovers(filteredBooks);
-        console.log("Books with Covers:", filteredBooks);
-      } catch (error) {
-        console.log("Error fetching search results:", error);
-      }
-      setIsLoading(false);
+      const subjectQuery = extractedSubjects
+        .map((subject) => `("${subject}")`)
+        .join("+OR+");
+      const searchURL = `https://openlibrary.org/search.json?q=subject%3A${subjectQuery}`;
+      const response = await axios.get(searchURL);
+      return response.data;
     };
-
+  
     if (key) {
-      fetchBookDescription();
-      fetchBookRating();
+      fetchData();
     }
   }, [key]);
-
+  
   const renderRecommendationSlider = () => {
     // Check if subjects are available
     if (extractedSubjects.length === 0) {

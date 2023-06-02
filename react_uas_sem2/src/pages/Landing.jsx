@@ -49,10 +49,14 @@ const Landing = () => {
     } else {
       updatedSelectedGenres = [...selectedGenres, genre];
     }
-    
+  
     setSelectedGenres(updatedSelectedGenres);
     localStorage.setItem("selectedGenres", JSON.stringify(updatedSelectedGenres));
+  
+    // Store selected genres in session storage
+    sessionStorage.setItem("pickedGenre", JSON.stringify(updatedSelectedGenres));
   };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
