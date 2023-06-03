@@ -26,7 +26,9 @@ const Landing = () => {
   }, []);
 
   const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
+    const username = event.target.value;
+    sessionStorage.setItem("Username", username);
+    setUsername(username);
   };
 
   const handleSaveUsername = () => {
@@ -88,6 +90,8 @@ const Landing = () => {
     setShowNotification(false);
   };
 
+  
+
   return (
     <div className="body">
       
@@ -134,7 +138,8 @@ const Landing = () => {
               {showNotification && (
                 <NotificationModal closeNotification={closeNotification} />
               )}
-              <h2 className="title">Pilih Genre Buku</h2>
+              <h2 className="title">What Genre of Book do you Like? </h2>
+              <p>Please pick at least 3</p>
               <div className="genre-buttons">
                 <button
                   className={`genre-button ${
