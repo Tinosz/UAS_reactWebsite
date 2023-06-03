@@ -22,8 +22,8 @@ import logo from "./styles/Assets/BookhavenLogo.png";
 import { useContext } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-function NavigationBar({ username, handleButtonClick }) {
-  const [lightModeOn, setLightModeOn] = useState(true);
+function NavigationBar({ handleButtonClick }) {
+    const [lightModeOn, setLightModeOn] = useState(true);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [searchOption, setSearchOption] = useState("#");
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,6 +32,14 @@ function NavigationBar({ username, handleButtonClick }) {
   const [show2, setShow2] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
+  const [username, setUsername] = useState(""); // Username state
+  useEffect(() => {
+    const usernameFromStorage = sessionStorage.getItem("Username");
+    if (usernameFromStorage) {
+      // Update the state with the username from sessionStorage
+      setUsername(usernameFromStorage);
+    }
+  }, []);
   const handleClick = () => {
     handleButtonClick();
   };
