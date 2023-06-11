@@ -344,3 +344,8 @@
 .edit-popup-status{
   display: flex;
 }
+
+.no-books{
+  margin-top: 100px;
+  margin-bottom: 100px;
+}

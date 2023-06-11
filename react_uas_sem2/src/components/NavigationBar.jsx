@@ -195,8 +195,6 @@ const handleRecommendedClick = () => {
   useEffect(() => {
     const selectedGenres = JSON.parse(localStorage.getItem("selectedGenres"));
     if (selectedGenres && Array.isArray(selectedGenres)) {
-      // Update the state with the selected genres from local storage
-      // ...
     }
   }, []);
 
@@ -219,7 +217,7 @@ const handleRecommendedClick = () => {
             isExpanded ? "search-form active " : ""
           }`}
           onSubmit={(e) => {
-            e.preventDefault(); // Prevent form submission
+            e.preventDefault();
             if (searchTerm.trim() !== "") {
               handleBookSearch(searchTerm, searchOption);
             }

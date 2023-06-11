@@ -261,7 +261,7 @@ const Bookshelf = () => {
     filteredBooks.length > 0 ? (
       getBooksForTab(activeTab)
     ) : (
-      <p>No books currently on this list</p>
+      <p className="no-books">No books currently on this list</p>
     );
 
   return (

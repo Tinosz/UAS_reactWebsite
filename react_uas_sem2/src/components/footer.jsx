@@ -1,9 +1,10 @@
 import React from "react";
 import "./styles/footerStyles.css";
 import { useNavigate } from "react-router-dom";
+import logo from "./styles/Assets/book.gif";
 
 const Footer = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="box">
       <div className="topBox">
@@ -15,36 +16,66 @@ const Footer = () => {
             <br />- George R.R Martin -
           </h1>
         </div>
-        <div className="right-layer"></div>
+        <div className="right-layer">
+          <img src={logo} alt="logo" className="footer-image-box"/>
+        </div>
       </div>
 
       <div className="container-footer">
         <div className="column">
           <h3 className="topic">About Us</h3>
-          <a href="#" onClick={() => navigate('/AboutUs')}>Valen</a>
-          <a href="#" onClick={() => navigate('/AboutUs')}>Axel</a>
-          <a href="#" onClick={() => navigate('/AboutUs')}>Damar</a>
-          <a href="#" onClick={() => navigate('/AboutUs')}>Daniel</a>
+          <a href="#" onClick={() => navigate("/AboutUs")}>
+            Valen
+          </a>
+          <a href="#" onClick={() => navigate("/AboutUs")}>
+            Axel
+          </a>
+          <a href="#" onClick={() => navigate("/AboutUs")}>
+            Damar
+          </a>
+          <a href="#" onClick={() => navigate("/AboutUs")}>
+            Daniel
+          </a>
         </div>
         <div className="column">
           <h3 className="topic">Discover</h3>
-          <a href="#" onClick={() => navigate('/Home')}>Home</a>
-          <a href="#" onClick={() => {
-                const useLink = 'https://openlibrary.org/trending/daily.json';
-                navigate("/GenreSearch", { state: { useLink } });
-                }}>Trending</a>
-          <a href="#" onClick={() => {
-                const useLink = 'https://openlibrary.org/trending/yearly.json';
-                navigate("/GenreSearch", { state: { useLink } });
-                }}>Popular</a>
+          <a href="#" onClick={() => navigate("/Home")}>
+            Home
+          </a>
+          <a
+            href="#"
+            onClick={() => {
+              const useLink = "https://openlibrary.org/trending/daily.json";
+              navigate("/GenreSearch", { state: { useLink } });
+            }}
+          >
+            Trending
+          </a>
+          <a
+            href="#"
+            onClick={() => {
+              const useLink = "https://openlibrary.org/trending/yearly.json";
+              navigate("/GenreSearch", { state: { useLink } });
+            }}
+          >
+            Popular
+          </a>
           <a href="#">Nowhere</a>
         </div>
         <div className="column">
           <h3 className="topic">Other Genres</h3>
-          <a href="#" onClick={() => navigate('/Search')}>Romance</a>
-          <a href="#" onClick={() => navigate('/Search')}>Fantasy</a>
-          <a href="#" onClick={() => navigate('/Search')}>Coding</a>
-          <a href="#" onClick={() => navigate('/Search')}>Fiction</a>
+          <a href="#" onClick={() => navigate("/Search")}>
+            Romance
+          </a>
+          <a href="#" onClick={() => navigate("/Search")}>
+            Fantasy
+          </a>
+          <a href="#" onClick={() => navigate("/Search")}>
+            Coding
+          </a>
+          <a href="#" onClick={() => navigate("/Search")}>
+            Fiction
+          </a>
         </div>
         <div className="column">
           <h3 className="topic">Social Media</h3>
